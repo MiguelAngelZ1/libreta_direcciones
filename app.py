@@ -27,15 +27,34 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["GET", "POST"])
+@app.route("/add", methods=["POST"])
 def add():
-    if request.method == "GET":
-        return render_template("add.html", error=None)  # Cargar la página correctamente.
+    grado = request.form["grado"].strip()
+    nombre = request.form["nombre"].strip()
+    apellido = request.form["apellido"].strip()
+    dni = request.form["dni"].strip()
 
-    print("Solicitud recibida en /add")
-    print("Datos enviados:", request.form)
+    # Validación más estricta en el backend
+    if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
+        return render_template("add.html", error="❌ El nombre y el apellido solo pueden contener letras.")
 
-    return "✅ Solicitud recibida correctamente en /add"
+    if not dni.isdigit() or len(dni) < 8:
+        return render_template("add.html", error="❌ El DNI debe contener solo números y tener al menos 8 dígitos.")
+
+    # Aplicar formato correcto antes de insertar en la base de datos
+    nombre = nombre.title()
+    apellido = apellido.upper()
+
+    conn = db_connection()
+    if conn is None:
+        return render_template("add.html", error="❌ Error de conexión a la base de datos.")
+
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
+                           (grado, nombre, apellido, dni))
+
+    return redirect("/menu")
 
 
 

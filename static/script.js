@@ -27,7 +27,7 @@ function validarFormulario() {
     let apellido = document.getElementById("apellido").value.trim();
     let dni = document.getElementById("dni").value.trim();
 
-    // Expresión regular estricta: solo letras y espacios
+    // Expresión regular estricta: solo permite letras y espacios
     let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
     if (!grado || !nombre || !apellido || !dni) {
@@ -49,6 +49,7 @@ function validarFormulario() {
 
     return true;
 }
+
 
 
 
