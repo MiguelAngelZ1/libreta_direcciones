@@ -27,25 +27,30 @@ function validarFormulario() {
     let apellido = document.getElementById("apellido").value.trim();
     let dni = document.getElementById("dni").value.trim();
 
-    let nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre);
-    let apellidoValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido);
+    // Expresión regular MEJORADA para nombres y apellidos (solo letras y espacios)
+    let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
     if (!grado || !nombre || !apellido || !dni) {
         alert("⚠️ Todos los campos son obligatorios.");
         return false;
     }
 
-    if (!nombreValido || !apellidoValido) {
+    if (!soloLetras.test(nombre) || !soloLetras.test(apellido)) {
         alert("❌ El nombre y el apellido solo pueden contener letras y espacios.");
         return false;
     }
 
-    // Formatear el nombre y apellido antes de enviar los datos
+    // Formatear nombre y apellido automáticamente
     nombre = nombre.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
     apellido = apellido.toUpperCase();
 
+    // Actualizar los valores en el formulario
+    document.getElementById("nombre").value = nombre;
+    document.getElementById("apellido").value = apellido;
+
     return true;
 }
+
 
 
 
