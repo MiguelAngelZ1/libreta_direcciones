@@ -27,45 +27,15 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["POST"])
+@app.route("/add", methods=["GET", "POST"])
 def add():
-    print("✅ Solicitud recibida en /add")
+    if request.method == "GET":
+        return render_template("add.html", error=None)  # Cargar la página correctamente.
+
+    print("Solicitud recibida en /add")
     print("Datos enviados:", request.form)
 
-    grado = request.form.get("grado", "").strip()
-    nombre = request.form.get("nombre", "").strip()
-    apellido = request.form.get("apellido", "").strip()
-    dni = request.form.get("dni", "").strip()
-
-    print(f"📌 Datos procesados: Grado={grado}, Nombre={nombre}, Apellido={apellido}, DNI={dni}")
-
-    # Validación
-    if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
-        print("❌ Error en validación: Nombre o apellido contienen caracteres inválidos")
-        return render_template("add.html", error="❌ El nombre y el apellido solo pueden contener letras.")
-
-    if not dni.isdigit() or len(dni) < 8:
-        print("❌ Error en validación: DNI incorrecto")
-        return render_template("add.html", error="❌ El DNI debe contener solo números y tener al menos 8 dígitos.")
-
-    # Intento de conexión a la base de datos
-    conn = db_connection()
-    if conn is None:
-        print("❌ Error de conexión a la base de datos")
-        return render_template("add.html", error="❌ Error de conexión a la base de datos.")
-
-    try:
-        with conn:
-            with conn.cursor() as cursor:
-                cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
-                               (grado, nombre.title(), apellido.upper(), dni))
-                print("✅ Registro agregado exitosamente")
-    except Exception as e:
-        print(f"❌ Error al insertar en la base de datos: {e}")
-        return render_template("add.html", error="❌ Error al guardar el contacto.")
-
-    return redirect("/menu")
-
+    return "✅ Solicitud recibida correctamente en /add"
 
 
 
