@@ -83,14 +83,12 @@ def edit():
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("""
-                    UPDATE contactos 
-                    SET grado = %s, nombre = %s, apellido = %s, dni = %s 
+                     UPDATE contactos 
+                     SET grado = %s, nombre = %s, apellido = %s, dni = %s 
                     WHERE id = %s
-                """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
-
-        return redirect("/menu")
-
-    return render_template("edit.html")
+                    """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
+                return redirect("/menu")
+        return render_template("edit.html")
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():

@@ -37,7 +37,7 @@
                     <td>{{ registro[3] }}</td>
                     <td>{{ registro[4] }}</td>
                     <td>
-                        <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
+                        <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
                         <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
                     </td>
                 </tr>
@@ -58,6 +58,8 @@
             <h2>Editar Contacto</h2>
             <form id="editForm">
                 <input type="hidden" id="editId">
+                <label>Grado:</label>
+                <input type="text" id="editGrado">
                 <label>Nombre:</label>
                 <input type="text" id="editNombre">
                 <label>Apellido:</label>
@@ -69,6 +71,7 @@
                     <button type="button" onclick="confirmarEdicion()">Confirmar cambios</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </body>

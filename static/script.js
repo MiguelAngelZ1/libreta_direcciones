@@ -23,8 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Funciones para manejar la edición y eliminación de contactos
-function abrirModal(id, nombre, apellido, dni) {
+function abrirModal(id, grado, nombre, apellido, dni) {
     document.getElementById("editId").value = id;
+    document.getElementById("editGrado").value = grado;
     document.getElementById("editNombre").value = nombre;
     document.getElementById("editApellido").value = apellido;
     document.getElementById("editDni").value = dni;
@@ -32,18 +33,20 @@ function abrirModal(id, nombre, apellido, dni) {
     document.getElementById("editModal").style.display = "block";  
 }
 
+
 function cerrarModal() {
     document.getElementById("editModal").style.display = "none";  
 }
 
+//Funcion para confirmar la edición
 function confirmarEdicion() {
     let id = document.getElementById("editId").value;
+    let nuevoGrado = document.getElementById("editGrado").value;
     let nuevoNombre = document.getElementById("editNombre").value;
     let nuevoApellido = document.getElementById("editApellido").value;
     let nuevoDni = document.getElementById("editDni").value;
-    let nuevoGrado = prompt("Ingrese el grado:", "");  // Solicitar grado si es necesario
 
-    if (!nuevoNombre || !nuevoApellido || !nuevoDni || !nuevoGrado) {
+    if (!nuevoGrado || !nuevoNombre || !nuevoApellido || !nuevoDni) {
         alert("Error: Todos los campos deben estar completos.");
         return;
     }
@@ -62,6 +65,7 @@ function confirmarEdicion() {
         location.reload();
     });
 }
+
 
 
 // Funcion Limpiar busqueda
