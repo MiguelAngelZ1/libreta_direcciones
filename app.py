@@ -69,31 +69,32 @@ def view():
     return render_template("view.html", registros=registros)
 
 
-@app.route("/edit", methods=["GET", "POST"])
+@app.route("/edit", methods=["POST"])
 def edit():
-    if request.method == "POST":
-        id_registro = request.form["id"]
-        nuevo_grado = request.form["grado"]
-        nuevo_nombre = request.form["nombre"]
-        nuevo_apellido = request.form["apellido"]
-        nuevo_dni = request.form["dni"]
+    id_registro = request.form["id"]
+    nuevo_grado = request.form["grado"]
+    nuevo_nombre = request.form["nombre"].title()  # Aplica formato correcto
+    nuevo_apellido = request.form["apellido"].upper()  # Aplica formato correcto
+    nuevo_dni = request.form["dni"]
 
-        if not nuevo_dni.isdigit():
-            return "Error: DNI debe contener solo números"
+    if not nuevo_dni.isdigit():
+        return "Error: DNI debe contener solo números"
 
-        conn = db_connection()
-        if conn is None:
-            return "Error de conexión a la base de datos"
+    conn = db_connection()
+    if conn is None:
+        return "Error de conexión a la base de datos"
 
-        with conn:
-            with conn.cursor() as cursor:
-                cursor.execute("""
-                     UPDATE contactos 
-                     SET grado = %s, nombre = %s, apellido = %s, dni = %s 
-                    WHERE id = %s
-                    """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
-                return redirect("/menu")
-        return render_template("edit.html")
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                UPDATE contactos 
+                SET grado = %s, nombre = %s, apellido = %s, dni = %s 
+                WHERE id = %s
+            """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
+
+    return redirect("/menu")
+
+
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
