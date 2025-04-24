@@ -40,8 +40,17 @@ function validarFormulario() {
         return false;
     }
 
+    // Formatear los datos correctamente
+    nombre = nombre.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
+    apellido = apellido.toUpperCase();
+
+    // Actualizar los valores en el formulario antes de enviarlo
+    document.getElementById("nombre").value = nombre;
+    document.getElementById("apellido").value = apellido;
+
     return true;
 }
+
 
 
 // Funciones para manejar la edición y eliminación de contactos
