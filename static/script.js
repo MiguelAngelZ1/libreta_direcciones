@@ -2,43 +2,84 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
 
     searchBox.addEventListener("input", function () {
-        let input = searchBox.value.toLowerCase().trim(); // Elimina espacios innecesarios
+        let input = searchBox.value.toLowerCase().trim();
         let filas = document.querySelectorAll("#tableBody tr");
 
         filas.forEach(fila => {
-            let nombre = fila.dataset.nombre || "";
-            let apellido = fila.dataset.apellido || "";
-            let dni = fila.dataset.dni || "";
+            let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
+            let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
+            let dni = fila.dataset.dni ? fila.dataset.dni.toLowerCase() : "";
 
             if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                fila.style.display = "table-row";  // Muestra los que coincidan
+                fila.style.display = "table-row";  
+                fila.style.backgroundColor = "#ffff99";  // Resaltar coincidencias
             } else {
-                fila.style.display = "none";  // Oculta los que no coincidan
+                fila.style.display = "none";  
             }
         });
     });
 });
 
 
-// Funciones para manejar la edición y eliminación de contactos
-function editarContacto(id, nombre, apellido, dni) {
-    let nuevoNombre = prompt("Editar nombre:", nombre);
-    let nuevoApellido = prompt("Editar apellido:", apellido);
-    let nuevoDNI = prompt("Editar DNI:", dni);
 
-    if (nuevoNombre && nuevoApellido && nuevoDNI) {
-        fetch("/edit", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({
-                id: id,
-                nombre: nuevoNombre,
-                apellido: nuevoApellido,
-                dni: nuevoDNI
-            })
-        }).then(() => location.reload());
-    }
+// Funciones para manejar la edición y eliminación de contactos
+function abrirModal(id, nombre, apellido, dni) {
+    document.getElementById("editId").value = id;
+    document.getElementById("editNombre").value = nombre;
+    document.getElementById("editApellido").value = apellido;
+    document.getElementById("editDni").value = dni;
+
+    document.getElementById("editModal").style.display = "block";  
 }
+
+function cerrarModal() {
+    document.getElementById("editModal").style.display = "none";  
+}
+
+function confirmarEdicion() {
+    let id = document.getElementById("editId").value;
+    let nuevoNombre = document.getElementById("editNombre").value;
+    let nuevoApellido = document.getElementById("editApellido").value;
+    let nuevoDni = document.getElementById("editDni").value;
+
+    if (!nuevoNombre || !nuevoApellido || !nuevoDni) {
+        alert("Error: Todos los campos deben estar completos.");
+        return;
+    }
+
+    if (!confirm("¿Seguro que quieres guardar los cambios?")) {
+        return;
+    }
+
+    fetch("/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ id, nombre: nuevoNombre, apellido: nuevoApellido, dni: nuevoDni })
+    }).then(() => {
+        cerrarModal();
+        location.reload();
+    });
+    fetch("/edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ id, nombre: nuevoNombre, apellido: nuevoApellido, dni: nuevoDni })
+    }).then(() => {
+        alert("✅ Contacto editado correctamente.");
+        cerrarModal();
+        location.reload();
+    });
+    
+}
+
+// Funcion Limpiar busqueda
+function limpiarBusqueda() {
+    document.getElementById("searchBox").value = "";
+    document.querySelectorAll("#tableBody tr").forEach(fila => {
+        fila.style.display = "table-row";
+        fila.style.backgroundColor = "";  
+    });
+}
+
 
 function eliminarContacto(id) {
     if (confirm("¿Seguro que quieres eliminar este contacto?")) {
@@ -48,4 +89,13 @@ function eliminarContacto(id) {
             body: new URLSearchParams({ id: id })
         }).then(() => location.reload());
     }
+    fetch("/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ id })
+    }).then(() => {
+        alert("❌ Contacto eliminado correctamente.");
+        location.reload();
+    });
+    
 }
