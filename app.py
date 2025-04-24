@@ -27,10 +27,10 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["POST"])
+@app.route("/add", methods=["GET", "POST"])
 def add():
-    print("Solicitud recibida en /add")
-    print("Datos enviados:", request.form)  # Depuración para ver datos antes de procesarlos
+    if request.method == "POST":
+        return render_template("add.html")  # Depuración para ver datos antes de procesarlos
 
     grado = request.form.get("grado", "").strip()
     nombre = request.form.get("nombre", "").strip().title()
