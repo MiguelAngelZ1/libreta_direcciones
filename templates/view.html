@@ -31,7 +31,7 @@
             </thead>
             <tbody id="tableBody">
                 {% for registro in registros %}
-                <tr>
+                <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
                     <td>{{ registro[0] }}</td>
                     <td>{{ registro[1] }}</td>
                     <td>{{ registro[2] }}</td>
@@ -44,6 +44,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
         
         {% else %}

@@ -1,24 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
-    const tableBody = document.getElementById("tableBody");
+    const filas = document.querySelectorAll("#tableBody tr");
 
-    if (!searchBox || !tableBody) return; // Evita errores si los elementos no existen
-
-    searchBox.addEventListener("input", function () {  
+    searchBox.addEventListener("input", function () {
         let input = searchBox.value.toLowerCase();
-        let filas = tableBody.getElementsByTagName("tr");
 
-        for (let fila of filas) {
-            let textoFila = fila.innerText.toLowerCase();
+        filas.forEach(fila => {
+            let nombre = fila.dataset.nombre;
+            let apellido = fila.dataset.apellido;
+            let dni = fila.dataset.dni;
 
-            if (textoFila.includes(input)) {
-                fila.style.display = "";  // Muestra coincidencias
+            if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
+                fila.style.display = "";  // Muestra solo los que coincidan
             } else {
-                fila.style.display = "none";  // Oculta los que no coinciden
+                fila.style.display = "none";  // Oculta lo que no coincide
             }
-        }
+        });
     });
 });
+
 
 
 
