@@ -1,0 +1,12 @@
+name: Keep Render Active
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # Ejecuta cada 10 minutos
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send request to keep app awake
+        run: curl -X GET https://libreta.onrender.com
