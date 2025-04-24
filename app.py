@@ -29,34 +29,31 @@ def menu():
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
-    if request.method == "POST":
-        return render_template("add.html")  # Depuración para ver datos antes de procesarlos
+    if request.method == ["GET", "POST"]:
+        return render_template("add.html", error=None)  # Muestra la página correctamente
 
-    grado = request.form.get("grado", "").strip()
-    nombre = request.form.get("nombre", "").strip().title()
-    apellido = request.form.get("apellido", "").strip().upper()
-    dni = request.form.get("dni", "").strip()
+    grado = request.form["grado"].strip()
+    nombre = request.form["nombre"].strip()
+    apellido = request.form["apellido"].strip()
+    dni = request.form["dni"].strip()
 
     if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
-        print("❌ Error en validación: Nombre o apellido contienen caracteres no permitidos")
-        return "Error: El nombre y el apellido solo pueden contener letras."
+        return render_template("add.html", error="❌ El nombre y el apellido solo pueden contener letras.")
 
     if not dni.isdigit() or len(dni) < 8:
-        print("❌ Error en validación: DNI incorrecto")
-        return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
+        return render_template("add.html", error="❌ El DNI debe contener solo números y tener al menos 8 dígitos.")
 
     conn = db_connection()
     if conn is None:
-        print("❌ Error de conexión a la base de datos")
-        return "Error de conexión a la base de datos."
+        return render_template("add.html", error="❌ Error de conexión a la base de datos.")
 
     with conn:
         with conn.cursor() as cursor:
             cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
                            (grado, nombre, apellido, dni))
 
-    print("✅ Registro agregado exitosamente")
-    return redirect("/menu")
+    return redirect("/menu")  # Si el registro es exitoso, redirige al menú principal.
+
 
 
 
