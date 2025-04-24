@@ -58,10 +58,11 @@ def view():
     
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos")  # Consulta más eficiente
+            cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")  # Ordenado por nombre
             registros = cursor.fetchall()
 
     return render_template("view.html", registros=registros)
+
 
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
@@ -107,6 +108,25 @@ def delete():
         return redirect("/menu")
 
     return render_template("delete.html")
+
+@app.route("/search", methods=["GET"])
+def search():
+    query = request.args.get("query")
+    
+    conn = db_connection()
+    if conn is None:
+        return "Error de conexión a la base de datos"
+    
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                SELECT id, grado, nombre, apellido, dni FROM contactos
+                WHERE nombre ILIKE %s OR apellido ILIKE %s
+            """, (f"%{query}%", f"%{query}%"))
+            resultados = cursor.fetchall()
+
+    return render_template("view.html", registros=resultados)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
