@@ -29,32 +29,43 @@ def menu():
 
 @app.route("/add", methods=["POST"])
 def add():
-    grado = request.form["grado"].strip()
-    nombre = request.form["nombre"].strip()
-    apellido = request.form["apellido"].strip()
-    dni = request.form["dni"].strip()
+    print("✅ Solicitud recibida en /add")
+    print("Datos enviados:", request.form)
 
-    # Validación más estricta en el backend
+    grado = request.form.get("grado", "").strip()
+    nombre = request.form.get("nombre", "").strip()
+    apellido = request.form.get("apellido", "").strip()
+    dni = request.form.get("dni", "").strip()
+
+    print(f"📌 Datos procesados: Grado={grado}, Nombre={nombre}, Apellido={apellido}, DNI={dni}")
+
+    # Validación
     if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
+        print("❌ Error en validación: Nombre o apellido contienen caracteres inválidos")
         return render_template("add.html", error="❌ El nombre y el apellido solo pueden contener letras.")
 
     if not dni.isdigit() or len(dni) < 8:
+        print("❌ Error en validación: DNI incorrecto")
         return render_template("add.html", error="❌ El DNI debe contener solo números y tener al menos 8 dígitos.")
 
-    # Aplicar formato correcto antes de insertar en la base de datos
-    nombre = nombre.title()
-    apellido = apellido.upper()
-
+    # Intento de conexión a la base de datos
     conn = db_connection()
     if conn is None:
+        print("❌ Error de conexión a la base de datos")
         return render_template("add.html", error="❌ Error de conexión a la base de datos.")
 
-    with conn:
-        with conn.cursor() as cursor:
-            cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
-                           (grado, nombre, apellido, dni))
+    try:
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
+                               (grado, nombre.title(), apellido.upper(), dni))
+                print("✅ Registro agregado exitosamente")
+    except Exception as e:
+        print(f"❌ Error al insertar en la base de datos: {e}")
+        return render_template("add.html", error="❌ Error al guardar el contacto.")
 
     return redirect("/menu")
+
 
 
 
