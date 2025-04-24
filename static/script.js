@@ -27,13 +27,22 @@ function validarFormulario() {
     let apellido = document.getElementById("apellido").value.trim();
     let dni = document.getElementById("dni").value.trim();
 
+    let nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre);
+    let apellidoValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido);
+
     if (!grado || !nombre || !apellido || !dni) {
         alert("⚠️ Todos los campos son obligatorios.");
-        return false; // Evita el envío del formulario
+        return false;
     }
 
-    return true; // Permite el envío
+    if (!nombreValido || !apellidoValido) {
+        alert("❌ El nombre y el apellido solo pueden contener letras.");
+        return false;
+    }
+
+    return true;
 }
+
 
 // Funciones para manejar la edición y eliminación de contactos
 function abrirModal(id, grado, nombre, apellido, dni) {
