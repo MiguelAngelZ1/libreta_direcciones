@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar un Registro</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Eliminar un Registro</h1>
+    </header>
+    <main>
+        <form action="/delete" method="POST">
+            <label for="id">ID del Registro a Eliminar:</label>
+            <input type="text" id="id" name="id" required>
+            <br>
+            <button type="submit">Eliminar</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2025 Libreta Digital</p>
+    </footer>
+</body>
+</html>
