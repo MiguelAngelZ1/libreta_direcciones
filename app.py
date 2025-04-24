@@ -29,11 +29,9 @@ def menu():
 
 @app.route("/add", methods=["POST"])
 def add():
-    print("Datos recibidos:", request.form)  # Depuración para ver los datos
-
     grado = request.form["grado"].strip()
-    nombre = request.form["nombre"].strip()
-    apellido = request.form["apellido"].strip()
+    nombre = request.form["nombre"].strip().title()
+    apellido = request.form["apellido"].strip().upper()
     dni = request.form["dni"].strip()
 
     if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
@@ -41,9 +39,6 @@ def add():
 
     if not dni.isdigit() or len(dni) < 8:
         return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
-
-    nombre = nombre.title()
-    apellido = apellido.upper()
 
     conn = db_connection()
     if conn is None:
@@ -54,7 +49,8 @@ def add():
             cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
                            (grado, nombre, apellido, dni))
 
-    return redirect("/menu")
+    return render_template("menu.html")  # Ahora muestra la página en lugar de redirigir.
+
 
 
 @app.route("/view")
