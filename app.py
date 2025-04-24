@@ -29,19 +29,25 @@ def menu():
 
 @app.route("/add", methods=["POST"])
 def add():
-    grado = request.form["grado"].strip()
-    nombre = request.form["nombre"].strip().title()
-    apellido = request.form["apellido"].strip().upper()
-    dni = request.form["dni"].strip()
+    print("Solicitud recibida en /add")
+    print("Datos enviados:", request.form)  # Depuración para ver datos antes de procesarlos
+
+    grado = request.form.get("grado", "").strip()
+    nombre = request.form.get("nombre", "").strip().title()
+    apellido = request.form.get("apellido", "").strip().upper()
+    dni = request.form.get("dni", "").strip()
 
     if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
+        print("❌ Error en validación: Nombre o apellido contienen caracteres no permitidos")
         return "Error: El nombre y el apellido solo pueden contener letras."
 
     if not dni.isdigit() or len(dni) < 8:
+        print("❌ Error en validación: DNI incorrecto")
         return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
 
     conn = db_connection()
     if conn is None:
+        print("❌ Error de conexión a la base de datos")
         return "Error de conexión a la base de datos."
 
     with conn:
@@ -49,7 +55,9 @@ def add():
             cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
                            (grado, nombre, apellido, dni))
 
-    return render_template("menu.html")  # Ahora muestra la página en lugar de redirigir.
+    print("✅ Registro agregado exitosamente")
+    return redirect("/menu")
+
 
 
 
