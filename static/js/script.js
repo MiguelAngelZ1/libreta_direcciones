@@ -1,24 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
     const tableBody = document.getElementById("tableBody");
+    const filas = tableBody.getElementsByTagName("tr");
 
-    searchBox.addEventListener("input", function () {  // Detecta cambios en tiempo real
+    searchBox.addEventListener("input", function () {  // Se activa en cada entrada de texto
         let input = searchBox.value.toLowerCase();
-        let filas = tableBody.getElementsByTagName("tr");
 
         for (let fila of filas) {
-            let nombre = fila.cells[2].innerText.toLowerCase();
-            let apellido = fila.cells[3].innerText.toLowerCase();
-            let dni = fila.cells[4].innerText.toLowerCase();
+            let textoFila = fila.innerText.toLowerCase();  // Captura toda la fila para comparar
 
-            if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                fila.style.display = "";  // Muestra los que coinciden
+            if (textoFila.includes(input)) {
+                fila.style.display = "";  // Muestra sólo registros que coincidan
             } else {
-                fila.style.display = "none";  // Oculta los que no coinciden
+                fila.style.display = "none";  // Oculta lo que no es relevante
             }
         }
     });
 });
+
 
 // Funciones para manejar la edición y eliminación de contactos
 function editarContacto(id, nombre, apellido, dni) {
