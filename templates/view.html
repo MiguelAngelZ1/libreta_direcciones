@@ -13,11 +13,9 @@
     </header>
     <main>
         <!-- Mostrar mensaje si no hay registros -->
-        {% if registros %}
-
+        
         <input type="text" id="searchBox" placeholder="Buscar por nombre, apellido o DNI">
-
-    
+        {% if registros %}
         <table id="contactTable">
             <thead>
                 <tr>
@@ -43,10 +41,8 @@
                     </td>
                 </tr>
                 {% endfor %}
-            </tbody>
-            
-        </table>
-        
+            </tbody>       
+        </table> 
         {% else %}
         <p>No hay registros disponibles.</p>
         {% endif %}

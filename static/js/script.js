@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
-    const filas = document.querySelectorAll("#tableBody tr");
 
     searchBox.addEventListener("input", function () {
         let input = searchBox.value.toLowerCase();
+        let filas = document.querySelectorAll("#tableBody tr"); // Ahora captura filas dinámicamente
 
         filas.forEach(fila => {
             let nombre = fila.dataset.nombre;
@@ -13,13 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
                 fila.style.display = "";  // Muestra solo los que coincidan
             } else {
-                fila.style.display = "none";  // Oculta lo que no coincide
+                fila.style.display = "none";  // Oculta los que no coinciden
             }
         });
     });
 });
-
-
 
 
 // Funciones para manejar la edición y eliminación de contactos
