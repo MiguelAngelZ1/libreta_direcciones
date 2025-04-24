@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
     const tableBody = document.getElementById("tableBody");
 
-    // Búsqueda en tiempo real
-    searchBox.addEventListener("keyup", function () {
+    searchBox.addEventListener("input", function () {  // Detecta cambios en tiempo real
         let input = searchBox.value.toLowerCase();
         let filas = tableBody.getElementsByTagName("tr");
 
@@ -13,15 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
             let dni = fila.cells[4].innerText.toLowerCase();
 
             if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                fila.style.display = "";
+                fila.style.display = "";  // Muestra los que coinciden
             } else {
-                fila.style.display = "none";
+                fila.style.display = "none";  // Oculta los que no coinciden
             }
         }
     });
 });
 
-// Función para editar contacto
+// Funciones para manejar la edición y eliminación de contactos
 function editarContacto(id, nombre, apellido, dni) {
     let nuevoNombre = prompt("Editar nombre:", nombre);
     let nuevoApellido = prompt("Editar apellido:", apellido);
@@ -31,18 +30,22 @@ function editarContacto(id, nombre, apellido, dni) {
         fetch("/edit", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${id}&nombre=${nuevoNombre}&apellido=${nuevoApellido}&dni=${nuevoDNI}`
+            body: new URLSearchParams({
+                id: id,
+                nombre: nuevoNombre,
+                apellido: nuevoApellido,
+                dni: nuevoDNI
+            })
         }).then(() => location.reload());
     }
 }
 
-// Función para eliminar contacto
 function eliminarContacto(id) {
     if (confirm("¿Seguro que quieres eliminar este contacto?")) {
         fetch("/delete", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${id}`
+            body: new URLSearchParams({ id: id })
         }).then(() => location.reload());
     }
 }
