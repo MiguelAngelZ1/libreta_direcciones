@@ -11,9 +11,12 @@
         <h1>Registros en la Libreta</h1>
     </header>
     <main>
+        <!-- Mostrar mensaje si no hay registros -->
+        {% if registros %}
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Grado</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
@@ -21,9 +24,20 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Los datos se renderizarán dinámicamente desde el backend -->
+                {% for contacto in registros %}
+                <tr>
+                    <td>{{ contacto[0] }}</td>  <!-- ID -->
+                    <td>{{ contacto[1] }}</td>  <!-- Grado -->
+                    <td>{{ contacto[2] }}</td>  <!-- Nombre -->
+                    <td>{{ contacto[3] }}</td>  <!-- Apellido -->
+                    <td>{{ contacto[4] }}</td>  <!-- DNI -->
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p>No hay registros disponibles.</p>
+        {% endif %}
     </main>
     <footer>
         <p>&copy; 2025 Libreta Digital</p>
