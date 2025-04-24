@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 # URL de conexión a PostgreSQL desde variables de entorno
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://libreta_db_user:A2OwJBOrJacD7MX38Y2XNisNprYVk066@dpg-d0548gvgi27c73cac2q0-a.oregon-postgres.render.com/libreta_db")
-
 def db_connection():
     """Establece conexión con PostgreSQL usando conexión optimizada."""
     try:
