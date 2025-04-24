@@ -27,7 +27,7 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["POST"])
+@app.route("/add", methods=["GET", "POST"])
 def add():
     grado = request.form["grado"].strip()
     nombre = request.form["nombre"].strip().title()  # Aplica formato correcto
