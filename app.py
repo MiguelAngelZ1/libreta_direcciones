@@ -27,21 +27,21 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["GET", "POST"])
+@app.route("/add", methods=["POST"])
 def add():
+    print("Datos recibidos:", request.form)  # Depuración para ver los datos
+
     grado = request.form["grado"].strip()
     nombre = request.form["nombre"].strip()
     apellido = request.form["apellido"].strip()
     dni = request.form["dni"].strip()
 
-    # Validación más estricta en el backend
     if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
         return "Error: El nombre y el apellido solo pueden contener letras."
 
     if not dni.isdigit() or len(dni) < 8:
         return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
 
-    # Aplicar formato correcto antes de insertar en la base de datos
     nombre = nombre.title()
     apellido = apellido.upper()
 
@@ -55,6 +55,7 @@ def add():
                            (grado, nombre, apellido, dni))
 
     return redirect("/menu")
+
 
 @app.route("/view")
 def view():
