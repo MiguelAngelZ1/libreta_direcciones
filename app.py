@@ -30,25 +30,30 @@ def menu():
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
-        grado = request.form["grado"]
-        nombre = request.form["nombre"]
-        apellido = request.form["apellido"]
-        dni = request.form["dni"]
+        grado = request.form["grado"].strip()
+        nombre = request.form["nombre"].strip().title()  # Convierte la primera letra de cada palabra a mayúscula
+        apellido = request.form["apellido"].strip().upper()  # Convierte todo a mayúsculas
+        dni = request.form["dni"].strip()
 
-        if not dni.isdigit():
-            return "Error: DNI debe contener solo números"
+        if not dni.isdigit() or len(dni) < 8:
+            return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
 
         conn = db_connection()
         if conn is None:
-            return "Error de conexión a la base de datos"
+            return "Error de conexión a la base de datos."
 
-        with conn:
-            with conn.cursor() as cursor:
-                cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
-                               (grado, nombre, apellido, dni))
+        try:
+            with conn:
+                with conn.cursor() as cursor:
+                    cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
+                                   (grado, nombre, apellido, dni))
+        except psycopg2.Error as e:
+            return f"Error al insertar datos: {e}"  # Captura errores SQL para evitar un fallo 502.
+
         return redirect("/menu")
 
     return render_template("add.html")
+
 
 @app.route("/view")
 def view():

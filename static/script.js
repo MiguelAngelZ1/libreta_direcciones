@@ -27,6 +27,7 @@ function validarFormulario() {
     let apellido = document.getElementById("apellido").value.trim();
     let dni = document.getElementById("dni").value.trim();
 
+    // Expresión regular mejorada para nombres y apellidos
     let nombreValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre);
     let apellidoValido = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(apellido);
 
@@ -36,11 +37,11 @@ function validarFormulario() {
     }
 
     if (!nombreValido || !apellidoValido) {
-        alert("❌ El nombre y el apellido solo pueden contener letras.");
+        alert("❌ El nombre y el apellido solo pueden contener letras y espacios.");
         return false;
     }
 
-    // Formatear los datos correctamente
+    // Transformar el formato antes de enviar los datos
     nombre = nombre.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
     apellido = apellido.toUpperCase();
 
@@ -50,6 +51,7 @@ function validarFormulario() {
 
     return true;
 }
+
 
 
 
