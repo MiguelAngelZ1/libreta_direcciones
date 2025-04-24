@@ -29,7 +29,7 @@ def menu():
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
-    if request.method == ["GET", "POST"]:
+    if request.method == "POST":
         return render_template("add.html", error=None)  # Muestra la página correctamente
 
     grado = request.form["grado"].strip()
