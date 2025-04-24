@@ -56,7 +56,18 @@ def add():
 
     return redirect("/menu")
 
+@app.route("/view")
+def view():
+    conn = db_connection()
+    if conn is None:
+        return "Error de conexión a la base de datos"
+    
+    with conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")  # Ordenado por nombre
+            registros = cursor.fetchall()
 
+    return render_template("view.html", registros=registros)
 
 
 @app.route("/edit", methods=["POST"])
@@ -83,7 +94,6 @@ def edit():
             """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
 
     return redirect("/menu")
-
 
 
 @app.route("/delete", methods=["GET", "POST"])
