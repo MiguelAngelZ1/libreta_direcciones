@@ -27,7 +27,7 @@ function validarFormulario() {
     let apellido = document.getElementById("apellido").value.trim();
     let dni = document.getElementById("dni").value.trim();
 
-    // Expresión regular MEJORADA para nombres y apellidos (solo letras y espacios)
+    // Expresión regular mejorada: solo permite letras y espacios en nombres/apellidos
     let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
     if (!grado || !nombre || !apellido || !dni) {
@@ -40,16 +40,17 @@ function validarFormulario() {
         return false;
     }
 
-    // Formatear nombre y apellido automáticamente
+    // Formatear el nombre y apellido antes de enviarse
     nombre = nombre.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
     apellido = apellido.toUpperCase();
 
-    // Actualizar los valores en el formulario
+    // Actualizar los valores en el formulario antes de enviarlos
     document.getElementById("nombre").value = nombre;
     document.getElementById("apellido").value = apellido;
 
     return true;
 }
+
 
 
 

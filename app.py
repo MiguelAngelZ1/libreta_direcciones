@@ -27,46 +27,31 @@ def index():
 def menu():
     return render_template("menu.html")
 
-@app.route("/add", methods=["GET", "POST"])
+@app.route("/add", methods=["POST"])
 def add():
-    if request.method == "POST":
-        grado = request.form["grado"].strip()
-        nombre = request.form["nombre"].strip().title()  # Convierte la primera letra de cada palabra a mayúscula
-        apellido = request.form["apellido"].strip().upper()  # Convierte todo a mayúsculas
-        dni = request.form["dni"].strip()
+    grado = request.form["grado"].strip()
+    nombre = request.form["nombre"].strip().title()  # Aplica formato correcto
+    apellido = request.form["apellido"].strip().upper()  # Aplica formato correcto
+    dni = request.form["dni"].strip()
 
-        if not dni.isdigit() or len(dni) < 8:
-            return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
+    # Validación adicional en el backend
+    if not nombre.replace(" ", "").isalpha() or not apellido.replace(" ", "").isalpha():
+        return "Error: El nombre y el apellido solo pueden contener letras."
 
-        conn = db_connection()
-        if conn is None:
-            return "Error de conexión a la base de datos."
+    if not dni.isdigit() or len(dni) < 8:
+        return "Error: DNI debe contener solo números y tener al menos 8 dígitos."
 
-        try:
-            with conn:
-                with conn.cursor() as cursor:
-                    cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
-                                   (grado, nombre, apellido, dni))
-        except psycopg2.Error as e:
-            return f"Error al insertar datos: {e}"  # Captura errores SQL para evitar un fallo 502.
-
-        return redirect("/menu")
-
-    return render_template("add.html")
-
-
-@app.route("/view")
-def view():
     conn = db_connection()
     if conn is None:
-        return "Error de conexión a la base de datos"
-    
+        return "Error de conexión a la base de datos."
+
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")  # Ordenado por nombre
-            registros = cursor.fetchall()
+            cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
+                           (grado, nombre, apellido, dni))
 
-    return render_template("view.html", registros=registros)
+    return redirect("/menu")
+
 
 
 @app.route("/edit", methods=["POST"])
