@@ -41,8 +41,9 @@ function confirmarEdicion() {
     let nuevoNombre = document.getElementById("editNombre").value;
     let nuevoApellido = document.getElementById("editApellido").value;
     let nuevoDni = document.getElementById("editDni").value;
+    let nuevoGrado = prompt("Ingrese el grado:", "");  // Solicitar grado si es necesario
 
-    if (!nuevoNombre || !nuevoApellido || !nuevoDni) {
+    if (!nuevoNombre || !nuevoApellido || !nuevoDni || !nuevoGrado) {
         alert("Error: Todos los campos deben estar completos.");
         return;
     }
@@ -54,22 +55,14 @@ function confirmarEdicion() {
     fetch("/edit", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ id, nombre: nuevoNombre, apellido: nuevoApellido, dni: nuevoDni })
-    }).then(() => {
-        cerrarModal();
-        location.reload();
-    });
-    fetch("/edit", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ id, nombre: nuevoNombre, apellido: nuevoApellido, dni: nuevoDni })
+        body: new URLSearchParams({ id, grado: nuevoGrado, nombre: nuevoNombre, apellido: nuevoApellido, dni: nuevoDni })
     }).then(() => {
         alert("✅ Contacto editado correctamente.");
         cerrarModal();
         location.reload();
     });
-    
 }
+
 
 // Funcion Limpiar busqueda
 function limpiarBusqueda() {
