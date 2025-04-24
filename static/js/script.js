@@ -3,16 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.getElementById("tableBody");
     const filas = tableBody.getElementsByTagName("tr");
 
-    searchBox.addEventListener("input", function () {  // Se activa en cada entrada de texto
+    searchBox.addEventListener("input", function () {  // Se activa al escribir
         let input = searchBox.value.toLowerCase();
 
         for (let fila of filas) {
-            let textoFila = fila.innerText.toLowerCase();  // Captura toda la fila para comparar
+            let textoFila = fila.innerText.toLowerCase();  // Captura toda la fila
 
             if (textoFila.includes(input)) {
-                fila.style.display = "";  // Muestra sólo registros que coincidan
+                fila.style.display = "";  // Muestra solo coincidencias
             } else {
-                fila.style.display = "none";  // Oculta lo que no es relevante
+                fila.style.display = "none";  // Oculta los que no coincidan
             }
         }
     });

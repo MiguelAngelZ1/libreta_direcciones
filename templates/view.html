@@ -14,12 +14,9 @@
     <main>
         <!-- Mostrar mensaje si no hay registros -->
         {% if registros %}
-
-        <form action="/search" method="GET">
-            <input type="text" name="query" placeholder="Buscar por nombre o apellido">
-            <button type="submit">Buscar</button>
-        </form>
         
+            <input type="text" name="query" placeholder="Buscar por nombre o apellido">
+    
         <table id="contactTable">
             <thead>
                 <tr>
