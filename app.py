@@ -1,30 +1,32 @@
 import psycopg2
 from flask import Flask, render_template, request, redirect
+import os
 
 app = Flask(__name__)
 
-# URL de conexión a PostgreSQL en Render
-DATABASE_URL = "postgresql://libreta_db_user:A2OwJBOrJacD7MX38Y2XNisNprYVk066@dpg-d0548gvgi27c73cac2q0-a.oregon-postgres.render.com/libreta_db"
+# URL de conexión a PostgreSQL desde variables de entorno
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://libreta_db_user:A2OwJBOrJacD7MX38Y2XNisNprYVk066@dpg-d0548gvgi27c73cac2q0-a.oregon-postgres.render.com/libreta_db")
 
 def db_connection():
-    """Establece la conexión con PostgreSQL, manejando posibles errores."""
+    """Establece conexión con PostgreSQL usando conexión optimizada."""
     try:
-        return psycopg2.connect(DATABASE_URL)
+        return psycopg2.connect(
+            DATABASE_URL,
+            sslmode="require",
+            connect_timeout=10  # Establece un timeout para evitar bloqueos
+        )
     except psycopg2.Error as e:
         print(f"Error de conexión a la base de datos: {e}")
-        return None  # Retorna None en caso de error
+        return None  # Retorna None en caso de fallo
 
-# Página principal
 @app.route("/")
 def index():
     return render_template("index.html")
 
-# Menú principal
 @app.route("/menu")
 def menu():
     return render_template("menu.html")
 
-# Agregar un registro
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
@@ -33,14 +35,13 @@ def add():
         apellido = request.form["apellido"]
         dni = request.form["dni"]
 
-        # Validación de entrada básica (evita caracteres no numéricos en DNI)
         if not dni.isdigit():
             return "Error: DNI debe contener solo números"
 
         conn = db_connection()
         if conn is None:
             return "Error de conexión a la base de datos"
-        
+
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)", 
@@ -49,7 +50,6 @@ def add():
 
     return render_template("add.html")
 
-# Ver registros
 @app.route("/view")
 def view():
     conn = db_connection()
@@ -58,13 +58,11 @@ def view():
     
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM contactos")
+            cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos")  # Consulta más eficiente
             registros = cursor.fetchall()
 
-    print(registros)  # Esto mostrará los datos en la terminal
     return render_template("view.html", registros=registros)
 
-# Editar un registro
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
     if request.method == "POST":
@@ -74,7 +72,6 @@ def edit():
         nuevo_apellido = request.form["apellido"]
         nuevo_dni = request.form["dni"]
 
-        # Validación de entrada básica
         if not nuevo_dni.isdigit():
             return "Error: DNI debe contener solo números"
 
@@ -94,7 +91,6 @@ def edit():
 
     return render_template("edit.html")
 
-# Eliminar un registro
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
     if request.method == "POST":
