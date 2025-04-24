@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Registros</title>
     <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
     <header>
@@ -19,7 +20,7 @@
             <button type="submit">Buscar</button>
         </form>
         
-        <table>
+        <table id="contactTable">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -27,20 +28,26 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>DNI</th>
+                    <th>Acciones</th> <!-- Nueva columna -->
                 </tr>
             </thead>
-            <tbody>
-                {% for contacto in registros %}
+            <tbody id="tableBody">
+                {% for registro in registros %}
                 <tr>
-                    <td>{{ contacto[0] }}</td>  <!-- ID -->
-                    <td>{{ contacto[1] }}</td>  <!-- Grado -->
-                    <td>{{ contacto[2] }}</td>  <!-- Nombre -->
-                    <td>{{ contacto[3] }}</td>  <!-- Apellido -->
-                    <td>{{ contacto[4] }}</td>  <!-- DNI -->
+                    <td>{{ registro[0] }}</td>
+                    <td>{{ registro[1] }}</td>
+                    <td>{{ registro[2] }}</td>
+                    <td>{{ registro[3] }}</td>
+                    <td>{{ registro[4] }}</td>
+                    <td>
+                        <button onclick="editarContacto('{{ registro[0] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
+                        <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        
         {% else %}
         <p>No hay registros disponibles.</p>
         {% endif %}
