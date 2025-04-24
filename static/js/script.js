@@ -2,18 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
 
     searchBox.addEventListener("input", function () {
-        let input = searchBox.value.toLowerCase();
-        let filas = document.querySelectorAll("#tableBody tr"); // Ahora captura filas dinámicamente
+        let input = searchBox.value.toLowerCase().trim(); // Elimina espacios innecesarios
+        let filas = document.querySelectorAll("#tableBody tr");
 
         filas.forEach(fila => {
-            let nombre = fila.dataset.nombre;
-            let apellido = fila.dataset.apellido;
-            let dni = fila.dataset.dni;
+            let nombre = fila.dataset.nombre || "";
+            let apellido = fila.dataset.apellido || "";
+            let dni = fila.dataset.dni || "";
 
             if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                fila.style.display = "";  // Muestra solo los que coincidan
+                fila.style.display = "table-row";  // Muestra los que coincidan
             } else {
-                fila.style.display = "none";  // Oculta los que no coinciden
+                fila.style.display = "none";  // Oculta los que no coincidan
             }
         });
     });
