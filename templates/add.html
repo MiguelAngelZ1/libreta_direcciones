@@ -11,7 +11,7 @@
         <h1>Agregar un Registro</h1>
     </header>
     <main>
-        <form action="/add" method="POST">
+        <form action="/add" method="POST" onsubmit="return validarFormulario()">
             <label for="grado">Grado:</label>
             <input type="text" id="grado" name="grado" required>
             <br>

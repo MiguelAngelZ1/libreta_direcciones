@@ -20,7 +20,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//Funcion para validar el formulario
+function validarFormulario() {
+    let grado = document.getElementById("grado").value.trim();
+    let nombre = document.getElementById("nombre").value.trim();
+    let apellido = document.getElementById("apellido").value.trim();
+    let dni = document.getElementById("dni").value.trim();
 
+    if (!grado || !nombre || !apellido || !dni) {
+        alert("⚠️ Todos los campos son obligatorios.");
+        return false; // Evita el envío del formulario
+    }
+
+    return true; // Permite el envío
+}
 
 // Funciones para manejar la edición y eliminación de contactos
 function abrirModal(id, grado, nombre, apellido, dni) {
@@ -65,8 +78,6 @@ function confirmarEdicion() {
         location.reload();
     });
 }
-
-
 
 // Funcion Limpiar busqueda
 function limpiarBusqueda() {
