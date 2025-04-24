@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 # URL de conexión a PostgreSQL en Render
-DATABASE_URL = "postgresql://usuario:password@EXTERNAL-HOST:puerto/libreta_db"
+DATABASE_URL = "postgresql://libreta_db_user:A2OwJBOrJacD7MX38Y2XNisNprYVk066@dpg-d0548gvgi27c73cac2q0-a.oregon-postgres.render.com/libreta_db"
 
 def db_connection():
     return psycopg2.connect(DATABASE_URL)
