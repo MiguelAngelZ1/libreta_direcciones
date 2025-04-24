@@ -60,9 +60,9 @@ def view():
         with conn.cursor() as cursor:
             cursor.execute("SELECT * FROM contactos")
             registros = cursor.fetchall()
-    return render_template("view.html", registros=registros)
-    print(registros)  # Agrega esto en `app.py` dentro de la función `view()`
 
+    print(registros)  # Esto mostrará los datos en la terminal
+    return render_template("view.html", registros=registros)
 
 # Editar un registro
 @app.route("/edit", methods=["GET", "POST"])
