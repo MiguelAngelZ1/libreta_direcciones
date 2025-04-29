@@ -50,14 +50,6 @@ function validarFormulario() {
     return true;
 }
 
-
-
-
-
-
-
-
-
 // Funciones para manejar la edición y eliminación de contactos
 function abrirModal(id, grado, nombre, apellido, dni) {
     document.getElementById("editId").value = id;
