@@ -58,7 +58,7 @@ def add():
     # Validación de DNI: debe contener solo números y tener al menos 8 dígitos.
     if not dni.isdigit() or len(dni) < 8:
         error = "El DNI debe contener solo números y tener al menos 8 dígitos."
-    return render_template("add.html", error=error)
+        return render_template("add.html", error=error)
 
 
     # Transformación de datos:
