@@ -1,53 +1,33 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agregar Contacto</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-  <header>
-    <h1>Agregar Contacto</h1>
-  </header>
-  <main>
-    <!-- Bloque para mostrar mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+{% extends "base.html" %}
+
+{% block title %}
+  Agregar Contacto
+{% endblock %}
+
+{% block content %}
+  <h2>Agregar Contacto</h2>
+
+  <!-- Mostrar error específico, en caso de validación fallida -->
+  {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  <!-- Formulario de ingreso de contacto -->
+  <form action="/add" method="POST">
+    <label for="grado">Grado:</label>
+    <input type="text" id="grado" name="grado">
     
-    <!-- Mostrar error específico, en caso de validación fallida -->
-    {% if error %}
-      <div class="alert alert-danger">
-        {{ error }}
-      </div>
-    {% endif %}
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
     
-    <!-- Formulario de ingreso de contacto -->
-    <form action="/add" method="POST">
-      <label for="grado">Grado:</label>
-      <input type="text" id="grado" name="grado">
-      
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-      
-      <label for="apellido">Apellido:</label>
-      <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
-      
-      <label for="dni">DNI:</label>
-      <input type="text" id="dni" name="dni" placeholder="DNI" required>
-      
-      <button type="submit">Agregar Contacto</button>
-    </form>
-  </main>
-  <footer>
-    <p>&copy; 2025 Libreta Digital</p>
-  </footer>
-</body>
-</html>
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
+    
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" name="dni" placeholder="DNI" required>
+    
+    <button type="submit">Agregar Contacto</button>
+  </form>
+{% endblock %}
