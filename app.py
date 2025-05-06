@@ -134,7 +134,7 @@ def delete():
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("DELETE FROM contactos WHERE id = %s", (id_registro,))
-        return redirect("/menu")
+        return redirect("/index")
 
     return render_template("delete.html")
 
