@@ -25,13 +25,13 @@
       <tbody id="tableBody">
         {% for registro in registros %}
           <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
-            <!-- El ID (registro[0]) se usa internamente pero no se muestra -->
+            <!-- Aunque el ID (registro[0]) se usa internamente, no se muestra -->
             <td>{{ registro[1] }}</td>
             <td>{{ registro[2] }}</td>
             <td>{{ registro[3] }}</td>
             <td>{{ registro[4] }}</td>
             <td>
-              <!-- Se pasan el ID (registro[0]) y demás información necesaria en los botones -->
+              <!-- Se pasan el ID y demás datos necesarios a las funciones de edición y eliminación -->
               <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
               <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
             </td>
@@ -48,7 +48,7 @@
     <div class="modal-content">
       <h2>Editar Contacto</h2>
       <form id="editForm" method="POST" action="/edit">
-        <!-- Se mantiene el campo oculto para identificar el registro -->
+        <!-- Campo oculto para mantener el ID del registro -->
         <input type="hidden" id="editId" name="id">
         <label>Grado:</label>
         <input type="text" id="editGrado" name="grado">
