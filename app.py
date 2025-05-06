@@ -21,13 +21,12 @@ def db_connection():
         )
     except psycopg2.Error as e:
         print(f"Error de conexión a la base de datos: {e}")
-        return None  # Retorna None en caso de error
+        return None
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-# Si deseas tener una ruta '/menu' que muestre lo mismo que index.html:
 @app.route("/menu")
 def menu():
     return render_template("index.html")
@@ -39,7 +38,7 @@ def add():
         return render_template("add.html", error=None)
     
     # --- PROCESAMIENTO DEL FORMULARIO (método POST) ---
-    # Extraer datos del formulario
+    # Extraer y limpiar los datos del formulario
     grado = request.form.get("grado", "").strip()
     nombre_input = request.form.get("nombre", "").strip()
     apellido_input = request.form.get("apellido", "").strip()
@@ -49,7 +48,7 @@ def add():
     if not nombre_input or not apellido_input or not dni:
         error = "Todos los campos (nombre, apellido, DNI) son requeridos."
         return render_template("add.html", error=error)
-
+    
     # Validación del DNI: debe ser numérico y tener al menos 8 dígitos.
     if not dni.isdigit() or len(dni) < 8:
         error = "El DNI debe contener solo números y tener al menos 8 dígitos."
@@ -67,8 +66,7 @@ def add():
                 # Validación de duplicados: verificar si el DNI ya existe
                 query = "SELECT id FROM contactos WHERE dni = %s"
                 cursor.execute(query, (dni,))
-                existing = cursor.fetchone()
-                if existing is not None:
+                if cursor.fetchone() is not None:
                     error = "Ya existe un contacto con el mismo DNI."
                     return render_template("add.html", error=error)
                 
@@ -91,7 +89,6 @@ def add():
         error = "Error al agregar el contacto."
         return render_template("add.html", error=error)
 
-
 @app.route("/view")
 def view():
     conn = db_connection()
@@ -102,7 +99,6 @@ def view():
         with conn.cursor() as cursor:
             cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")
             registros = cursor.fetchall()
-
     return render_template("view.html", registros=registros)
 
 @app.route("/edit", methods=["POST"])
@@ -113,12 +109,11 @@ def edit():
     nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
-    # Validación del DNI: debe ser numérico y tener al menos 8 dígitos.
+    # Validación del DNI: solo números y al menos 8 dígitos.
     if not nuevo_dni.isdigit() or len(nuevo_dni) < 8:
         flash("Error: El DNI debe contener solo números y tener al menos 8 dígitos.", "danger")
         return redirect("/view")
     
-    # Conexión a la base de datos
     conn = db_connection()
     if conn is None:
         flash("Error de conexión a la base de datos.", "danger")
@@ -130,16 +125,14 @@ def edit():
                 # Verificar duplicado: asegurarse que no exista otro contacto (distinto del actual) con el mismo DNI.
                 query = "SELECT id FROM contactos WHERE dni = %s AND id <> %s"
                 cursor.execute(query, (nuevo_dni, id_registro))
-                duplicate = cursor.fetchone()
-                if duplicate is not None:
+                if cursor.fetchone() is not None:
                     flash("Error: Ya existe otro contacto con el mismo DNI.", "danger")
                     return redirect("/view")
                 
-                # Transformación consistente de datos:
+                # Transformación consistente:
                 nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
                 nuevo_apellido = nuevo_apellido.upper()
 
-                # Actualización en la tabla
                 update_sql = """
                     UPDATE contactos 
                     SET grado = %s, nombre = %s, apellido = %s, dni = %s 
@@ -150,19 +143,17 @@ def edit():
     except Exception as e:
         print(f"Error al actualizar contacto: {e}")
         flash("Error al actualizar el contacto.", "danger")
-
+    
     return redirect("/")
-
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
     if request.method == "POST":
         id_registro = request.form["id"]
-
         conn = db_connection()
         if conn is None:
             return "Error de conexión a la base de datos"
-
+        
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("DELETE FROM contactos WHERE id = %s", (id_registro,))
