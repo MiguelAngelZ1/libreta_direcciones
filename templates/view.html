@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Registros</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Asegúrate de que la ruta sea correcta -->
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Registros en la Libreta</h1>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <main>
+        <input type="text" id="searchBox" placeholder="Buscar por nombre, apellido o DNI">
+        <button onclick="limpiarBusqueda()">🧹 Limpiar Búsqueda</button>
+
+        {% if registros %}
+        <table id="contactTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Grado</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for registro in registros %}
+                <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
+                    <td>{{ registro[0] }}</td>
+                    <td>{{ registro[1] }}</td>
+                    <td>{{ registro[2] }}</td>
+                    <td>{{ registro[3] }}</td>
+                    <td>{{ registro[4] }}</td>
+                    <td>
+                        <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
+                        <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>       
+        </table> 
+        {% else %}
+        <p>No hay registros disponibles.</p>
+        {% endif %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Libreta Digital</p>
+    </footer>
+
+    <!-- Modal para edición -->
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Editar Contacto</h2>
+            <form id="editForm" method="POST" action="/edit">
+                <input type="hidden" id="editId" name="id">
+                <label>Grado:</label>
+                <input type="text" id="editGrado" name="grado">
+                <label>Nombre:</label>
+                <input type="text" id="editNombre" name="nombre">
+                <label>Apellido:</label>
+                <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
+                <label>DNI:</label>
+                <input type="text" id="editDni" name="dni">
+                <div class="modal-buttons">
+                    <button type="button" onclick="cerrarModal()">Cancelar</button>
+                    <button type="button" onclick="confirmarEdicion()">Confirmar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
