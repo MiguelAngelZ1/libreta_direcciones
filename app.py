@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, flash
 import os
 
 app = Flask(__name__)
-app.secret_key = "clave_super_secreta"  # Necesaria para usar mensajes flash
+app.secret_key = "EMIteamo.2025"  # Necesaria para usar mensajes flash
 
 # URL de conexión a PostgreSQL desde variables de entorno (o valor por defecto)
 DATABASE_URL = os.getenv(
