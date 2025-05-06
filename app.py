@@ -115,7 +115,6 @@ def edit():
         flash("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.", "danger")
         return redirect("/view")
 
-    
     conn = db_connection()
     if conn is None:
         flash("Error de conexión a la base de datos.", "danger")
