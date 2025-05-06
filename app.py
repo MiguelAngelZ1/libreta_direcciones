@@ -40,7 +40,7 @@ def add():
     
     # --- PROCESAMIENTO DEL FORMULARIO (método POST) ---
     # Extraer datos del formulario
-    grado = request.form.get("grado", "")  # Si usas este campo, de lo contrario, lo puedes omitir
+    grado = request.form.get("grado", "").strip()
     nombre_input = request.form.get("nombre", "").strip()
     apellido_input = request.form.get("apellido", "").strip()
     dni = request.form.get("dni", "").strip()
@@ -50,32 +50,34 @@ def add():
         error = "Todos los campos (nombre, apellido, DNI) son requeridos."
         return render_template("add.html", error=error)
 
-    # Validar que el apellido contenga solo letras (ignorando espacios)
-    if not apellido_input.replace(" ", "").isalpha():
-        error = "El apellido solo debe contener letras."
-        return render_template("add.html", error=error)
-
-    # Validación de DNI: debe contener solo números y tener al menos 8 dígitos.
+    # Validación del DNI: debe ser numérico y tener al menos 8 dígitos.
     if not dni.isdigit() or len(dni) < 8:
         error = "El DNI debe contener solo números y tener al menos 8 dígitos."
         return render_template("add.html", error=error)
-
-
-    # Transformación de datos:
-    # - Para el nombre: cada palabra con la primera letra en mayúscula.
-    # - Para el apellido: todo en MAYÚSCULAS.
-    nombre = " ".join(word.capitalize() for word in nombre_input.split())
-    apellido = apellido_input.upper()
 
     # Conexión a la base de datos
     conn = db_connection()
     if conn is None:
         error = "Error de conexión a la base de datos."
         return render_template("add.html", error=error)
-
+    
     try:
         with conn:
             with conn.cursor() as cursor:
+                # Validación de duplicados: verificar si el DNI ya existe
+                query = "SELECT id FROM contactos WHERE dni = %s"
+                cursor.execute(query, (dni,))
+                existing = cursor.fetchone()
+                if existing is not None:
+                    error = "Ya existe un contacto con el mismo DNI."
+                    return render_template("add.html", error=error)
+                
+                # Transformación de datos:
+                # - Para el nombre: cada palabra con la primera letra en mayúscula.
+                # - Para el apellido: todo en MAYÚSCULAS.
+                nombre = " ".join(word.capitalize() for word in nombre_input.split())
+                apellido = apellido_input.upper()
+
                 # Inserta los datos en la tabla 'contactos'
                 sql = """
                     INSERT INTO contactos (grado, nombre, apellido, dni)
@@ -83,12 +85,12 @@ def add():
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
         flash("Contacto agregado exitosamente.", "success")
-        # Redirige a la página principal (index.html)
         return redirect("/")
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
         return render_template("add.html", error=error)
+
 
 @app.route("/view")
 def view():
