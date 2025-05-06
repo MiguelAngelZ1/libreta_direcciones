@@ -47,7 +47,7 @@ function validarSoloNumeros(texto) {
 /* ========================
    VALIDACIÓN DE FORMULARIO DE CREACIÓN
    ======================== */
-function validarFormulario() {
+   function validarFormulario() {
     let grado = document.getElementById("grado").value.trim();
     let nombre = document.getElementById("nombre").value.trim();
     let apellido = document.getElementById("apellido").value.trim();
@@ -57,32 +57,33 @@ function validarFormulario() {
         alert("⚠️ Todos los campos son obligatorios.");
         return false;
     }
-
-    // Validar que nombre y apellido contienen solo letras y espacios
+    
+    // Validar solo letras para nombre y apellido
     let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
     if (!soloLetras.test(nombre) || !soloLetras.test(apellido)) {
         alert("❌ El nombre y el apellido solo pueden contener letras y espacios.");
         return false;
     }
-
-    // Nuevo: validar que el DNI contenga solo números y al menos 8 dígitos.
+    
+    // Validar que el DNI contenga solo números y tenga al menos 8 dígitos.
     let soloNumeros = /^\d+$/;
     if (!soloNumeros.test(dni) || dni.length < 8) {
         alert("❌ El DNI debe contener solo números y tener al menos 8 dígitos.");
         return false;
     }
-
-    // Formatear el nombre: cada palabra con la primera letra en mayúscula
+    
+    // Formateo
     nombre = nombre.split(" ")
                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                    .join(" ");
     apellido = apellido.toUpperCase();
-
+    
     document.getElementById("nombre").value = nombre;
     document.getElementById("apellido").value = apellido;
-
+    
     return true;
 }
+
 
 
 /* ========================
