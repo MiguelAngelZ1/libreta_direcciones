@@ -108,45 +108,51 @@ def view():
 @app.route("/edit", methods=["POST"])
 def edit():
     id_registro = request.form["id"]
-    nuevo_grado = request.form["grado"]
+    nuevo_grado = request.form["grado"].strip()
     nuevo_nombre = request.form["nombre"].strip()
     nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
-    # Validación para el DNI: debe contener solo números y tener al menos 8 dígitos.
+    # Validación del DNI: debe ser numérico y tener al menos 8 dígitos.
     if not nuevo_dni.isdigit() or len(nuevo_dni) < 8:
-        flash("Error: DNI debe contener solo números y tener al menos 8 dígitos.", "danger")
+        flash("Error: El DNI debe contener solo números y tener al menos 8 dígitos.", "danger")
         return redirect("/view")
-
     
-    # Validación para el apellido: solo letras (ignorando espacios).
-    if not nuevo_apellido.replace(" ", "").isalpha():
-        flash("Error: El apellido solo debe contener letras.", "danger")
-        return redirect("/view")
-
-    # Transformaciones consistentes:
-    nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
-    nuevo_apellido = nuevo_apellido.upper()
-
+    # Conexión a la base de datos
     conn = db_connection()
     if conn is None:
         flash("Error de conexión a la base de datos.", "danger")
         return redirect("/view")
-
+    
     try:
         with conn:
             with conn.cursor() as cursor:
-                cursor.execute("""
+                # Verificar duplicado: asegurarse que no exista otro contacto (distinto del actual) con el mismo DNI.
+                query = "SELECT id FROM contactos WHERE dni = %s AND id <> %s"
+                cursor.execute(query, (nuevo_dni, id_registro))
+                duplicate = cursor.fetchone()
+                if duplicate is not None:
+                    flash("Error: Ya existe otro contacto con el mismo DNI.", "danger")
+                    return redirect("/view")
+                
+                # Transformación consistente de datos:
+                nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
+                nuevo_apellido = nuevo_apellido.upper()
+
+                # Actualización en la tabla
+                update_sql = """
                     UPDATE contactos 
                     SET grado = %s, nombre = %s, apellido = %s, dni = %s 
                     WHERE id = %s
-                """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
+                """
+                cursor.execute(update_sql, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
         flash("Contacto actualizado exitosamente.", "success")
     except Exception as e:
         print(f"Error al actualizar contacto: {e}")
         flash("Error al actualizar el contacto.", "danger")
 
     return redirect("/")
+
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
