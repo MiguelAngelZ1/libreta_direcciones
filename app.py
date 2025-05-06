@@ -106,25 +106,41 @@ def view():
 def edit():
     id_registro = request.form["id"]
     nuevo_grado = request.form["grado"]
-    # Se aplican transformaciones similares a la ruta /add:
-    nuevo_nombre = request.form["nombre"].strip().title()  # Cada palabra con la primera letra mayúscula
-    nuevo_apellido = request.form["apellido"].strip().upper()  # Todo en MAYÚSCULAS
+    nuevo_nombre = request.form["nombre"].strip()
+    nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
+    # Validación para el DNI: debe contener solo números.
     if not nuevo_dni.isdigit():
-        return "Error: DNI debe contener solo números"
+        flash("Error: DNI debe contener solo números.", "danger")
+        return redirect("/view")
+    
+    # Validación para el apellido: solo letras (ignorando espacios).
+    if not nuevo_apellido.replace(" ", "").isalpha():
+        flash("Error: El apellido solo debe contener letras.", "danger")
+        return redirect("/view")
+
+    # Transformaciones consistentes:
+    nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
+    nuevo_apellido = nuevo_apellido.upper()
 
     conn = db_connection()
     if conn is None:
-        return "Error de conexión a la base de datos"
+        flash("Error de conexión a la base de datos.", "danger")
+        return redirect("/view")
 
-    with conn:
-        with conn.cursor() as cursor:
-            cursor.execute("""
-                UPDATE contactos 
-                SET grado = %s, nombre = %s, apellido = %s, dni = %s 
-                WHERE id = %s
-            """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
+    try:
+        with conn:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    UPDATE contactos 
+                    SET grado = %s, nombre = %s, apellido = %s, dni = %s 
+                    WHERE id = %s
+                """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
+        flash("Contacto actualizado exitosamente.", "success")
+    except Exception as e:
+        print(f"Error al actualizar contacto: {e}")
+        flash("Error al actualizar el contacto.", "danger")
 
     return redirect("/")
 
