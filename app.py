@@ -120,7 +120,7 @@ def edit():
                 WHERE id = %s
             """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
 
-    return redirect("/menu")
+    return redirect("/index")
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
