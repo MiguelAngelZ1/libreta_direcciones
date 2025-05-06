@@ -55,10 +55,11 @@ def add():
         error = "El apellido solo debe contener letras."
         return render_template("add.html", error=error)
 
-    # Validación de DNI: debe contener solo números y tener al menos 7 dígitos.
-    if not dni.isdigit() or len(dni) < 7:
-        error = "El DNI debe contener solo números y tener al menos 7 dígitos."
-        return render_template("add.html", error=error)
+    # Validación de DNI: debe contener solo números y tener al menos 8 dígitos.
+if not dni.isdigit() or len(dni) < 8:
+    error = "El DNI debe contener solo números y tener al menos 8 dígitos."
+    return render_template("add.html", error=error)
+
 
     # Transformación de datos:
     # - Para el nombre: cada palabra con la primera letra en mayúscula.
