@@ -47,7 +47,7 @@ function validarSoloNumeros(texto) {
 /* ========================
    VALIDACIÓN DE FORMULARIO DE CREACIÓN
    ======================== */
-   function validarFormulario() {
+function validarFormulario() {
     let grado = document.getElementById("grado").value.trim();
     let nombre = document.getElementById("nombre").value.trim();
     let apellido = document.getElementById("apellido").value.trim();
