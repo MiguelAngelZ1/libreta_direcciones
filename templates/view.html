@@ -1,4 +1,4 @@
-<!-- {% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
   Ver Registros
@@ -25,7 +25,7 @@
       <tbody id="tableBody">
         {% for registro in registros %}
           <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
-            <!-- Aunque el ID (registro[0]) se usa internamente, no se muestra -->
+            <!-- No se muestra el ID, pero se utiliza internamente -->
             <td>{{ registro[1] }}</td>
             <td>{{ registro[2] }}</td>
             <td>{{ registro[3] }}</td>
@@ -47,6 +47,7 @@
   <div id="editModal" class="modal" style="display: none;">
     <div class="modal-content">
       <h2>Editar Contacto</h2>
+      <!-- Ahora el formulario se envía de forma tradicional -->
       <form id="editForm" method="POST" action="/edit">
         <!-- Campo oculto para mantener el ID del registro -->
         <input type="hidden" id="editId" name="id">
@@ -60,9 +61,11 @@
         <input type="text" id="editDni" name="dni">
         <div class="modal-buttons">
           <button type="button" onclick="cerrarModal()">Cancelar</button>
-          <button type="button" onclick="confirmarEdicion()">Confirmar cambios</button>
+          <!-- Botón de submit para que se envíe el formulario y la redirección presente los flash messages -->
+          <button type="submit">Confirmar cambios</button>
         </div>
       </form>
     </div>
   </div>
-{% endblock %} -->
+{% endblock %}
+çççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççaçççaaaaaaaaaaaaaaaaaaaaa
