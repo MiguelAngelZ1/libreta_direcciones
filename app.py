@@ -111,10 +111,11 @@ def edit():
     nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
-    # Validación para el DNI: debe contener solo números.
-    if not nuevo_dni.isdigit():
-        flash("Error: DNI debe contener solo números.", "danger")
-        return redirect("/view")
+    # Validación para el DNI: debe contener solo números y tener al menos 8 dígitos.
+if not nuevo_dni.isdigit() or len(nuevo_dni) < 8:
+    flash("Error: DNI debe contener solo números y tener al menos 8 dígitos.", "danger")
+    return redirect("/view")
+
     
     # Validación para el apellido: solo letras (ignorando espacios).
     if not nuevo_apellido.replace(" ", "").isalpha():
