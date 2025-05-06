@@ -114,7 +114,7 @@ def edit():
     # Validación para el DNI: debe contener solo números y tener al menos 8 dígitos.
     if not nuevo_dni.isdigit() or len(nuevo_dni) < 8:
         flash("Error: DNI debe contener solo números y tener al menos 8 dígitos.", "danger")
-    return redirect("/view")
+        return redirect("/view")
 
     
     # Validación para el apellido: solo letras (ignorando espacios).
