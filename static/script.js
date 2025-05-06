@@ -95,10 +95,11 @@ function confirmarEdicion() {
     }
 
     const soloNumeros = /^\d+$/;
-    if (!soloNumeros.test(nuevoDni) || nuevoDni.length < 8) {
-        alert("Error: El DNI debe contener solo números y tener al menos 8 dígitos.");
+    if (!soloNumeros.test(nuevoDni) || nuevoDni.length != 8) {
+        alert("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.");
         return;
     }
+    
 
     if (!confirm("¿Seguro que quieres guardar los cambios?")) {
         return;
