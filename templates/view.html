@@ -14,7 +14,7 @@
     <table id="contactTable">
       <thead>
         <tr>
-          <th>ID</th>
+          <!-- Se ha eliminado la columna ID para que no se muestre al usuario -->
           <th>Grado</th>
           <th>Nombre</th>
           <th>Apellido</th>
@@ -25,19 +25,20 @@
       <tbody id="tableBody">
         {% for registro in registros %}
           <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
-            <td>{{ registro[0] }}</td>
+            <!-- El ID (registro[0]) se usa internamente pero no se muestra -->
             <td>{{ registro[1] }}</td>
             <td>{{ registro[2] }}</td>
             <td>{{ registro[3] }}</td>
             <td>{{ registro[4] }}</td>
             <td>
+              <!-- Se pasan el ID (registro[0]) y demás información necesaria en los botones -->
               <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
               <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
             </td>
           </tr>
         {% endfor %}
-      </tbody>
-    </table>
+      </tbody>       
+    </table> 
   {% else %}
     <p>No hay registros disponibles.</p>
   {% endif %}
@@ -47,6 +48,7 @@
     <div class="modal-content">
       <h2>Editar Contacto</h2>
       <form id="editForm" method="POST" action="/edit">
+        <!-- Se mantiene el campo oculto para identificar el registro -->
         <input type="hidden" id="editId" name="id">
         <label>Grado:</label>
         <input type="text" id="editGrado" name="grado">
