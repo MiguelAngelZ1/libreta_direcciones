@@ -156,7 +156,7 @@ function confirmarEdicion() {
         location.reload();
     });
 }
-
+// Cierra el modal al hacer clic fuera de él
 
 /* ========================
    FUNCIONES DE ELIMINACIÓN Y BÚSQUEDA
