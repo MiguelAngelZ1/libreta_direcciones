@@ -1,4 +1,3 @@
-// Ejecuta cuando el DOM esté completamente cargado
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
 
@@ -15,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fila.style.display = "table-row";  
                 fila.style.backgroundColor = "#ffff99";  // Resalta la fila
             } else {
-                fila.style.display = "none";
+                fila.style.display = "none";  
             }
         });
     });
@@ -59,7 +58,7 @@ function validarFormulario() {
         return false;
     }
 
-    // Validar que el nombre y apellido contengan solo letras y espacios
+    // Validar que 'nombre' y 'apellido' contengan solo letras y espacios (acepta acentos y ñ)
     if (!validarSoloLetras(nombre) || !validarSoloLetras(apellido)) {
         alert("❌ El nombre y el apellido solo pueden contener letras y espacios.");
         return false;
@@ -71,7 +70,6 @@ function validarFormulario() {
                    .join(" ");
     apellido = apellido.toUpperCase();
 
-    // Actualizamos los valores ya formateados
     document.getElementById("nombre").value = nombre;
     document.getElementById("apellido").value = apellido;
 
@@ -89,15 +87,16 @@ function abrirModal(id, grado, nombre, apellido, dni) {
     document.getElementById("editNombre").value = nombre;
     document.getElementById("editApellido").value = apellido;
     document.getElementById("editDni").value = dni;
-    document.getElementById("editModal").style.display = "block";
+    document.getElementById("editModal").style.display = "block";  
 }
 
 // Cierra el modal de edición
 function cerrarModal() {
-    document.getElementById("editModal").style.display = "none";
+    document.getElementById("editModal").style.display = "none";  
 }
 
-// Confirma la edición validando los datos antes de enviarlos al servidor
+// Confirma la edición validando que tanto el nombre como el apellido contengan solo letras y espacios,
+// y que el DNI contenga solamente números.
 function confirmarEdicion() {
     let id = document.getElementById("editId").value;
     let nuevoGrado = document.getElementById("editGrado").value.trim();
@@ -107,6 +106,12 @@ function confirmarEdicion() {
 
     if (!nuevoGrado || !nuevoNombre || !nuevoApellido || !nuevoDni) {
         alert("Error: Todos los campos deben estar completos.");
+        return;
+    }
+
+    // Validar que el nombre solo contenga letras y espacios
+    if (!validarSoloLetras(nuevoNombre)) {
+        alert("Error: El nombre solo puede contener letras y espacios.");
         return;
     }
 
@@ -126,7 +131,6 @@ function confirmarEdicion() {
         return;
     }
 
-    // Se envía la solicitud de edición al servidor vía POST
     fetch("/edit", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
