@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, flash
 import os
 
 app = Flask(__name__)
-app.secret_key = "EMIteamo.2025"  # Necesaria para usar mensajes flash
+app.secret_key = "EMIteamo.2025"  # Puedes usar una variable de entorno en producción
 
 # URL de conexión a PostgreSQL desde variables de entorno (o valor por defecto)
 DATABASE_URL = os.getenv(
@@ -27,6 +27,7 @@ def db_connection():
 def index():
     return render_template("index.html")
 
+# Si deseas tener una ruta '/menu' que muestre lo mismo que index.html:
 @app.route("/menu")
 def menu():
     return render_template("index.html")
@@ -39,7 +40,7 @@ def add():
     
     # --- PROCESAMIENTO DEL FORMULARIO (método POST) ---
     # Extraer datos del formulario
-    grado = request.form.get("grado", "")  # Si tienes este campo, sino puedes omitirlo
+    grado = request.form.get("grado", "")  # Si usas este campo, de lo contrario puedes omitirlo
     nombre_input = request.form.get("nombre", "").strip()
     apellido_input = request.form.get("apellido", "").strip()
     dni = request.form.get("dni", "").strip()
@@ -56,7 +57,7 @@ def add():
 
     # Transformación de datos:
     # - Para el nombre: cada palabra con la primera letra en mayúscula.
-    # - Para el apellido: todo en mayúsculas.
+    # - Para el apellido: todo en MAYÚSCULAS.
     nombre = " ".join(word.capitalize() for word in nombre_input.split())
     apellido = apellido_input.upper()
 
@@ -76,8 +77,8 @@ def add():
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
         flash("Contacto agregado exitosamente.", "success")
-        # Redirige al menú (o a otra página, como /view) una vez agregado el contacto
-        return redirect("/index")
+        # Redirige a la página principal (index.html)
+        return redirect("/")
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
@@ -101,8 +102,8 @@ def edit():
     id_registro = request.form["id"]
     nuevo_grado = request.form["grado"]
     # Se aplican transformaciones similares a la ruta /add:
-    nuevo_nombre = request.form["nombre"].strip().title()  # cada palabra con la primera letra mayúscula
-    nuevo_apellido = request.form["apellido"].strip().upper()  # todo en mayúsculas
+    nuevo_nombre = request.form["nombre"].strip().title()  # Cada palabra con la primera letra mayúscula
+    nuevo_apellido = request.form["apellido"].strip().upper()  # Todo en MAYÚSCULAS
     nuevo_dni = request.form["dni"].strip()
 
     if not nuevo_dni.isdigit():
@@ -120,7 +121,7 @@ def edit():
                 WHERE id = %s
             """, (nuevo_grado, nuevo_nombre, nuevo_apellido, nuevo_dni, id_registro))
 
-    return redirect("/index")
+    return redirect("/")
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
@@ -134,10 +135,9 @@ def delete():
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("DELETE FROM contactos WHERE id = %s", (id_registro,))
-        return redirect("/index")
-
+        return redirect("/")
+    
     return render_template("delete.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-
