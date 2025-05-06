@@ -112,8 +112,8 @@ def edit():
 
     # Validación del DNI: solo números y al menos 8 dígitos.
     if not nuevo_dni.isdigit() or len(nuevo_dni) != 8:
-    flash("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.", "danger")
-    return redirect("/view")
+        flash("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.", "danger")
+        return redirect("/view")
 
     
     conn = db_connection()
