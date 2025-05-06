@@ -77,7 +77,7 @@ def add():
                 cursor.execute(sql, (grado, nombre, apellido, dni))
         flash("Contacto agregado exitosamente.", "success")
         # Redirige al menú (o a otra página, como /view) una vez agregado el contacto
-        return redirect("/menu")
+        return redirect("/index")
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
