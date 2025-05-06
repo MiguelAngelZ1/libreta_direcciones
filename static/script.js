@@ -1,53 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
 
-    searchBox.addEventListener("input", function () {
-        let input = searchBox.value.toLowerCase().trim();
-        let filas = document.querySelectorAll("#tableBody tr");
+    if (searchBox) {
+        searchBox.addEventListener("input", function () {
+            let input = searchBox.value.toLowerCase().trim();
+            let filas = document.querySelectorAll("#tableBody tr");
 
-        filas.forEach(fila => {
-            let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
-            let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
-            let dni = fila.dataset.dni ? fila.dataset.dni.toLowerCase() : "";
+            filas.forEach(fila => {
+                let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
+                let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
+                let dni = fila.dataset.dni ? fila.dataset.dni.toString() : "";
 
-            if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                fila.style.display = "table-row";  
-                fila.style.backgroundColor = "#ffff99";  // Resalta la fila
-            } else {
-                fila.style.display = "none";  
-            }
+                if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
+                    fila.style.display = "table-row";  
+                    fila.style.backgroundColor = "#ffff99";  // Resalta la fila
+                } else {
+                    fila.style.display = "none";  
+                }
+            });
         });
-    });
+    }
 });
 
-/* ========================
-   FUNCIONES DE VALIDACIÓN
-   ======================== */
-
-/**
- * Valida que un texto contenga solo letras (incluyendo acentos, Ñ y espacios).
- * @param {string} texto 
- * @returns {boolean}
- */
-function validarSoloLetras(texto) {
-    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    return regex.test(texto);
-}
-
-/**
- * Valida que un texto contenga solo números.
- * @param {string} texto 
- * @returns {boolean}
- */
-function validarSoloNumeros(texto) {
-    const regex = /^\d+$/;
-    return regex.test(texto);
-}
-
-/* ========================
-   VALIDACIÓN DE FORMULARIO DE CREACIÓN
-   ======================== */
-   function validarFormulario() {
+/* Validación del formulario de alta */
+function validarFormulario() {
     let grado = document.getElementById("grado").value.trim();
     let nombre = document.getElementById("nombre").value.trim();
     let apellido = document.getElementById("apellido").value.trim();
@@ -58,39 +34,30 @@ function validarSoloNumeros(texto) {
         return false;
     }
     
-    // Validar solo letras para nombre y apellido
-    let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
     if (!soloLetras.test(nombre) || !soloLetras.test(apellido)) {
         alert("❌ El nombre y el apellido solo pueden contener letras y espacios.");
         return false;
     }
     
-    // Validar que el DNI contenga solo números y tenga al menos 8 dígitos.
-    let soloNumeros = /^\d+$/;
+    const soloNumeros = /^\d+$/;
     if (!soloNumeros.test(dni) || dni.length < 8) {
         alert("❌ El DNI debe contener solo números y tener al menos 8 dígitos.");
         return false;
     }
     
-    // Formateo
+    // Formatear nombre y apellido antes de enviar el formulario
     nombre = nombre.split(" ")
                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                    .join(" ");
     apellido = apellido.toUpperCase();
-    
     document.getElementById("nombre").value = nombre;
     document.getElementById("apellido").value = apellido;
     
     return true;
 }
 
-
-
-/* ========================
-   FUNCIONES PARA LA EDICIÓN
-   ======================== */
-
-// Abre el modal de edición y carga los datos del contacto
+/* Funciones para la edición */
 function abrirModal(id, grado, nombre, apellido, dni) {
     document.getElementById("editId").value = id;
     document.getElementById("editGrado").value = grado;
@@ -100,13 +67,10 @@ function abrirModal(id, grado, nombre, apellido, dni) {
     document.getElementById("editModal").style.display = "block";  
 }
 
-// Cierra el modal de edición
 function cerrarModal() {
     document.getElementById("editModal").style.display = "none";  
 }
 
-// Confirma la edición validando que tanto el nombre como el apellido contengan solo letras y espacios,
-// y que el DNI contenga solamente números.
 function confirmarEdicion() {
     let id = document.getElementById("editId").value;
     let nuevoGrado = document.getElementById("editGrado").value.trim();
@@ -119,7 +83,6 @@ function confirmarEdicion() {
         return;
     }
 
-    // Validar que nombre y apellido contienen solo letras y espacios
     const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
     if (!soloLetras.test(nuevoNombre)) {
         alert("Error: El nombre solo puede contener letras y espacios.");
@@ -130,7 +93,6 @@ function confirmarEdicion() {
         return;
     }
 
-    // Validar que el DNI contenga solo números y al menos 8 dígitos.
     const soloNumeros = /^\d+$/;
     if (!soloNumeros.test(nuevoDni) || nuevoDni.length < 8) {
         alert("Error: El DNI debe contener solo números y tener al menos 8 dígitos.");
@@ -157,22 +119,17 @@ function confirmarEdicion() {
         location.reload();
     });
 }
-// Cierra el modal al hacer clic fuera de él
 
-/* ========================
-   FUNCIONES DE ELIMINACIÓN Y BÚSQUEDA
-   ======================== */
-
-// Función para limpiar la búsqueda
+/* Función para limpiar la búsqueda */
 function limpiarBusqueda() {
     document.getElementById("searchBox").value = "";
     document.querySelectorAll("#tableBody tr").forEach(fila => {
         fila.style.display = "table-row";
-        fila.style.backgroundColor = "";
+        fila.style.backgroundColor = "";  
     });
 }
 
-// Función para eliminar un contacto (única petición)
+/* Función para eliminar un contacto */
 function eliminarContacto(id) {
     if (confirm("¿Seguro que quieres eliminar este contacto?")) {
         fetch("/delete", {
