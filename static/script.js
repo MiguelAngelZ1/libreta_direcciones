@@ -118,21 +118,21 @@ function confirmarEdicion() {
         return;
     }
 
-    // Validar que el nombre solo contenga letras y espacios
-    if (!validarSoloLetras(nuevoNombre)) {
+    // Validar que nombre y apellido contienen solo letras y espacios
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    if (!soloLetras.test(nuevoNombre)) {
         alert("Error: El nombre solo puede contener letras y espacios.");
         return;
     }
-
-    // Validar que el apellido solo contenga letras y espacios
-    if (!validarSoloLetras(nuevoApellido)) {
+    if (!soloLetras.test(nuevoApellido)) {
         alert("Error: El apellido solo puede contener letras y espacios.");
         return;
     }
 
-    // Validar que el DNI contenga solo números
-    if (!validarSoloNumeros(nuevoDni)) {
-        alert("Error: El DNI debe contener solo números.");
+    // Validar que el DNI contenga solo números y al menos 8 dígitos.
+    const soloNumeros = /^\d+$/;
+    if (!soloNumeros.test(nuevoDni) || nuevoDni.length < 8) {
+        alert("Error: El DNI debe contener solo números y tener al menos 8 dígitos.");
         return;
     }
 
@@ -156,6 +156,7 @@ function confirmarEdicion() {
         location.reload();
     });
 }
+
 
 /* ========================
    FUNCIONES DE ELIMINACIÓN Y BÚSQUEDA
