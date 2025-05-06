@@ -110,11 +110,11 @@ def edit():
     nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
-    # Validación del DNI: solo números y al menos 8 dígitos.
+    # Validar que el DNI tenga exactamente 8 dígitos y solo números
     if not nuevo_dni.isdigit() or len(nuevo_dni) != 8:
         flash("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.", "danger")
         return redirect("/view")
-
+    
     conn = db_connection()
     if conn is None:
         flash("Error de conexión a la base de datos.", "danger")
@@ -123,14 +123,15 @@ def edit():
     try:
         with conn:
             with conn.cursor() as cursor:
-                # Verificar duplicado: asegurarse que no exista otro contacto (distinto del actual) con el mismo DNI.
+                # Consulta para verificar duplicados: ignoramos el registro actual
                 query = "SELECT id FROM contactos WHERE dni = %s AND id <> %s"
                 cursor.execute(query, (nuevo_dni, id_registro))
-                if cursor.fetchone() is not None:
+                duplicate = cursor.fetchone()
+                if duplicate is not None:
                     flash("Error: Ya existe otro contacto con el mismo DNI.", "danger")
                     return redirect("/view")
                 
-                # Transformación consistente:
+                # Transformar y actualizar datos
                 nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
                 nuevo_apellido = nuevo_apellido.upper()
 
@@ -146,6 +147,7 @@ def edit():
         flash("Error al actualizar el contacto.", "danger")
     
     return redirect("/")
+
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
