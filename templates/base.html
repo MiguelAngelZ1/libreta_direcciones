@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Título genérico, que se puede sobrescribir en cada vista -->
   <title>{% block title %}Libreta Digital{% endblock %}</title>
   <link rel="stylesheet" href="/static/css/styles.css">
   <script src="/static/script.js" defer></script>
@@ -12,7 +13,7 @@
     <h1>Libreta Digital</h1>
   </header>
 
-  <!-- Bloque centralizado para mensajes flash -->
+  <!-- Bloque centralizado para mostrar mensajes flash -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <div id="flash-messages">
@@ -27,10 +28,10 @@
 
   <main>
     {% block content %}
-    <!-- Contenido de la vista -->
+    <!-- Aquí se inserta el contenido específico de cada vista -->
     {% endblock %}
   </main>
-  
+
   <footer>
     <p>&copy; 2025 Libreta Digital</p>
   </footer>
