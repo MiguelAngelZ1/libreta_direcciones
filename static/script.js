@@ -41,10 +41,11 @@ function validarFormulario() {
     }
     
     const soloNumeros = /^\d+$/;
-    if (!soloNumeros.test(dni) || dni.length < 8) {
-        alert("❌ El DNI debe contener solo números y tener al menos 8 dígitos.");
+    if (!soloNumeros.test(dni) || dni.length != 8) {
+        alert("❌ El DNI debe contener solo números y tener exactamente 8 dígitos.");
         return false;
     }
+    
     
     // Formatear nombre y apellido antes de enviar el formulario
     nombre = nombre.split(" ")
