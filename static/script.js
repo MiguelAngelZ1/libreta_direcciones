@@ -41,7 +41,7 @@ function validarFormulario() {
     }
     
     const soloNumeros = /^\d+$/;
-        if (!soloNumeros.test(dni) || dni.length != 8) {
+    if (!soloNumeros.test(dni) || dni.length != 8) {
         alert("❌ El DNI debe contener solo números y tener exactamente 8 dígitos.");
         return false;
     }
