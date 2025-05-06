@@ -1,23 +1,25 @@
 #!/bin/bash
 # auto_commit.sh
-# Este script monitorea el directorio actual de forma recursiva y, cada vez que detecta
-# cambios en archivos (creación, modificación o eliminación), ejecuta git add, commit y push automáticamente.
+# Este script monitorea el directorio actual de forma recursiva.
+# Cada vez que detecta un cambio (modificación, creación o eliminación de archivos),
+# realiza los siguientes pasos:
+# 1. Añade todos los cambios (git add -A).
+# 2. Verifica si hay diferencias pendientes respecto del último commit.
+# 3. Si hay cambios, crea un commit con un mensaje que incluye la fecha y hora.
+# 4. Realiza un git pull --rebase para actualizar la rama local con los cambios remotos.
+# 5. Finalmente, hace git push al branch definido.
 
-# Definimos el branch de trabajo (ajusta si usas otro branch distinto a main)
 BRANCH="main"
+echo "Iniciando el monitor de auto-commits para el branch $BRANCH..."
 
-# Salida informativa
-echo "Iniciando el monitor de cambios para commits automáticos..."
-
-# Bucle infinito que usa inotifywait para detectar eventos recursivamente
 while inotifywait -r -e modify,create,delete .; do
-  # Agrega todos los cambios
   git add -A
-  # Verifica que haya cambios pendientes de commitear
+  # Solo se efectúa el commit si hay cambios pendientes
   if ! git diff-index --quiet HEAD --; then
-      # Realiza el commit con un mensaje que incluye la fecha y hora
       git commit -m "Auto commit: $(date '+%Y-%m-%d %H:%M:%S')"
-      # Realiza el push en el branch definido
+      # Actualiza la rama local integrando los últimos cambios del remoto (rebase)
+      git pull --rebase
+      # Hace push al branch especificado
       git push origin $BRANCH
       echo "Commit realizado y push enviado al branch $BRANCH"
   fi
