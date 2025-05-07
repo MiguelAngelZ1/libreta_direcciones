@@ -126,6 +126,7 @@ function cerrarModal() {
     }
 }
 
+
 function confirmarEdicion(event) {
     event.preventDefault(); // Evita la redirección automática por el formulario
 
