@@ -1,7 +1,58 @@
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-.modal-content { background: white; padding: 20px; margin: 10% auto; width: 300px; border-radius: 5px; }
-.modal-buttons { display: flex; justify-content: space-between; }
-
+/* Estilos para el modal flash */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+  }
+  
+  .modal-header,
+  .modal-footer {
+    padding: 10px;
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .modal-footer {
+    border-top: 1px solid #eee;
+    text-align: right;
+  }
+  
+  .btn,
+  .close-btn {
+    cursor: pointer;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 14px;
+    margin: 5px;
+  }
+  
+  .btn:hover,
+  .close-btn:hover {
+    background-color: #0056b3;
+  }
+  
 
 table {
     width: 100%;
