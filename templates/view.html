@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-  Ver Registros
-{% endblock %}
+{% block title %}Ver Registros{% endblock %}
 
 {% block content %}
   <h2>Registros en la Libreta</h2>
@@ -14,7 +12,7 @@
     <table id="contactTable">
       <thead>
         <tr>
-          <!-- Se ha eliminado la columna ID para que no se muestre al usuario -->
+          <!-- La columna ID no se muestra al usuario -->
           <th>Grado</th>
           <th>Nombre</th>
           <th>Apellido</th>
@@ -24,16 +22,26 @@
       </thead>
       <tbody id="tableBody">
         {% for registro in registros %}
-          <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
-            <!-- No se muestra el ID, pero se utiliza internamente -->
-            <td>{{ registro[1] }}</td>
-            <td>{{ registro[2] }}</td>
-            <td>{{ registro[3] }}</td>
-            <td>{{ registro[4] }}</td>
+          <tr data-nombre="{{ registro.nombre | lower }}" 
+              data-apellido="{{ registro.apellido | lower }}" 
+              data-dni="{{ registro.dni }}">
+            <td>{{ registro.grado }}</td>
+            <td>{{ registro.nombre }}</td>
+            <td>{{ registro.apellido }}</td>
+            <td>{{ registro.dni }}</td>
             <td>
-              <!-- Se pasan el ID y demás datos necesarios a las funciones de edición y eliminación -->
-              <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
-              <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
+              <!-- Se usan data attributes en lugar de inline event handlers -->
+              <button class="btn-editar"
+                      data-id="{{ registro.id }}"
+                      data-grado="{{ registro.grado }}"
+                      data-nombre="{{ registro.nombre }}"
+                      data-apellido="{{ registro.apellido }}"
+                      data-dni="{{ registro.dni }}">
+                ✏️ Editar
+              </button>
+              <button class="btn-eliminar" data-id="{{ registro.id }}">
+                ❌ Eliminar
+              </button>
             </td>
           </tr>
         {% endfor %}
@@ -47,9 +55,7 @@
   <div id="editModal" class="modal" style="display: none;">
     <div class="modal-content">
       <h2>Editar Contacto</h2>
-      <!-- Ahora el formulario se envía de forma tradicional -->
-      <form id="editForm" method="POST" action="/edit">
-        <!-- Campo oculto para mantener el ID del registro -->
+      <form id="editForm" method="POST" action="{{ url_for('edit') }}">
         <input type="hidden" id="editId" name="id">
         <label>Grado:</label>
         <input type="text" id="editGrado" name="grado">
@@ -61,7 +67,6 @@
         <input type="text" id="editDni" name="dni">
         <div class="modal-buttons">
           <button type="button" onclick="cerrarModal()">Cancelar</button>
-          <!-- Botón de submit para que se envíe el formulario y la redirección presente los flash messages -->
           <button type="submit">Confirmar cambios</button>
         </div>
       </form>
