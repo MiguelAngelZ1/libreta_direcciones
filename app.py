@@ -79,7 +79,7 @@ def add():
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
-                flash("Contacto agregado exitosamente.", "success")
+        flash("Contacto agregado exitosamente.", "success")
         return redirect(url_for("add"))
 
     except Exception as e:
