@@ -126,7 +126,7 @@ function cerrarModal() {
     }
 }
 
-
+// Función para confirmar la edición del contacto
 function confirmarEdicion(event) {
     event.preventDefault(); // Evita la redirección automática por el formulario
 
