@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>{% block title %}Mi Aplicación{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">Inicio</a>
-        <a href="{{ url_for('add') }}">Agregar Contacto</a>
-    </nav>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('add') }}">Agregar Contacto</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Área para mensajes flash -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-    <div class="container">
         {% block content %}{% endblock %}
-    </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </main>
+    <!-- En este ejemplo, no es necesario incluir lógica extra con JS, pero si la requieres, se puede cargar aquí -->
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
 </body>
 </html>
