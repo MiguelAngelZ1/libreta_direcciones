@@ -256,5 +256,69 @@ th, td {
   background-color: #23272b;
   transform: translateY(-2px);
 
-  
+  /* Contenedor de bienvenida */
+.welcome-container {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Título principal */
+.welcome-container h1 {
+  font-size: 2.8rem; /* Más grande y estilizado */
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Texto de descripción */
+.welcome-container p {
+  font-size: 1.4rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Botones de bienvenida */
+.welcome-container a.btn {
+  padding: 14px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  width: 220px; /* Uniforme para ambos botones */
+  text-align: center;
+  margin: 10px;
+}
+
+/* Estilo para 'Agregar Contacto' */
+.welcome-container a.btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.welcome-container a.btn-success:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+/* Estilo para 'Ver Registros' */
+.welcome-container a.btn-dark {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.welcome-container a.btn-dark:hover {
+  background-color: #23272b;
+  transform: scale(1.05);
+}
+
 }
