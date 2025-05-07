@@ -3,17 +3,24 @@
 {% block title %}Agregar Contacto{% endblock %}
 
 {% block content %}
-<h2>Agregar Contacto</h2>
+<h2>Agregar contacto</h2>
 <form id="contact-form" method="POST" action="{{ url_for('add_contact') }}">
-    <input type="text" name="nombre" placeholder="Nombre">
-    <input type="text" name="apellido" placeholder="Apellido">
-    <input type="text" name="telefono" placeholder="Teléfono">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <br>
     
-    <button type="submit">Agregar contacto</button>
+    <label for="apellido">Apellido:</label>
+    <input type="text" name="apellido" placeholder="Apellido" required>
+    <br>
+    
+    <label for="telefono">Teléfono:</label>
+    <input type="text" name="telefono" placeholder="Teléfono" required>
+    <br>
+    
+    <input type="submit" value="Agregar contacto">
+    <input type="reset" value="Limpiar campos">
 </form>
 
-<!-- Botón adicional para volver a Index -->
-<button id="btn-volver" onclick="window.location.href='{{ url_for('index') }}';">Volver a Index</button>
-
-
+<!-- Enlace para volver a la página de inicio -->
+<a href="{{ url_for('index') }}" class="button">Volver a Index</a>
 {% endblock %}
