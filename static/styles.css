@@ -76,3 +76,10 @@ button:hover {
     background-color: #0056b3;
 }
 
+.alert {
+    transition: opacity 0.8s ease-out;
+}
+
+.alert-hidden {
+    opacity: 0;
+}
