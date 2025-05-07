@@ -4,6 +4,7 @@
 # Se asegura de ejecutar las operaciones Git de forma exclusiva mediante flock,
 # y añade pausas para esperar a que se liberen los lock files.
 
+
 BRANCH="main"
 LOCKFILE="/tmp/auto_commit.lock"
 
