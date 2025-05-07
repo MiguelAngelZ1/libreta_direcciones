@@ -11,5 +11,8 @@
   <div class="container">
     {% block content %}{% endblock %}
   </div>
+
+  <!-- Se carga el archivo externo script.js donde se encuentra la lógica de búsqueda y de botones -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
