@@ -6,7 +6,7 @@
 <div class="container mt-5">
   <h1 class="mb-4">Agregar Contacto</h1>
 
-  {# Bloque para mostrar mensajes flash en forma de alertas #}
+  {# Bloque para mostrar mensajes flash #}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
