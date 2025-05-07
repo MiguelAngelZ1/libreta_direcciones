@@ -1,70 +1,41 @@
 {% extends "base.html" %}
 
-{% block title %}
-  Ver Registros
+{% block title %}Ver Contactos - Mi Aplicación{% endblock %}
+
+{% block nav %}
+<nav>
+  <a href="{{ url_for('index') }}">Inicio</a>
+  <a href="{{ url_for('add') }}">Agregar Contacto</a>
+  <a href="{{ url_for('view') }}">Ver Contactos</a>
+</nav>
 {% endblock %}
 
 {% block content %}
-  <h2>Registros en la Libreta</h2>
-  
-  <input type="text" id="searchBox" placeholder="Buscar por nombre, apellido o DNI">
-  <button onclick="limpiarBusqueda()">🧹 Limpiar Búsqueda</button>
-
-  {% if registros %}
-    <table id="contactTable">
-      <thead>
-        <tr>
-          <!-- Se ha eliminado la columna ID para que no se muestre al usuario -->
-          <th>Grado</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>DNI</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        {% for registro in registros %}
-          <tr data-nombre="{{ registro[2].lower() }}" data-apellido="{{ registro[3].lower() }}" data-dni="{{ registro[4] }}">
-            <!-- No se muestra el ID, pero se utiliza internamente -->
-            <td>{{ registro[1] }}</td>
-            <td>{{ registro[2] }}</td>
-            <td>{{ registro[3] }}</td>
-            <td>{{ registro[4] }}</td>
-            <td>
-              <!-- Se pasan el ID y demás datos necesarios a las funciones de edición y eliminación -->
-              <button onclick="abrirModal('{{ registro[0] }}', '{{ registro[1] }}', '{{ registro[2] }}', '{{ registro[3] }}', '{{ registro[4] }}')">✏️ Editar</button>
-              <button onclick="eliminarContacto('{{ registro[0] }}')">❌ Eliminar</button>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>       
-    </table> 
-  {% else %}
-    <p>No hay registros disponibles.</p>
-  {% endif %}
-
-  <!-- Modal para edición -->
-  <div id="editModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h2>Editar Contacto</h2>
-      <!-- Ahora el formulario se envía de forma tradicional -->
-      <form id="editForm" method="POST" action="/edit">
-        <!-- Campo oculto para mantener el ID del registro -->
-        <input type="hidden" id="editId" name="id">
-        <label>Grado:</label>
-        <input type="text" id="editGrado" name="grado">
-        <label>Nombre:</label>
-        <input type="text" id="editNombre" name="nombre">
-        <label>Apellido:</label>
-        <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
-        <label>DNI:</label>
-        <input type="text" id="editDni" name="dni">
-        <div class="modal-buttons">
-          <button type="button" onclick="cerrarModal()">Cancelar</button>
-          <!-- Botón de submit para que se envíe el formulario y la redirección presente los flash messages -->
-          <button type="submit">Confirmar cambios</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <h2>Lista de Contactos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Grado</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>DNI</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for registro in registros %}
+      <tr>
+        <td>{{ registro[0] }}</td>
+        <td>{{ registro[1] }}</td>
+        <td>{{ registro[2] }}</td>
+        <td>{{ registro[3] }}</td>
+        <td>{{ registro[4] }}</td>
+        <td>
+          <button onclick="eliminarContacto({{ registro[0] }})">Eliminar</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
