@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>{% block title %}Mi Aplicación{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
@@ -14,7 +13,6 @@
     {% block content %}{% endblock %}
   </div>
 
-  <!-- Se carga el archivo externo script.js donde se encuentra la lógica de búsqueda y de botones -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
