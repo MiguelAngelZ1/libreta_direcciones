@@ -1,7 +1,7 @@
-{% extends "base.html" %}
-{% block title %}Ver Contactos - Mi Aplicación{% endblock %}
+Mira, en view ya hay un script para esto pero no estaba funcionando correctamente ni se resaltan las filas con coincidencias {% extends "base.html" %} {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
 
 {% block content %}
+
 <div class="container mt-5">
   <!-- Fila con el Título y el botón "Volver al Inicio" -->
   <div class="row mb-3 align-items-center">
@@ -13,17 +13,11 @@
         <i class="fas fa-home"></i> Volver al Inicio
       </a>
     </div>
-  </div>
-  
-  <!-- Buscador en tiempo real -->
-  <div class="row mb-4">
+  </div>  <!-- Buscador en tiempo real -->  <div class="row mb-4">
     <div class="col">
       <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
     </div>
-  </div>
-  
-  <!-- Bloque para mostrar mensajes flash -->
-  <div class="mb-4">
+  </div>  <!-- Bloque para mostrar mensajes flash -->  <div class="mb-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -34,10 +28,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-  </div>
-  
-  <!-- Tabla de contactos -->
-  <table class="table table-striped">
+  </div>  <!-- Tabla de contactos -->  <table class="table table-striped">
     <thead>
       <tr>
         <th>Grado</th>
@@ -73,46 +64,41 @@
       {% endfor %}
     </tbody>
   </table>
-</div>
-
-<!-- Modal para edición -->
-<div id="editModal" class="modal" style="display: none;">
+</div><!-- Modal para edición --><div id="editModal" class="modal" style="display: none;">
   <div class="modal-content">
     <h2>Editar Contacto</h2>
     <form id="editForm" method="POST" action="/edit">
-      <input type="hidden" id="editId" name="id">
-      
-      <label for="editGrado">Grado:</label>
-      <select id="editGrado" name="grado" required>
-          <option value="">Selecciona un grado</option>
-          <option value="Primero">Primero</option>
-          <option value="Segundo">Segundo</option>
-          <option value="Tercero">Tercero</option>
-          <option value="Cuarto">Cuarto</option>
-          <option value="Quinto">Quinto</option>
-          <option value="Sexto">Sexto</option>
-      </select>
+      <input type="hidden" id="editId" name="id"><label for="editGrado">Grado:</label>
+  <select id="editGrado" name="grado" required>
+      <option value="">Selecciona un grado</option>
+      <option value="Primero">Primero</option>
+      <option value="Segundo">Segundo</option>
+      <option value="Tercero">Tercero</option>
+      <option value="Cuarto">Cuarto</option>
+      <option value="Quinto">Quinto</option>
+      <option value="Sexto">Sexto</option>
+  </select>
 
-      <label>Nombre:</label>
-      <input type="text" id="editNombre" name="nombre">
-      
-      <label>Apellido:</label>
-      <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
-      
-      <label>DNI:</label>
-      <input type="text" id="editDni" name="dni">
-      
-      <div class="modal-buttons">
-        <button type="button" onclick="cerrarModal()">Cancelar</button>
-        <button type="submit">Confirmar cambios</button>
-      </div>
-    </form>
+  <label>Nombre:</label>
+  <input type="text" id="editNombre" name="nombre">
+  
+  <label>Apellido:</label>
+  <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
+  
+  <label>DNI:</label>
+  <input type="text" id="editDni" name="dni">
+  
+  <div class="modal-buttons">
+    <button type="button" onclick="cerrarModal()">Cancelar</button>
+    <button type="submit">Confirmar cambios</button>
   </div>
-</div>
+</form>
 
-{% endblock %}
+  </div>
+</div>{% endblock %}
 
 {% block scripts %}
+
 <script>
 // Abre el modal y precarga los datos del contacto
 function openEditModal(id, grado, nombre, apellido, dni) {
@@ -174,5 +160,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-</script>
-{% endblock %}
+</script>{% endblock %}
+
