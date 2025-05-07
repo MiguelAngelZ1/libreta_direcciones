@@ -95,7 +95,7 @@
   .alert {
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    transition: opacity 0.8s ease-out;
+    transition: opacity 0.3s ease-out;
   }
   
   /* Fondo de pantalla y configuración base del body */
