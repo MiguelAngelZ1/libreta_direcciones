@@ -26,10 +26,6 @@ h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
-  /* Si deseas forzar que el título no se rompa en dos líneas,
-     puedes descomentar la siguiente línea.
-     Nota: Esto puede provocar overflow en pantallas muy pequeñas.
-  */
   white-space: nowrap; 
 }
 
