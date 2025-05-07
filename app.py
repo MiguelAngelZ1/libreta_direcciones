@@ -34,7 +34,7 @@ def menu():
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "GET":
-        # Cargar la página de agregar sin error
+        # Mostrar el formulario sin error
         return render_template("add.html", error=None)
     
     # --- PROCESAMIENTO DEL FORMULARIO (método POST) ---
@@ -49,11 +49,10 @@ def add():
         error = "Todos los campos (nombre, apellido, DNI) son requeridos."
         return render_template("add.html", error=error)
     
-    # Validación del DNI: debe ser numérico y tener al menos 8 dígitos.
+    # Validación del DNI: debe ser numérico y tener exactamente 8 dígitos.
     if not dni.isdigit() or len(dni) != 8:
         error = "El DNI debe contener solo números y tener exactamente 8 dígitos."
         return render_template("add.html", error=error)
-
 
     # Conexión a la base de datos
     conn = db_connection()
@@ -83,8 +82,10 @@ def add():
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
+        # Notificar al usuario que el contacto se agregó correctamente
         flash("Contacto agregado exitosamente.", "success")
-        return redirect("/")
+        # Renderizar nuevamente el formulario (con campos vacíos) en vez de redirigir al index
+        return render_template("add.html", error=None)
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
@@ -131,7 +132,7 @@ def edit():
                     flash("Error: Ya existe otro contacto con el mismo DNI.", "danger")
                     return redirect("/view")
                 
-                # Transformar y actualizar datos
+                # Transformar y actualizar los datos
                 nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
                 nuevo_apellido = nuevo_apellido.upper()
 
@@ -147,7 +148,6 @@ def edit():
         flash("Error al actualizar el contacto.", "danger")
     
     return redirect("/")
-
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
