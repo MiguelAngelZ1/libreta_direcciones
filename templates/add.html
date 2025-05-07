@@ -1,37 +1,65 @@
 {% extends "base.html" %}
 
-{% block nav %}{% endblock %}  {# Opcional: anular nav si no lo necesitas #}
+{% block nav %}{% endblock %}  {# Anulamos el nav si lo deseas #}
 
-{% block title %}
-  Agregar Contacto
-{% endblock %}
+{% block title %}Agregar Contacto{% endblock %}
 
 {% block content %}
   <h2>Agregar Contacto</h2>
 
+  <!-- Mostrar error en caso de validación fallida -->
   {% if error %}
     <div class="alert alert-danger">
       {{ error }}
     </div>
   {% endif %}
 
-  <form action="/add" method="POST">
+  <!-- Formulario de ingreso de contacto -->
+  <form id="contact-form" action="{{ url_for('add') }}" method="POST" onsubmit="return validarFormulario();">
     <label for="grado">Grado:</label>
     <input type="text" id="grado" name="grado">
-    
+    <br>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-    
+    <br>
     <label for="apellido">Apellido:</label>
     <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
-    
+    <br>
     <label for="dni">DNI:</label>
     <input type="text" id="dni" name="dni" placeholder="DNI" required>
-    
+    <br>
     <button type="submit">Agregar Contacto</button>
   </form>
 
-  <footer style="margin-top: 20px; text-align: center;">
-    <p>&copy; 2025 Libreta. Todos los derechos reservados.</p>
-  </footer>
+  <!-- Modal de éxito: se mostrará al recibir flash message de éxito -->
+  <div id="successModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+       background-color: rgba(0,0,0,0.5);">
+    <div class="modal-content" style="background: white; width: 300px; margin: 20% auto; padding: 20px; text-align: center;">
+      <h3>Contacto agregado</h3>
+      <p>¿Desea agregar otro?</p>
+      <button id="yesBtn">Sí</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
 {% endblock %}
+
+{% block flash %}{% endblock %}  {# Evitamos que se muestre el modal flash heredado en base.html #}
+
+{% if get_flashed_messages(with_categories=true) %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+       var successModal = document.getElementById("successModal");
+       if(successModal) {
+         successModal.style.display = "block";
+         document.getElementById("yesBtn").addEventListener("click", function(){
+              // Redirige al endpoint GET de /add para recargar la página limpia
+              window.location.href = "{{ url_for('add') }}";
+         });
+         document.getElementById("noBtn").addEventListener("click", function(){
+              // Redirige al index
+              window.location.href = "{{ url_for('index') }}";
+         });
+       }
+    });
+  </script>
+{% endif %}
