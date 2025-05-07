@@ -93,8 +93,6 @@ button:hover {
   
   /* Fondo de pantalla uniforme */
 body {
-    background: url('../images/fondo.jpg') no-repeat center center fixed;
-    background-size: cover;
     font-family: 'Arial', sans-serif;
     color: #333;
     margin: 0;
