@@ -6,18 +6,6 @@
 <div class="container mt-5">
   <h1 class="mb-4">Agregar Contacto</h1>
   
-  {# Se muestra el bloque de mensajes flash centralizado si existiesen #}
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-  
   <form method="POST" action="{{ url_for('add') }}">
     <div class="mb-3">
       <label for="grado" class="form-label">Grado:</label>
@@ -35,16 +23,15 @@
       <label for="dni" class="form-label">DNI:</label>
       <input type="text" id="dni" name="dni" class="form-control" placeholder="Ingrese DNI" required>
     </div>
-    <!-- Botón para guardar el contacto con su icono -->
+    <!-- Botón con icono para guardar contacto -->
     <button type="submit" class="btn btn-success">
       <i class="fas fa-save"></i> Guardar Contacto
     </button>
   </form>
   
-  <!-- Botón para volver al inicio, con icono de "home" -->
+  <!-- Botón para volver al inicio, también con icono -->
   <a href="{{ url_for('index') }}" class="btn btn-success mt-3">
     <i class="fas fa-home"></i> Volver al Inicio
   </a>
-  
 </div>
 {% endblock %}
