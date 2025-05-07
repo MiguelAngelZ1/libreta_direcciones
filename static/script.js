@@ -126,54 +126,26 @@ function cerrarModal() {
     }
 }
 
-function confirmarEdicion() {
-    let id = document.getElementById("editId").value;
-    let nuevoGrado = document.getElementById("editGrado").value.trim();
-    let nuevoNombre = document.getElementById("editNombre").value.trim();
-    let nuevoApellido = document.getElementById("editApellido").value.trim();
-    let nuevoDni = document.getElementById("editDni").value.trim();
+function confirmarEdicion(event) {
+    event.preventDefault(); // Evita la redirección automática por el formulario
 
-    if (!nuevoGrado || !nuevoNombre || !nuevoApellido || !nuevoDni) {
-        alert("Error: Todos los campos deben estar completos.");
-        return;
-    }
-
-    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    if (!soloLetras.test(nuevoNombre)) {
-        alert("Error: El nombre solo puede contener letras y espacios.");
-        return;
-    }
-    if (!soloLetras.test(nuevoApellido)) {
-        alert("Error: El apellido solo puede contener letras y espacios.");
-        return;
-    }
-
-    const soloNumeros = /^\d+$/;
-    if (!soloNumeros.test(nuevoDni) || nuevoDni.length != 8) {
-        alert("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.");
-        return;
-    }
-    
-    if (!confirm("¿Seguro que quieres guardar los cambios?")) {
-        return;
-    }
+    let formData = new FormData(document.getElementById("editForm"));
 
     fetch("/edit", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            id: id,
-            grado: nuevoGrado,
-            nombre: nuevoNombre,
-            apellido: nuevoApellido,
-            dni: nuevoDni
-        })
-    }).then(() => {
+        body: formData
+    })
+    .then(response => response.text())
+    .then(() => {
         alert("✅ Contacto editado correctamente.");
-        cerrarModal();
-        location.reload();
+        location.reload(); // Recarga la página en lugar de redirigir
+    })
+    .catch(error => {
+        alert("❌ Hubo un error al editar el contacto. Intenta nuevamente.");
+        console.error("Error:", error);
     });
 }
+
 
 // Función para limpiar la búsqueda
 function limpiarBusqueda() {
