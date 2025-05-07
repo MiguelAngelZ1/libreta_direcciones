@@ -18,7 +18,63 @@ document.addEventListener("DOMContentLoaded", function () {
                         fila.style.display = "table-row";
                         fila.style.backgroundColor = "#ffff99";  // Resalta la fila
                     } else {
-                        fila.style.display = "none";ççççççççççççççççççççççççççççççççççççççççççççççççççççç
+                        fila.style.display = "none";çççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççççç
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
                     }
                 }
             });
