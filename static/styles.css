@@ -86,3 +86,7 @@ button:hover {
     transition: opacity 0.8s ease-in;
 }
 
+.alert {
+    transition: opacity 0.8s ease-out;
+  }
+  
