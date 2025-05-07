@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
- 
+
 {% block content %}
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Contactos</h1>
+  
+  <!-- Buscador: formulario GET para filtrar la lista -->
+  <form method="get" action="{{ url_for('view') }}" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="q" class="form-control" placeholder="Buscar por nombre o apellido" value="{{ q }}">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-search"></i> Buscar
+      </button>
+    </div>
+  </form>
+  
+  <!-- Tabla de contactos -->
   <table class="table table-striped">
     <thead>
       <tr>
@@ -22,7 +34,7 @@
         <td>{{ c.apellido }}</td>
         <td>{{ c.dni }}</td>
         <td>
-          <!-- Botón de Editar: Se envuelve en un formulario que envía los datos del contacto -->
+          <!-- Botón de Editar -->
           <form method="post" action="{{ url_for('edit') }}" style="display:inline;">
             <input type="hidden" name="id" value="{{ c.id }}">
             <input type="hidden" name="grado" value="{{ c.grado }}">
@@ -33,9 +45,8 @@
               <i class="fas fa-edit"></i> Editar
             </button>
           </form>
-          <!-- Botón de Eliminar: Envía una solicitud POST a la ruta de eliminar con confirmación -->
-          <form method="post" action="{{ url_for('delete') }}" style="display:inline;" 
-                onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+          <!-- Botón de Eliminar -->
+          <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
             <input type="hidden" name="id" value="{{ c.id }}">
             <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
               <i class="fas fa-trash-alt"></i> Eliminar
