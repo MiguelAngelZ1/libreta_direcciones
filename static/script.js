@@ -199,3 +199,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Selecciona todas las alertas que tengan las clases 'alert' y 'fade'
+    const alerts = document.querySelectorAll('.alert.fade');
+    
+    alerts.forEach(alert => {
+      // Después de 4 segundos, remueve la clase "show" para iniciar el efecto fade-out
+      setTimeout(() => {
+        alert.classList.remove('show');
+      }, 4000);
+    });
+  });
+  
