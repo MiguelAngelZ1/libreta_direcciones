@@ -16,3 +16,36 @@
   </div>
 
 
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Agregar Contacto</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+  <body>
+      <!-- Aquí puedes incluir la barra de navegación si la hubiera -->
+      
+      <!-- Contenido específico (formulario de agregar contacto) -->
+      <div class="container my-5">
+        <h2 class="text-center">Agregar Contacto</h2>
+        <form action="{{ url_for('add') }}" method="post">
+            <!-- Aquí van los campos del formulario -->
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <!-- Agrega más campos según sea necesario -->
+            <div class="mt-3 text-center">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+        </form>
+      </div>
+      
+      <!-- Footer y scripts -->
+      <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+  </html>
+  
