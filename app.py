@@ -101,11 +101,12 @@ def add():
                                 cursor.execute(sql, (grado, nombre.capitalize(), apellido.upper(), dni))
                                 flash("✅ Contacto agregado correctamente.", "success")
                                 print("DEBUG: Contacto agregado")
-                    # Redirigimos para limpiar el formulario y evitar reenvío al refrescar la página
-                    return redirect(url_for("add"))
                 except Exception as e:
                     flash("❌ Error al agregar el contacto.", "danger")
                     print(f"DEBUG: Error insertando en la base de datos: {e}")
+        # Siempre redirijimos tras un POST para consumir el flash y evitar acumulación de mensajes
+        return redirect(url_for("add"))
+
     return render_template("add.html")
 
 
