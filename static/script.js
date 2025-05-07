@@ -1,4 +1,4 @@
-// Funcionalidad de búsqueda en la tabla
+// Funcionalidad de búsqueda en la tabla con corrección de resaltado
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
     if (searchBox) {
@@ -6,19 +6,26 @@ document.addEventListener("DOMContentLoaded", function () {
             let input = searchBox.value.toLowerCase().trim();
             let filas = document.querySelectorAll("#tableBody tr");
             filas.forEach(fila => {
-                let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
-                let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
-                let dni = fila.dataset.dni ? fila.dataset.dni.toString() : "";
-                if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
+                // Si el campo de búsqueda está vacío, mostramos la fila sin resaltado
+                if (input === "") {
                     fila.style.display = "table-row";
-                    fila.style.backgroundColor = "#ffff99";  // Resalta la fila
+                    fila.style.backgroundColor = "";
                 } else {
-                    fila.style.display = "none";
+                    let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
+                    let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
+                    let dni = fila.dataset.dni ? fila.dataset.dni.toString() : "";
+                    if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
+                        fila.style.display = "table-row";
+                        fila.style.backgroundColor = "#ffff99";  // Resalta la fila
+                    } else {
+                        fila.style.display = "none";
+                    }
                 }
             });
         });
     }
 });
+
 
 // Validación del formulario de alta
 function validarFormulario() {
