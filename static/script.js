@@ -202,15 +202,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    let form = document.getElementById("addForm");
     let alerta = document.getElementById("alerta");
-    if (alerta) {
-        setTimeout(() => {
-            alerta.classList.add("alert-hidden");
-            setTimeout(() => {
-                alerta.style.display = "none";
-            }, 800);
-        }, 4000);
+
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Evita la recarga automática
+
+            let formData = new FormData(form);
+
+            fetch("/add", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (alerta) {
+                    alerta.innerHTML = data; // Muestra el mensaje recibido del backend
+                    alerta.classList.add("alert-visible"); // Hace visible la alerta
+                    setTimeout(() => {
+                        alerta.classList.remove("alert-visible");
+                        alerta.classList.add("alert-hidden");
+                    }, 4000);
+                }
+                form.reset(); // Limpia los campos sin recargar la página
+            })
+            .catch(error => {
+                console.error("Error al agregar contacto:", error);
+            });
+        });
     }
 });
-
 
