@@ -5,7 +5,7 @@
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Contactos</h1>
   
-  <!-- Buscador en tiempo real -->
+  <!-- Buscador en tiempo real (si lo deseas, puedes dejarlo o quitarlo) -->
   <div class="mb-4">
       <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
   </div>
@@ -29,19 +29,14 @@
         <td>{{ c.apellido }}</td>
         <td>{{ c.dni }}</td>
         <td>
-          <!-- Botón de Editar -->
-          <form method="post" action="{{ url_for('edit') }}" style="display:inline;">
-            <input type="hidden" name="id" value="{{ c.id }}">
-            <input type="hidden" name="grado" value="{{ c.grado }}">
-            <input type="hidden" name="nombre" value="{{ c.nombre }}">
-            <input type="hidden" name="apellido" value="{{ c.apellido }}">
-            <input type="hidden" name="dni" value="{{ c.dni }}">
-            <button type="submit" class="btn btn-primary btn-sm" title="Editar">
-              <i class="fas fa-edit"></i> Editar
-            </button>
-          </form>
+          <!-- Botón de Editar: ahora solo dispara el modal -->
+          <button type="button" class="btn btn-primary btn-sm" title="Editar" 
+                  onclick="openEditModal('{{ c.id }}', '{{ c.grado }}', '{{ c.nombre }}', '{{ c.apellido }}', '{{ c.dni }}')">
+            <i class="fas fa-edit"></i> Editar
+          </button>
           <!-- Botón de Eliminar -->
-          <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+          <form method="post" action="{{ url_for('delete') }}" style="display:inline;" 
+                onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
             <input type="hidden" name="id" value="{{ c.id }}">
             <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
               <i class="fas fa-trash-alt"></i> Eliminar
@@ -53,12 +48,75 @@
     </tbody>
   </table>
 </div>
+
+<!-- Modal para editar contacto -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Editar Contacto</h5>
+      <button type="button" class="close-btn" onclick="closeEditModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="editForm" method="post" action="{{ url_for('edit') }}">
+        <input type="hidden" name="id" id="edit-id">
+        <div class="mb-3">
+          <label for="edit-grado" class="form-label">Grado:</label>
+          <input type="text" name="grado" id="edit-grado" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="edit-nombre" class="form-label">Nombre:</label>
+          <input type="text" name="nombre" id="edit-nombre" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="edit-apellido" class="form-label">Apellido:</label>
+          <input type="text" name="apellido" id="edit-apellido" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="edit-dni" class="form-label">DNI:</label>
+          <input type="text" name="dni" id="edit-dni" class="form-control">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary close-btn" onclick="closeEditModal()">Cancelar</button>
+      <button type="submit" form="editForm" class="btn btn-success">
+        <i class="fas fa-check"></i> Confirmar Cambios
+      </button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+// Función para abrir el modal y precargar los datos del contacto
+function openEditModal(id, grado, nombre, apellido, dni) {
+  document.getElementById("edit-id").value = id;
+  document.getElementById("edit-grado").value = grado;
+  document.getElementById("edit-nombre").value = nombre;
+  document.getElementById("edit-apellido").value = apellido;
+  document.getElementById("edit-dni").value = dni;
+  
+  document.getElementById("editModal").style.display = "block";
+}
+
+// Función para cerrar el modal
+function closeEditModal() {
+  document.getElementById("editModal").style.display = "none";
+}
+
+// Cerrar el modal si el usuario hace clic fuera de él
+window.onclick = function(event) {
+  var modal = document.getElementById("editModal");
+  if (event.target == modal) {
+    closeEditModal();
+  }
+};
+
+// Si tienes implementada búsqueda en tiempo real, se puede conservar el siguiente fragmento:
 document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("searchInput");
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) {
     searchInput.addEventListener("input", function(){
          let q = searchInput.value;
          fetch(`/search?q=${encodeURIComponent(q)}`)
@@ -74,22 +132,15 @@ document.addEventListener("DOMContentLoaded", function() {
                   <td>${contacto.apellido}</td>
                   <td>${contacto.dni}</td>
                   <td>
-                      <form method="post" action="{{ url_for('edit') }}" style="display:inline;">
-                        <input type="hidden" name="id" value="${contacto.id}">
-                        <input type="hidden" name="grado" value="${contacto.grado}">
-                        <input type="hidden" name="nombre" value="${contacto.nombre}">
-                        <input type="hidden" name="apellido" value="${contacto.apellido}">
-                        <input type="hidden" name="dni" value="${contacto.dni}">
-                        <button type="submit" class="btn btn-primary btn-sm" title="Editar">
-                          <i class="fas fa-edit"></i> Editar
-                        </button>
-                      </form>
-                      <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
-                        <input type="hidden" name="id" value="${contacto.id}">
-                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                          <i class="fas fa-trash-alt"></i> Eliminar
-                        </button>
-                      </form>
+                    <button type="button" class="btn btn-primary btn-sm" title="Editar" onclick="openEditModal('${contacto.id}', '${contacto.grado}', '${contacto.nombre}', '${contacto.apellido}', '${contacto.dni}')">
+                      <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+                      <input type="hidden" name="id" value="${contacto.id}">
+                      <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                      </button>
+                    </form>
                   </td>
                 `;
                 tbody.appendChild(tr);
@@ -97,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
          })
          .catch(error => console.error("Error en la búsqueda en tiempo real", error));
     });
+  }
 });
 </script>
 {% endblock %}
