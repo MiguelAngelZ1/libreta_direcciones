@@ -72,6 +72,7 @@ function validarFormulario() {
     return true;
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
     let alerta = document.getElementById("alerta");
     if (alerta) {
