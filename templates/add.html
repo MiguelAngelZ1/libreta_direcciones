@@ -1,23 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Agregar Contacto - Mi Aplicación{% endblock %}
+{% block nav %}{% endblock %}  {# Opcional: anular nav si no lo necesitas #}
 
-{% block nav %}
-<nav>
-  <a href="{{ url_for('index') }}">Inicio</a>
-  <a href="{{ url_for('add') }}">Agregar Contacto</a>
-  <a href="{{ url_for('view') }}">Ver Contactos</a>
-</nav>
+{% block title %}
+  Agregar Contacto
 {% endblock %}
 
 {% block content %}
   <h2>Agregar Contacto</h2>
-  
+
   {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
   {% endif %}
-  
-  <form action="{{ url_for('add') }}" method="POST">
+
+  <form action="/add" method="POST">
     <label for="grado">Grado:</label>
     <input type="text" id="grado" name="grado">
     
@@ -32,8 +30,8 @@
     
     <button type="submit">Agregar Contacto</button>
   </form>
-  
-  <footer style="margin-top:20px; text-align:center;">
+
+  <footer style="margin-top: 20px; text-align: center;">
     <p>&copy; 2025 Libreta. Todos los derechos reservados.</p>
   </footer>
 {% endblock %}
