@@ -1,33 +1,31 @@
-{% extends "base.html" %}
-
-{% block title %}
-  Agregar Contacto
-{% endblock %}
-
 {% block content %}
   <h2>Agregar Contacto</h2>
 
-  <!-- Mostrar error específico, en caso de validación fallida -->
+  {# Mostrar error inline si lo hay #}
   {% if error %}
     <div class="alert alert-danger">
       {{ error }}
     </div>
   {% endif %}
 
-  <!-- Formulario de ingreso de contacto -->
-  <form action="/add" method="POST">
+  {# Formulario para agregar contacto #}
+  <form id="contact-form" action="{{ url_for('add') }}" method="POST">
     <label for="grado">Grado:</label>
     <input type="text" id="grado" name="grado">
-    
+    <br>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-    
+    <br>
     <label for="apellido">Apellido:</label>
     <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
-    
+    <br>
     <label for="dni">DNI:</label>
     <input type="text" id="dni" name="dni" placeholder="DNI" required>
-    
+    <br>
     <button type="submit">Agregar Contacto</button>
   </form>
+
+  <!-- Botón para volver al inicio -->
+  <button onclick="window.location.href='/'">🏠 Volver al inicio</button>
+
 {% endblock %}
