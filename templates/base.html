@@ -11,25 +11,5 @@
   <div class="container">
     {% block content %}{% endblock %}
   </div>
-
-  <!-- Modal para mostrar mensajes flash -->
-  <div id="flashModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Notificación</h3>
-      </div>
-      <div class="modal-body">
-        {% for category, message in get_flashed_messages(with_categories=true) %}
-          <p class="alert alert-{{ category }}">{{ message }}</p>
-        {% endfor %}
-      </div>
-      <div class="modal-footer">
-        <button id="closeFlash" class="close-btn">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Se carga todo el JavaScript en un archivo externo -->
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
