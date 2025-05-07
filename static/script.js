@@ -1,25 +1,5 @@
-// Espera a que se haya cargado por completo el DOM
+// Asignar listeners y funcionalidades tras la carga completa del DOM
 document.addEventListener("DOMContentLoaded", function () {
-    // FLASH MODAL: Mostrar modal de flash si hay mensajes, y asignar su cierre
-    const flashModal = document.getElementById("flashModal");
-    if (flashModal) {
-        const flashBody = flashModal.querySelector(".modal-body");
-        if (flashBody && flashBody.innerHTML.trim() !== "") {
-            flashModal.style.display = "block";
-        }
-        const closeFlash = document.getElementById("closeFlash");
-        if (closeFlash) {
-            closeFlash.addEventListener("click", function () {
-                flashModal.style.display = "none";
-            });
-        }
-        window.addEventListener("click", function (event) {
-            if (event.target === flashModal) {
-                flashModal.style.display = "none";
-            }
-        });
-    }
-    
     // BUSQUEDA: controla el input del buscador
     const searchBox = document.getElementById("searchBox");
     if (searchBox) {
