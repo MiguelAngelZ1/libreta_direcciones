@@ -135,6 +135,7 @@ def view():
     return render_template("view.html", registros=registros, q=q)
 
 
+
 @app.route("/edit", methods=["POST"])
 def edit():
     id_registro = request.form["id"]
