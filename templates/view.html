@@ -3,20 +3,7 @@
 
 {% block content %}
 <div class="container mt-5">
-  <!-- Cabecera: Título en la izquierda; Buscador y botón "Volver al Inicio" en la derecha -->
-  <div class="row align-items-center mb-4">
-    <div class="col-md-6">
-      <h1 class="mb-0">Lista de Contactos</h1>
-    </div>
-    <div class="col-md-6">
-      <div class="input-group">
-        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
-        <a href="{{ url_for('index') }}" class="btn btn-success">
-          <i class="fas fa-home"></i> Volver al Inicio
-        </a>
-      </div>
-    </div>
-  </div>
+  <h1 class="mb-4">Lista de Contactos</h1>
   
   {# Bloque para mostrar mensajes flash en la vista #}
   <div class="mb-4">
@@ -30,6 +17,11 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+  </div>
+  
+  <!-- Buscador en tiempo real -->
+  <div class="mb-4">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
   </div>
   
   <!-- Tabla de contactos -->
@@ -52,12 +44,12 @@
         <td>{{ c.dni }}</td>
         <td>
           <!-- Botón de Editar: abre el modal -->
-          <button type="button" class="btn btn-primary btn-sm" title="Editar"
+          <button type="button" class="btn btn-primary btn-sm" title="Editar" 
                   onclick="openEditModal('{{ c.id }}', '{{ c.grado }}', '{{ c.nombre }}', '{{ c.apellido }}', '{{ c.dni }}')">
             <i class="fas fa-edit"></i> Editar
           </button>
           <!-- Botón de Eliminar -->
-          <form method="post" action="{{ url_for('delete') }}" style="display:inline;"
+          <form method="post" action="{{ url_for('delete') }}" style="display:inline;" 
                 onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
             <input type="hidden" name="id" value="{{ c.id }}">
             <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
@@ -69,6 +61,13 @@
       {% endfor %}
     </tbody>
   </table>
+  
+  <!-- Botón para volver al inicio -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-success">
+      <i class="fas fa-home"></i> Volver al Inicio
+    </a>
+  </div>
 </div>
 
 <!-- Modal para editar contacto -->
@@ -107,7 +106,6 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
