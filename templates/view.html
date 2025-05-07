@@ -5,6 +5,20 @@
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Contactos</h1>
   
+  {# Bloque para mostrar mensajes flash en la vista #}
+  <div class="mb-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+  
   <!-- Buscador en tiempo real -->
   <div class="mb-4">
       <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
@@ -47,7 +61,7 @@
       {% endfor %}
     </tbody>
   </table>
-
+  
   <!-- Botón para volver al inicio -->
   <div class="text-center mt-4">
     <a href="{{ url_for('index') }}" class="btn btn-success">
@@ -103,7 +117,6 @@ function openEditModal(id, grado, nombre, apellido, dni) {
   document.getElementById("edit-nombre").value = nombre;
   document.getElementById("edit-apellido").value = apellido;
   document.getElementById("edit-dni").value = dni;
-  
   document.getElementById("editModal").style.display = "block";
 }
 
