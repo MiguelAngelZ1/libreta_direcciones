@@ -145,4 +145,15 @@ function eliminarContacto(id) {
     }
 }
 
+document.getElementById("contact-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita recargar la página automáticamente
+
+    fetch(this.action, {
+        method: this.method,
+        body: new FormData(this)
+    }).then(response => response.text())
+      .then(() => {
+          this.reset(); // Limpia los campos del formulario
+      });
+});
 
