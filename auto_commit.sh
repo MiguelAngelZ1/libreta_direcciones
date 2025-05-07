@@ -23,5 +23,4 @@ while inotifywait -r -e modify,create,delete .; do
       git push --force-with-lease origin $BRANCH
       echo "Commit realizado y push enviado al branch $BRANCH"
   fi
-  
 done
