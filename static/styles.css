@@ -89,7 +89,7 @@
   
   .alert-visible {
     opacity: 1;
-    transition: opacity 0.8s ease-in;
+    transition: opacity 0.3s ease-in;
   }
   
   .alert {
