@@ -20,7 +20,8 @@ while inotifywait -r -e modify,create,delete .; do
       # Actualiza la rama local integrando los últimos cambios del remoto (rebase)
       git pull --rebase
       # Hace push al branch especificado usando --force-with-lease
-      git push --force-with-lease origin $BRANCH
+      git push --force origin $BRANCH
+
       echo "Commit realizado y push enviado al branch $BRANCH"
   fi
 done
