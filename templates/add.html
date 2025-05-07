@@ -5,18 +5,27 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Agregar Contacto</h2>
+<div class="container">
+  <div class="form-container">
+    <h2>Agregar Contacto</h2>
 
-  {% if error %}
-    <div class="alert alert-danger">
-      {{ error }}
-    </div>
-  {% endif %}
+    <!-- Bloque para mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-  <!-- Formulario de ingreso de contacto -->
-  <form action="/add" method="POST">
-      <label for="grado">Grado:</label>
-      <select id="grado" name="grado" required>
+    <!-- Formulario de ingreso -->
+    <form action="/add" method="POST">
+      <div class="form-group">
+        <label for="grado">Grado:</label>
+        <select id="grado" name="grado" required>
           <option value="">Selecciona un grado</option>
           <option value="Primero">Primero</option>
           <option value="Segundo">Segundo</option>
@@ -24,17 +33,26 @@
           <option value="Cuarto">Cuarto</option>
           <option value="Quinto">Quinto</option>
           <option value="Sexto">Sexto</option>
-      </select>
-      
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-      
-      <label for="apellido">Apellido:</label>
-      <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
-      
-      <label for="dni">DNI:</label>
-      <input type="text" id="dni" name="dni" placeholder="DNI" required>
-      
-      <button type="submit">Agregar Contacto</button>
-  </form>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
+      </div>
+
+      <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" placeholder="DNI" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Agregar Contacto</button>
+    </form>
+  </div>
+</div>
 {% endblock %}
