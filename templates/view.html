@@ -75,42 +75,41 @@
   </table>
 </div>
 
-<!-- Modal para editar contacto -->
-<div id="editModal" class="modal">
+<!-- Modal para edición -->
+<div id="editModal" class="modal" style="display: none;">
   <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">Editar Contacto</h5>
-      <button type="button" class="close-btn" onclick="closeEditModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="editForm" method="post" action="{{ url_for('edit') }}">
-        <input type="hidden" name="id" id="edit-id">
-        <div class="mb-3">
-          <label for="edit-grado" class="form-label">Grado:</label>
-          <input type="text" name="grado" id="edit-grado" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="edit-nombre" class="form-label">Nombre:</label>
-          <input type="text" name="nombre" id="edit-nombre" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="edit-apellido" class="form-label">Apellido:</label>
-          <input type="text" name="apellido" id="edit-apellido" class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="edit-dni" class="form-label">DNI:</label>
-          <input type="text" name="dni" id="edit-dni" class="form-control">
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary close-btn" onclick="closeEditModal()">Cancelar</button>
-      <button type="submit" form="editForm" class="btn btn-success">
-        <i class="fas fa-check"></i> Confirmar Cambios
-      </button>
-    </div>
+    <h2>Editar Contacto</h2>
+    <form id="editForm" method="POST" action="/edit">
+      <input type="hidden" id="editId" name="id">
+      
+      <label for="editGrado">Grado:</label>
+      <select id="editGrado" name="grado" required>
+          <option value="">Selecciona un grado</option>
+          <option value="Primero">Primero</option>
+          <option value="Segundo">Segundo</option>
+          <option value="Tercero">Tercero</option>
+          <option value="Cuarto">Cuarto</option>
+          <option value="Quinto">Quinto</option>
+          <option value="Sexto">Sexto</option>
+      </select>
+
+      <label>Nombre:</label>
+      <input type="text" id="editNombre" name="nombre">
+      
+      <label>Apellido:</label>
+      <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
+      
+      <label>DNI:</label>
+      <input type="text" id="editDni" name="dni">
+      
+      <div class="modal-buttons">
+        <button type="button" onclick="cerrarModal()">Cancelar</button>
+        <button type="submit">Confirmar cambios</button>
+      </div>
+    </form>
   </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
