@@ -194,12 +194,23 @@ function eliminarContacto(id) {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ id: id })
-        }).then(() => {
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al eliminar contacto (status ${response.status})`);
+            }
+            return response.text();
+        })
+        .then(() => {
             alert("❌ Contacto eliminado correctamente.");
             location.reload();
+        })
+        .catch(error => {
+            alert(`Error: No se pudo eliminar el contacto. ${error.message}`);
         });
     }
 }
+
 
 // Función para enviar el formulario de contacto
 document.addEventListener("DOMContentLoaded", function() {
