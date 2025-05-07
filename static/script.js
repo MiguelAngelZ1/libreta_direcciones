@@ -72,7 +72,7 @@ function validarFormulario() {
     return true;
 }
 
-
+// Función para mostrar la alerta de éxito al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
     let alerta = document.getElementById("alerta");
     if (alerta) {
