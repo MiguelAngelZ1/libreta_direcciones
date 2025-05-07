@@ -4,7 +4,8 @@
 
 {% block content %}
   <h2>Registros en la Libreta</h2>
-  <!-- Campo de búsqueda en tiempo real -->
+  
+  <!-- Campo de búsqueda y botón para limpiar filtros -->
   <input type="text" id="searchBox" placeholder="Buscar por nombre, apellido o DNI">
   <button onclick="limpiarBusqueda()">🧹 Limpiar Búsqueda</button>
 
@@ -16,6 +17,7 @@
           <th>Nombre</th>
           <th>Apellido</th>
           <th>DNI</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="tableBody">
@@ -27,6 +29,20 @@
             <td>{{ registro.nombre }}</td>
             <td>{{ registro.apellido }}</td>
             <td>{{ registro.dni }}</td>
+            <td>
+              <!-- Botones de acción usando data attributes -->
+              <button class="btn-editar"
+                      data-id="{{ registro.id }}"
+                      data-grado="{{ registro.grado }}"
+                      data-nombre="{{ registro.nombre }}"
+                      data-apellido="{{ registro.apellido }}"
+                      data-dni="{{ registro.dni }}">
+                ✏️ Editar
+              </button>
+              <button class="btn-eliminar" data-id="{{ registro.id }}">
+                ❌ Eliminar
+              </button>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
