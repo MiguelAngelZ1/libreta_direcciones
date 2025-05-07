@@ -1,7 +1,10 @@
-{% extends "base.html" %} {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}
+  Ver Contactos - Mi Aplicación
+{% endblock %}
 
 {% block content %}
-
 <div class="container mt-5">
   <!-- Fila con el Título y el botón "Volver al Inicio" -->
   <div class="row mb-3 align-items-center">
@@ -13,11 +16,17 @@
         <i class="fas fa-home"></i> Volver al Inicio
       </a>
     </div>
-  </div>  <!-- Buscador en tiempo real -->  <div class="row mb-4">
+  </div>
+
+  <!-- Buscador en tiempo real -->
+  <div class="row mb-4">
     <div class="col">
-      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre, apellido o DNI...">
     </div>
-  </div>  <!-- Bloque para mostrar mensajes flash -->  <div class="mb-4">
+  </div>
+
+  <!-- Bloque para mostrar mensajes flash -->
+  <div class="mb-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -28,7 +37,10 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-  </div>  <!-- Tabla de contactos -->  <table class="table table-striped">
+  </div>
+
+  <!-- Tabla de contactos -->
+  <table class="table table-striped">
     <thead>
       <tr>
         <th>Grado</th>
@@ -40,18 +52,16 @@
     </thead>
     <tbody id="contactoTable">
       {% for c in registros %}
-      <tr>
+      <tr data-grado="{{ c.grado }}" data-nombre="{{ c.nombre.lower() }}" data-apellido="{{ c.apellido.lower() }}" data-dni="{{ c.dni }}">
         <td>{{ c.grado }}</td>
         <td>{{ c.nombre }}</td>
         <td>{{ c.apellido }}</td>
         <td>{{ c.dni }}</td>
         <td>
-          <!-- Botón de Editar: abre el modal -->
           <button type="button" class="btn btn-primary btn-sm" title="Editar" 
                   onclick="openEditModal('{{ c.id }}', '{{ c.grado }}', '{{ c.nombre }}', '{{ c.apellido }}', '{{ c.dni }}')">
             <i class="fas fa-edit"></i> Editar
           </button>
-          <!-- Botón de Eliminar -->
           <form method="post" action="{{ url_for('delete') }}" style="display:inline;" 
                 onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
             <input type="hidden" name="id" value="{{ c.id }}">
@@ -64,89 +74,76 @@
       {% endfor %}
     </tbody>
   </table>
-</div><!-- Modal para edición --><div id="editModal" class="modal" style="display: none;">
+</div>
+
+<!-- Modal para edición -->
+<div id="editModal" class="modal" style="display: none;">
   <div class="modal-content">
     <h2>Editar Contacto</h2>
     <form id="editForm" method="POST" action="/edit">
-      <input type="hidden" id="editId" name="id"><label for="editGrado">Grado:</label>
-  <select id="editGrado" name="grado" required>
-      <option value="">Selecciona un grado</option>
-      <option value="Primero">Primero</option>
-      <option value="Segundo">Segundo</option>
-      <option value="Tercero">Tercero</option>
-      <option value="Cuarto">Cuarto</option>
-      <option value="Quinto">Quinto</option>
-      <option value="Sexto">Sexto</option>
-  </select>
-
-  <label>Nombre:</label>
-  <input type="text" id="editNombre" name="nombre">
-  
-  <label>Apellido:</label>
-  <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
-  
-  <label>DNI:</label>
-  <input type="text" id="editDni" name="dni">
-  
-  <div class="modal-buttons">
-    <button type="button" onclick="cerrarModal()">Cancelar</button>
-    <button type="submit">Confirmar cambios</button>
+      <input type="hidden" id="editId" name="id">
+      <label for="editGrado">Grado:</label>
+      <select id="editGrado" name="grado" required>
+        <option value="">Selecciona un grado</option>
+        <option value="Primero">Primero</option>
+        <option value="Segundo">Segundo</option>
+        <option value="Tercero">Tercero</option>
+        <option value="Cuarto">Cuarto</option>
+        <option value="Quinto">Quinto</option>
+        <option value="Sexto">Sexto</option>
+      </select>
+      <label>Nombre:</label>
+      <input type="text" id="editNombre" name="nombre">
+      <label>Apellido:</label>
+      <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
+      <label>DNI:</label>
+      <input type="text" id="editDni" name="dni">
+      <div class="modal-buttons">
+        <button type="button" onclick="cerrarModal()">Cancelar</button>
+        <button type="submit">Confirmar cambios</button>
+      </div>
+    </form>
   </div>
-</form>
-
-  </div>
-</div>{% endblock %}
+</div>
+{% endblock %}
 
 {% block scripts %}
-
 <script>
 // Abre el modal y precarga los datos del contacto
 function openEditModal(id, grado, nombre, apellido, dni) {
-  document.getElementById("edit-id").value = id;
-  document.getElementById("edit-grado").value = grado;
-  document.getElementById("edit-nombre").value = nombre;
-  document.getElementById("edit-apellido").value = apellido;
-  document.getElementById("edit-dni").value = dni;
+  document.getElementById("editId").value = id;
+  document.getElementById("editGrado").value = grado;
+  document.getElementById("editNombre").value = nombre;
+  document.getElementById("editApellido").value = apellido;
+  document.getElementById("editDni").value = dni;
   document.getElementById("editModal").style.display = "block";
 }
 
 // Cierra el modal
-function closeEditModal() {
+function cerrarModal() {
   document.getElementById("editModal").style.display = "none";
 }
 
-// Cierra el modal si el usuario hace clic fuera de él
-window.onclick = function(event) {
-  var modal = document.getElementById("editModal");
-  if (event.target == modal) {
-    closeEditModal();
-  }
-};
-
-// Búsqueda en tiempo real
+// Búsqueda en tiempo real con resaltado de filas
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
   const contactRows = document.querySelectorAll("#contactoTable tr");
 
-  if (!searchInput || !contactRows.length) {
-    console.error("No se encontraron elementos de búsqueda.");
-    return;
-  }
-
   searchInput.addEventListener("input", function () {
-    const filter = searchInput.value.toLowerCase().trim();
+    let filter = searchInput.value.toLowerCase().trim();
 
     contactRows.forEach(row => {
-      const nombre = row.children[1].textContent.toLowerCase();
-      const apellido = row.children[2].textContent.toLowerCase();
-      const dni = row.children[3].textContent.toLowerCase();
+      let grado = row.children[0].textContent.toLowerCase();
+      let nombre = row.children[1].textContent.toLowerCase();
+      let apellido = row.children[2].textContent.toLowerCase();
+      let dni = row.children[3].textContent.toLowerCase();
 
-      if (nombre.includes(filter) || apellido.includes(filter) || dni.includes(filter)) {
-        row.style.display = "";  // Mostrar la fila
-        row.style.backgroundColor = "#ffff99";  // Resaltar la coincidencia
+      if (grado.includes(filter) || nombre.includes(filter) || apellido.includes(filter) || dni.includes(filter)) {
+        row.style.display = "";
+        row.classList.add("resaltado");
       } else {
-        row.style.display = "none";  // Ocultar la fila
-        row.style.backgroundColor = "";
+        row.style.display = "none";
+        row.classList.remove("resaltado");
       }
     });
   });
@@ -154,12 +151,11 @@ document.addEventListener("DOMContentLoaded", function () {
   searchInput.addEventListener("blur", function () {
     if (searchInput.value === "") {
       contactRows.forEach(row => {
-        row.style.display = "";  // Restaurar todas las filas visibles
-        row.style.backgroundColor = "";
+        row.style.display = "";
+        row.classList.remove("resaltado");
       });
     }
   });
 });
 </script>
 {% endblock %}
-
