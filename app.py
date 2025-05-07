@@ -80,7 +80,6 @@ def add():
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
         flash("Contacto agregado exitosamente.", "success")
-        # Aquí volvemos a renderizar el template, tal como lo hacías antes.
         return render_template("add.html", error=None)
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
