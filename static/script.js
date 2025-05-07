@@ -76,6 +76,36 @@ function validarFormulario() {
 
 // Funciones para la edición
 
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script.js cargado correctamente");
+
+    // Asignar evento a los botones de edición
+    const btnEditarList = document.querySelectorAll(".btn-editar");
+    console.log("Botones de editar encontrados:", btnEditarList);
+    btnEditarList.forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.dataset.id;
+            let grado = this.dataset.grado;
+            let nombre = this.dataset.nombre;
+            let apellido = this.dataset.apellido;
+            let dni = this.dataset.dni;
+
+            console.log(`Editando contacto con ID ${id}`);
+            abrirModal(id, grado, nombre, apellido, dni);
+        });
+    });
+
+    // Asignar evento a los botones de eliminación
+    const btnEliminarList = document.querySelectorAll(".btn-eliminar");
+    console.log("Botones de eliminar encontrados:", btnEliminarList);
+    btnEliminarList.forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.dataset.id;
+            console.log(`Eliminando contacto con ID ${id}`);
+            eliminarContacto(id);
+        });
+    });
+});
 
 function abrirModal(id, grado, nombre, apellido, dni) {
     const editModal = document.getElementById("editModal");
