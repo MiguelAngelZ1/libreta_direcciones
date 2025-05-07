@@ -13,16 +13,20 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <!-- Opcional: Puedes colocar un header o navbar común -->
-  <header>
-    <!-- Ejemplo de navbar (opcional) -->
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Mi Aplicación</a>
-         </div>
-      </nav> -->
-  </header>
-  
+  <!-- Navbar común -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+          <a class="navbar-brand" href="{{ url_for('index') }}">Mi Aplicación</a>
+          <div class="collapse navbar-collapse">
+              <ul class="navbar-nav ms-auto">
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url_for('add') }}">Agregar Contacto</a></li>
+                  <!-- Agrega más enlaces si lo requieres, como "view" -->
+              </ul>
+          </div>
+      </div>
+  </nav>
+
   <main>
     {% block content %}{% endblock %}
   </main>
