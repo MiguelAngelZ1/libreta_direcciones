@@ -145,6 +145,7 @@ function eliminarContacto(id) {
     }
 }
 
+
 document.getElementById("contact-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita recargar la página automáticamente
 
