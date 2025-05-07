@@ -1,26 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Mi Aplicación{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8">
+  <title>{% block title %}Mi Aplicación{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <main>
-        <!-- Área para mensajes flash -->
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="flash">
-              {% for message in messages %}
-                <p>{{ message }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
+  {% block nav %}{% endblock %}
+  
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
 
-        {% block content %}{% endblock %}
-    </main>
-    <!-- En este ejemplo, no es necesario incluir lógica extra con JS, pero si la requieres, se puede cargar aquí -->
-    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+  <!-- Modal para mostrar mensajes flash -->
+  <div id="flashModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Notificación</h3>
+      </div>
+      <div class="modal-body">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+          <p class="alert alert-{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button id="closeFlash" class="close-btn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      var flashModal = document.getElementById("flashModal");
+      if (flashModal) {
+        // Si hay algún mensaje en el cuerpo del modal, se muestra
+        if (flashModal.querySelector(".modal-body").innerHTML.trim() !== "") {
+          flashModal.style.display = "block";
+        }
+        // Cierra el modal al hacer clic en el botón de cerrar
+        document.getElementById("closeFlash").onclick = function() {
+          flashModal.style.display = "none";
+        };
+
+        // Cierra el modal al hacer clic fuera del contenido
+        window.onclick = function(event) {
+          if (event.target === flashModal) {
+            flashModal.style.display = "none";
+          }
+        };
+      }
+    });
+  </script>
 </body>
 </html>
