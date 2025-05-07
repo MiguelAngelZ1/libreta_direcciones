@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-}); como
+});
 
 
 // Validación del formulario de alta
