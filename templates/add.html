@@ -1,19 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Agregar Contacto{% endblock %}
+{% block title %}
+  Agregar Contacto
+{% endblock %}
 
 {% block content %}
-<h2>Agregar Contacto</h2>
-<form id="contact-form" method="POST" action="{{ url_for('add_contact') }}">
-    <input type="text" name="nombre" placeholder="Nombre">
-    <input type="text" name="apellido" placeholder="Apellido">
-    <input type="text" name="telefono" placeholder="Teléfono">
+  <h2>Agregar Contacto</h2>
+
+  <!-- Mostrar error específico, en caso de validación fallida -->
+  {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+  {% endif %}
+
+  <!-- Formulario de ingreso de contacto -->
+  <form action="/add" method="POST">
+    <label for="grado">Grado:</label>
+    <input type="text" id="grado" name="grado">
     
-    <button type="submit">Agregar contacto</button>
-</form>
-
-<!-- Botón adicional para volver a Index -->
-<button id="btn-volver" onclick="window.location.href='{{ url_for('index') }}';">Volver a Index</button>
-
-
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+    
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
+    
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" name="dni" placeholder="DNI" required>
+    
+    <button type="submit">Agregar Contacto</button>
+  </form>
 {% endblock %}
