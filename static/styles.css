@@ -17,7 +17,7 @@ body {
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 95%;
-  max-width: 900px;  /* Aumentado a 600px para mayor ancho y evitar que el título se divida */
+  max-width: 900px;  /* Contenedor agrandado */
   box-sizing: border-box;
 }
 
@@ -48,8 +48,10 @@ select, input {
   box-sizing: border-box;
 }
 
-/* Botón de enviar */
-.btn-submit, .btn-success {
+/* Botones generales: para enviar y otros botones */
+.btn-submit,
+.btn-success,
+button {
   width: 100%;
   background-color: #007bff;
   color: white;
@@ -61,7 +63,9 @@ select, input {
   transition: background-color 0.3s ease;
 }
 
-.btn-submit:hover, .btn-success:hover {
+.btn-submit:hover,
+.btn-success:hover,
+button:hover {
   background-color: #0056b3;
 }
 
@@ -139,7 +143,8 @@ select, input {
   border-radius: 5px;
 }
 
-.modal-header, .modal-footer {
+.modal-header,
+.modal-footer {
   padding: 10px;
 }
 
@@ -185,24 +190,69 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
-/* Estilo de botones generales */
-button {
-  padding: 8px;
-  border: none;
-  background-color: #007BFF;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
 /* Contenedores con fondo semitransparente */
 .container {
   background-color: rgba(255, 255, 255, 0.92);
   padding: 200px;
   border-radius: 8px;
   margin-bottom: 20px;
+}
+
+/* ----- Estilos para la pantalla de bienvenida ----- */
+.welcome-container {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #333;
+  white-space: nowrap; /* Evita salto de línea en el título */
+}
+
+.welcome-container p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* Botones de la pantalla de bienvenida */
+.welcome-container a.btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.welcome-container a.btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.welcome-container a.btn-success:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.welcome-container a.btn-dark {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.welcome-container a.btn-dark:hover {
+  background-color: #23272b;
+  transform: translateY(-2px);
 }
