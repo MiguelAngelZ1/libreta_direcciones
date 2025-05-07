@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block nav %}{% endblock %}  {# Opcional: anula el menú si no se desea #}
+{% block nav %}{% endblock %}  {# Anula el menú si no se desea #}
 
 {% block title %}Agregar Contacto{% endblock %}
 
@@ -35,7 +35,8 @@
   </form>
 
   {# Modal personalizado para notificar que el contacto se agregó exitosamente #}
-  <div id="successModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div id="successModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; 
+       height: 100%; background-color: rgba(0,0,0,0.5);">
     <div class="modal-content" style="background: white; width:300px; margin:20% auto; padding:20px; text-align: center;">
       <h3>Contacto agregado</h3>
       <p>¿Desea agregar otro?</p>
@@ -48,7 +49,7 @@
 {# Evitamos que se muestre el bloque flash que viene de base.html #}
 {% block flash %}{% endblock %}
 
-{# Si existen flashes (por ej., "Contacto agregado exitosamente"), mostramos el modal #}
+{# Si existen flashes, muestra el modal #}
 {% if flashes %}
   <script>
     document.addEventListener("DOMContentLoaded", function(){
@@ -56,7 +57,7 @@
       if(successModal) {
          successModal.style.display = "block";
          document.getElementById("yesBtn").addEventListener("click", function(){
-             // Redirige al endpoint GET de /add para recargar la página limpia
+             // Recarga la página para enviar un nuevo contacto
              window.location.href = "{{ url_for('add') }}";
          });
          document.getElementById("noBtn").addEventListener("click", function(){
