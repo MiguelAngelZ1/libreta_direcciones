@@ -200,16 +200,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    let alerta = document.getElementById("alerta");
-    if (alerta) {
-        setTimeout(() => {
-            alerta.classList.add("alert-hidden");
-            setTimeout(() => {
-                alerta.style.display = "none";
-            }, 800);
-        }, 4000);
-    }
-});
-
-
