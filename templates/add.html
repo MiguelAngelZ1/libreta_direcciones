@@ -11,7 +11,7 @@
   {# Formulario para agregar contacto #}
   <form id="contact-form" action="{{ url_for('add') }}" method="POST">
     <label for="grado">Grado:</label>
-    <input type="text" id="grado" name="grado">
+    <input type="text" id="grado" name="grado" placeholder="Nomb" required>
     <br>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
