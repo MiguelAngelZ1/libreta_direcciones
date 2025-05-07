@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const alerts = document.querySelectorAll('.alert.fade');
     
     alerts.forEach(alert => {
-      // Después de 4 segundos, remueve la clase "show" para iniciar el efecto fade-out
+      // Después de 2segundos, remueve la clase "show" para iniciar el efecto fade-out
       setTimeout(() => {
         alert.classList.remove('show');
       }, 2000);
