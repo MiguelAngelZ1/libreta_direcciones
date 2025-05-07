@@ -34,6 +34,9 @@ def obtener_contactos():
             cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")
             return cursor.fetchall()
 
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route("/view")
 def view():
