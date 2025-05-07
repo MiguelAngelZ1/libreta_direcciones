@@ -30,7 +30,7 @@ h2 {
      puedes descomentar la siguiente línea.
      Nota: Esto puede provocar overflow en pantallas muy pequeñas.
   */
-  /* white-space: nowrap; */
+  white-space: nowrap; */
 }
 
 /* Estilos para los grupos de formulario */
