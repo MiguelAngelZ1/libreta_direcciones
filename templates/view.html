@@ -1,4 +1,4 @@
-Mira, en view ya hay un script para esto pero no estaba funcionando correctamente ni se resaltan las filas con coincidencias {% extends "base.html" %} {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
+{% extends "base.html" %} {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
 
 {% block content %}
 
@@ -124,41 +124,41 @@ window.onclick = function(event) {
 };
 
 // Búsqueda en tiempo real
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", function(){
-      let q = searchInput.value;
-      fetch(`/search?q=${encodeURIComponent(q)}`)
-        .then(response => response.json())
-        .then(data => {
-          let tbody = document.getElementById("contactoTable");
-          tbody.innerHTML = "";
-          data.forEach(function(contacto) {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${contacto.grado}</td>
-              <td>${contacto.nombre}</td>
-              <td>${contacto.apellido}</td>
-              <td>${contacto.dni}</td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm" title="Editar" onclick="openEditModal('${contacto.id}', '${contacto.grado}', '${contacto.nombre}', '${contacto.apellido}', '${contacto.dni}')">
-                  <i class="fas fa-edit"></i> Editar
-                </button>
-                <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
-                  <input type="hidden" name="id" value="${contacto.id}">
-                  <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                    <i class="fas fa-trash-alt"></i> Eliminar
-                  </button>
-                </form>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        })
-        .catch(error => console.error("Error en la búsqueda en tiempo real", error));
-    });
+  const contactRows = document.querySelectorAll("#contactoTable tr");
+
+  if (!searchInput || !contactRows.length) {
+    console.error("No se encontraron elementos de búsqueda.");
+    return;
   }
+
+  searchInput.addEventListener("input", function () {
+    const filter = searchInput.value.toLowerCase().trim();
+
+    contactRows.forEach(row => {
+      const nombre = row.children[1].textContent.toLowerCase();
+      const apellido = row.children[2].textContent.toLowerCase();
+      const dni = row.children[3].textContent.toLowerCase();
+
+      if (nombre.includes(filter) || apellido.includes(filter) || dni.includes(filter)) {
+        row.style.display = "";  // Mostrar la fila
+        row.style.backgroundColor = "#ffff99";  // Resaltar la coincidencia
+      } else {
+        row.style.display = "none";  // Ocultar la fila
+        row.style.backgroundColor = "";
+      }
+    });
+  });
+
+  searchInput.addEventListener("blur", function () {
+    if (searchInput.value === "") {
+      contactRows.forEach(row => {
+        row.style.display = "";  // Restaurar todas las filas visibles
+        row.style.backgroundColor = "";
+      });
+    }
+  });
 });
 </script>
 {% endblock %}
