@@ -73,6 +73,11 @@ function validarFormulario() {
 }
 
 
+
+
+
+
+
 // Funciones para la edición
 
 document.addEventListener("DOMContentLoaded", function () {
