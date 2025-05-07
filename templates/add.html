@@ -29,13 +29,13 @@
 <div id="alerta" class="alert alert-success alert-hidden mt-3" role="alert"></div>
 
 
-
-  {% if mensaje %}
-  <div id="alerta" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-      {{ mensaje }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
+{% if mensaje %}
+    <div id="alerta" class="alert {{ 'alert-success' if '✅' in mensaje else 'alert-danger' }} alert-dismissible fade show mt-3" role="alert">
+        {{ mensaje }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 {% endif %}
+
 
 
 
