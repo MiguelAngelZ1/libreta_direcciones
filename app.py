@@ -1,23 +1,24 @@
 import psycopg2
-from flask import Flask, render_template, request, redirect, flash
+from psycopg2.extras import RealDictCursor
+from flask import Flask, render_template, request, redirect, flash, url_for
 import os
 
 app = Flask(__name__)
 app.secret_key = "EMIteamo.2025"  # Recuerda usar variables de entorno en producción
 
-# URL de conexión a PostgreSQL desde variables de entorno (o valor por defecto)
+# URL de conexión a PostgreSQL (desde variable de entorno o valor por defecto)
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql://libreta_db_user:A2OwJBOrJacD7MX38Y2XNisNprYVk066@dpg-d0548gvgi27c73cac2q0-a.oregon-postgres.render.com/libreta_db"
 )
 
 def db_connection():
-    """Establece conexión con PostgreSQL usando una conexión optimizada."""
+    """Establece la conexión a PostgreSQL."""
     try:
         return psycopg2.connect(
             DATABASE_URL,
             sslmode="require",
-            connect_timeout=10  # Timeout para evitar bloqueos
+            connect_timeout=10
         )
     except psycopg2.Error as e:
         print(f"Error de conexión a la base de datos: {e}")
@@ -34,36 +35,33 @@ def menu():
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "GET":
-        # Mostrar el formulario sin error
         return render_template("add.html", error=None)
     
-    # --- PROCESAMIENTO DEL FORMULARIO (método POST) ---
-    # Extraer y limpiar los datos del formulario
+    # Procesamiento del formulario de alta
     grado = request.form.get("grado", "").strip()
     nombre_input = request.form.get("nombre", "").strip()
     apellido_input = request.form.get("apellido", "").strip()
     dni = request.form.get("dni", "").strip()
 
-    # Validación de campos requeridos
+    # Validación de campos obligatorios
     if not nombre_input or not apellido_input or not dni:
         error = "Todos los campos (nombre, apellido, DNI) son requeridos."
         return render_template("add.html", error=error)
     
-    # Validación del DNI: debe ser numérico y tener exactamente 8 dígitos.
+    # Validación del formato del DNI
     if not dni.isdigit() or len(dni) != 8:
         error = "El DNI debe contener solo números y tener exactamente 8 dígitos."
         return render_template("add.html", error=error)
 
-    # Conexión a la base de datos
     conn = db_connection()
     if conn is None:
         error = "Error de conexión a la base de datos."
         return render_template("add.html", error=error)
-    
+
     try:
         with conn:
             with conn.cursor() as cursor:
-                # Validación de duplicados: verificar si el DNI ya existe
+                # Validación de duplicados
                 query = "SELECT id FROM contactos WHERE dni = %s"
                 cursor.execute(query, (dni,))
                 if cursor.fetchone() is not None:
@@ -71,20 +69,17 @@ def add():
                     return render_template("add.html", error=error)
                 
                 # Transformación de datos:
-                # - Para el nombre: cada palabra con la primera letra en mayúscula.
-                # - Para el apellido: todo en MAYÚSCULAS.
+                # - Nombre: cada palabra con la primera letra en mayúscula.
+                # - Apellido: todo en MAYÚSCULAS.
                 nombre = " ".join(word.capitalize() for word in nombre_input.split())
                 apellido = apellido_input.upper()
 
-                # Inserta los datos en la tabla 'contactos'
                 sql = """
                     INSERT INTO contactos (grado, nombre, apellido, dni)
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
-        # Notificar al usuario que el contacto se agregó correctamente
         flash("Contacto agregado exitosamente.", "success")
-        # Renderizar nuevamente el formulario (con campos vacíos) en vez de redirigir al index
         return render_template("add.html", error=None)
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
@@ -98,7 +93,8 @@ def view():
         return "Error de conexión a la base de datos"
     
     with conn:
-        with conn.cursor() as cursor:
+        # Se usa RealDictCursor para obtener cada registro como diccionario
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
             cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")
             registros = cursor.fetchall()
     return render_template("view.html", registros=registros)
@@ -111,28 +107,25 @@ def edit():
     nuevo_apellido = request.form["apellido"].strip()
     nuevo_dni = request.form["dni"].strip()
 
-    # Validar que el DNI tenga exactamente 8 dígitos y solo números
     if not nuevo_dni.isdigit() or len(nuevo_dni) != 8:
         flash("Error: El DNI debe contener solo números y tener exactamente 8 dígitos.", "danger")
-        return redirect("/view")
+        return redirect(url_for("view"))
     
     conn = db_connection()
     if conn is None:
         flash("Error de conexión a la base de datos.", "danger")
-        return redirect("/view")
+        return redirect(url_for("view"))
     
     try:
         with conn:
             with conn.cursor() as cursor:
-                # Consulta para verificar duplicados: ignoramos el registro actual
                 query = "SELECT id FROM contactos WHERE dni = %s AND id <> %s"
                 cursor.execute(query, (nuevo_dni, id_registro))
                 duplicate = cursor.fetchone()
                 if duplicate is not None:
                     flash("Error: Ya existe otro contacto con el mismo DNI.", "danger")
-                    return redirect("/view")
+                    return redirect(url_for("view"))
                 
-                # Transformar y actualizar los datos
                 nuevo_nombre = " ".join(word.capitalize() for word in nuevo_nombre.split())
                 nuevo_apellido = nuevo_apellido.upper()
 
@@ -147,7 +140,7 @@ def edit():
         print(f"Error al actualizar contacto: {e}")
         flash("Error al actualizar el contacto.", "danger")
     
-    return redirect("/")
+    return redirect(url_for("index"))
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
@@ -156,11 +149,10 @@ def delete():
         conn = db_connection()
         if conn is None:
             return "Error de conexión a la base de datos"
-        
         with conn:
             with conn.cursor() as cursor:
                 cursor.execute("DELETE FROM contactos WHERE id = %s", (id_registro,))
-        return redirect("/")
+        return redirect(url_for("index"))
     
     return render_template("delete.html")
 
