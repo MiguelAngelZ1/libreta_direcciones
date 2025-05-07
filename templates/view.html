@@ -2,27 +2,12 @@
 {% block title %}Ver Contactos - Mi Aplicación{% endblock %}
 
 {% block content %}
-
+<div class="container mt-5">
+  <h1 class="mb-4">Lista de Contactos</h1>
   
   <!-- Buscador en tiempo real -->
-  <div class="row mb-4">
-    <div class="col">
-      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
-    </div>
-  </div>
-  
-  <!-- Bloque para mostrar mensajes flash -->
   <div class="mb-4">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
   </div>
   
   <!-- Tabla de contactos -->
@@ -62,6 +47,13 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <!-- Botón para volver al inicio -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-success">
+      <i class="fas fa-home"></i> Volver al Inicio
+    </a>
+  </div>
 </div>
 
 <!-- Modal para editar contacto -->
@@ -104,22 +96,23 @@
 
 {% block scripts %}
 <script>
-// Abre el modal y precarga los datos del contacto
+// Función para abrir el modal y precargar los datos del contacto
 function openEditModal(id, grado, nombre, apellido, dni) {
   document.getElementById("edit-id").value = id;
   document.getElementById("edit-grado").value = grado;
   document.getElementById("edit-nombre").value = nombre;
   document.getElementById("edit-apellido").value = apellido;
   document.getElementById("edit-dni").value = dni;
+  
   document.getElementById("editModal").style.display = "block";
 }
 
-// Cierra el modal
+// Función para cerrar el modal
 function closeEditModal() {
   document.getElementById("editModal").style.display = "none";
 }
 
-// Cierra el modal si el usuario hace clic fuera de él
+// Cerrar el modal si el usuario hace clic fuera de él
 window.onclick = function(event) {
   var modal = document.getElementById("editModal");
   if (event.target == modal) {
@@ -132,35 +125,35 @@ document.addEventListener("DOMContentLoaded", function() {
   const searchInput = document.getElementById("searchInput");
   if (searchInput) {
     searchInput.addEventListener("input", function(){
-      let q = searchInput.value;
-      fetch(`/search?q=${encodeURIComponent(q)}`)
-        .then(response => response.json())
-        .then(data => {
-          let tbody = document.getElementById("contactoTable");
-          tbody.innerHTML = "";
-          data.forEach(function(contacto) {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${contacto.grado}</td>
-              <td>${contacto.nombre}</td>
-              <td>${contacto.apellido}</td>
-              <td>${contacto.dni}</td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm" title="Editar" onclick="openEditModal('${contacto.id}', '${contacto.grado}', '${contacto.nombre}', '${contacto.apellido}', '${contacto.dni}')">
-                  <i class="fas fa-edit"></i> Editar
-                </button>
-                <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
-                  <input type="hidden" name="id" value="${contacto.id}">
-                  <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                    <i class="fas fa-trash-alt"></i> Eliminar
-                  </button>
-                </form>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        })
-        .catch(error => console.error("Error en la búsqueda en tiempo real", error));
+         let q = searchInput.value;
+         fetch(`/search?q=${encodeURIComponent(q)}`)
+         .then(response => response.json())
+         .then(data => {
+             let tbody = document.getElementById("contactoTable");
+             tbody.innerHTML = "";
+             data.forEach(function(contacto) {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                  <td>${contacto.grado}</td>
+                  <td>${contacto.nombre}</td>
+                  <td>${contacto.apellido}</td>
+                  <td>${contacto.dni}</td>
+                  <td>
+                    <button type="button" class="btn btn-primary btn-sm" title="Editar" onclick="openEditModal('${contacto.id}', '${contacto.grado}', '${contacto.nombre}', '${contacto.apellido}', '${contacto.dni}')">
+                      <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+                      <input type="hidden" name="id" value="${contacto.id}">
+                      <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                      </button>
+                    </form>
+                  </td>
+                `;
+                tbody.appendChild(tr);
+             });
+         })
+         .catch(error => console.error("Error en la búsqueda en tiempo real", error));
     });
   }
 });
