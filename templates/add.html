@@ -1,37 +1,32 @@
-{% extends "base.html" %}
-
-{% block title %}Agregar Contacto - Mi Aplicación{% endblock %}
-
 {% block content %}
-<div class="container mt-5">
-  <h1 class="mb-4">Agregar Contacto</h1>
-  <form method="POST" action="{{ url_for('add') }}">
-    <div class="mb-3">
-      <label for="grado" class="form-label">Grado:</label>
-      <input type="text" id="grado" name="grado" class="form-control">
-    </div>
-    <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <label for="apellido" class="form-label">Apellido:</label>
-      <input type="text" id="apellido" name="apellido" class="form-control" required>
-    </div>
-    <div class="mb-3">
-      <label for="dni" class="form-label">DNI:</label>
-      <input type="text" id="dni" name="dni" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-success">
-       <i class="fas fa-save"></i> Guardar Contacto
-    </button>
-  </form>
+  <h2>Agregar Contacto</h2>
 
-  {% if mensaje %}
-  <div id="alerta" class="alert {% if '✅' in mensaje %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show mt-3" role="alert">
-    {{ mensaje }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
+  {# Mostrar error inline si lo hay #}
+  {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
   {% endif %}
-</div>
+
+  {# Formulario para agregar contacto #}
+  <form id="contact-form" action="{{ url_for('add') }}" method="POST">
+    <label for="grado">Grado:</label>
+    <input type="text" id="grado" name="grado" placeholder="Seleccione un grado" required>
+    <br>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+    <br>
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
+    <br>
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" name="dni" placeholder="DNI" required>
+    <br>
+    <button type="submit">Agregar Contacto</button>
+  </form>
+  
+
+  <!-- Botón para volver al inicio -->
+  <button onclick="window.location.href='/'">🏠 Volver al inicio</button>
+
 {% endblock %}
