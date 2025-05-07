@@ -1,18 +1,24 @@
+{% extends "base.html" %}
 
-  <div class="welcome-container">
-    <h1>Bienvenido a la Libreta de Contactos</h1>
-    <p>Administra y visualiza tus registros de manera eficiente</p>
+{% block title %}
+  Libreta de Direcciones
+{% endblock %}
+
+{% block content %}
+
+  <div class="container text-center mt-5">
+    <h1 class="fw-bold">Bienvenido a la Libreta de Contactos</h1>
+    <p class="text-muted">Administra y visualiza tus registros de manera eficiente</p>
 
     <!-- Sección de botones -->
     <div class="mt-4">
-        <a href="{{ url_for('add') }}" class="btn btn-success">
-            <i class="fas fa-user-plus"></i> Agregar Contacto
+        <a href="{{ url_for('add') }}" class="btn btn-success btn-lg">
+            <i class="fas fa-plus-circle"></i> Agregar Contacto
         </a>
 
-        <a href="{{ url_for('view') }}" class="btn btn-dark">
+        <a href="{{ url_for('view') }}" class="btn btn-dark btn-lg">
             <i class="fas fa-list"></i> Ver Registros
         </a>
     </div>
-  </div>
 
 {% endblock %}
