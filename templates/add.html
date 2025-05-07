@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Agregar contacto</h2>
-<form id="contact-form" method="POST" action="{{ url_for('add_contact') }}">
+<form id="contact-form" method="POST" action="{{ url_for('add') }}">
     <label for="nombre">Nombre:</label>
     <input type="text" name="nombre" placeholder="Nombre" required>
     <br>
