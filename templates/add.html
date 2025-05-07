@@ -13,7 +13,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          <div class="alert alert-{{ category }} alert-visible fade show" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
@@ -51,8 +51,15 @@
         <input type="text" id="dni" name="dni" placeholder="DNI" required>
       </div>
 
-      <button type="submit" class="btn-submit">Agregar Contacto</button>
+      <button type="submit" class="btn btn-success">Agregar Contacto</button>
     </form>
+
+    <!-- Botón para volver al inicio -->
+    <div class="text-center mt-3">
+      <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <i class="fas fa-home"></i> Volver al Inicio
+      </a>
+    </div>
   </div>
 </div>
 {% endblock %}
