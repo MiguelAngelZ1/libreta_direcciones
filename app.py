@@ -134,7 +134,28 @@ def view():
                 registros = cursor.fetchall()
     return render_template("view.html", registros=registros, q=q)
 
-
+@app.route("/search", methods=["GET"])
+def search():
+    q = request.args.get("q", "").strip()
+    contactos = []
+    conn = db_connection()
+    if conn:
+        with conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                if q:
+                    query = """
+                        SELECT id, grado, nombre, apellido, dni
+                        FROM contactos
+                        WHERE nombre ILIKE %s OR apellido ILIKE %s
+                        ORDER BY nombre ASC
+                    """
+                    wildcard = f"%{q}%"
+                    cursor.execute(query, (wildcard, wildcard))
+                else:
+                    query = "SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC"
+                    cursor.execute(query)
+                contactos = cursor.fetchall()
+    return jsonify(contactos)
 
 @app.route("/edit", methods=["POST"])
 def edit():
