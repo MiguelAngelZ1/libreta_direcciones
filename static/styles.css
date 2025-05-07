@@ -53,83 +53,83 @@
     background-color: #0056b3;
   }
   
-
-table {
+  /* Estilos para tablas */
+  table {
     width: 100%;
     border-collapse: collapse;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-}
-th, td {
+  }
+  
+  th,
+  td {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-}
-button {
+  }
+  
+  /* Estilo de botones generales */
+  button {
     padding: 8px;
     border: none;
     background-color: #007BFF;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-}
-button:hover {
+  }
+  
+  button:hover {
     background-color: #0056b3;
-}
-
-.alert-hidden {
+  }
+  
+  /* Estilos para alertas (transiciones y fondo uniforme) */
+  .alert-hidden {
     opacity: 0;
     transition: opacity 0.8s ease-out;
-}
-
-.alert-visible {
+  }
+  
+  .alert-visible {
     opacity: 1;
     transition: opacity 0.8s ease-in;
-}
-
-.alert {
+  }
+  
+  .alert {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
     transition: opacity 0.8s ease-out;
   }
-
   
-  /* Fondo de pantalla uniforme */
-body {
+  /* Fondo de pantalla y configuración base del body */
+  body {
     font-family: 'Arial', sans-serif;
     color: #333;
     margin: 0;
     padding: 0;
-}
-
-/* Barra de navegación personalizada */
-.custom-navbar {
+  }
+  
+  /* Barra de navegación personalizada */
+  .custom-navbar {
     background-color: rgba(0, 0, 0, 0.8);  /* Fondo oscuro semitransparente */
     border-bottom: 2px solid #28a745;       /* Borde verde para resaltar */
-}
-
-/* Estilo para alertas: se utiliza la opacidad y transición para suavizar la desaparición */
-.alert {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    transition: opacity 0.8s ease-out;
-}
-
-/* Botón verde unificado */
-.btn-success {
+  }
+  
+  /* Botón verde unificado */
+  .btn-success {
     background-color: #28a745 !important;
     border-color: #28a745 !important;
     color: #fff;
-}
-
-/* Enlaces del navbar con fuente clara */
-.nav-link {
+  }
+  
+  /* Enlaces del navbar con fuente clara */
+  .nav-link {
     color: #fff !important;
     font-weight: bold;
-}
-
-/* Opcional: contenedores con fondo semitransparente para mejorar la legibilidad */
-.container {
+  }
+  
+  /* Contenedores con fondo semitransparente para mejorar la legibilidad */
+  .container {
     background-color: rgba(255, 255, 255, 0.92);
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
-}
-
+  }
+  
