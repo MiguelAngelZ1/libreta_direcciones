@@ -72,12 +72,6 @@ function validarFormulario() {
     return true;
 }
 
-
-
-
-
-
-
 // Funciones para la edición
 
 document.addEventListener("DOMContentLoaded", function () {
