@@ -72,21 +72,18 @@ function validarFormulario() {
     return true;
 }
 
-// Función para mostrar la alerta de éxito al cargar la página
+
 document.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname === "/add") { // Solo ejecuta en add.html
-        let alerta = document.getElementById("alerta");
-        if (alerta) {
+    let alerta = document.getElementById("alerta");
+    if (alerta) {
+        setTimeout(() => {
+            alerta.classList.add("alert-hidden");
             setTimeout(() => {
-                alerta.classList.add("alert-hidden");
-                setTimeout(() => {
-                    alerta.style.display = "none";
-                }, 800);
-            }, 4000);
-        }
+                alerta.style.display = "none"; // Elimina el espacio en la interfaz
+            }, 800); // Espera a que la transición termine
+        }, 4000); // La alerta dura 4 segundos antes de ocultarse
     }
 });
-
 
 
 
