@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
+// Función para abrir el modal de edición
 function abrirModal(id, grado, nombre, apellido, dni) {
     const editModal = document.getElementById("editModal");
     if (editModal) {
