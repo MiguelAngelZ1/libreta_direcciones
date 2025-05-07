@@ -1,33 +1,52 @@
-{% extends "base.html" %}
-
-{% block title %}
-  Agregar Contacto
-{% endblock %}
-
 {% block content %}
-  <h2>Agregar Contacto</h2>
+  <h2>Registros en la Libreta</h2>
 
-  <!-- Mostrar error específico, en caso de validación fallida -->
-  {% if error %}
-    <div class="alert alert-danger">
-      {{ error }}
-    </div>
+  <!-- Campo de búsqueda y botón para limpiar filtros -->
+  <input type="text" id="searchBox" placeholder="Buscar por nombre, apellido o DNI">
+  <button onclick="limpiarBusqueda()">🧹 Limpiar Búsqueda</button>
+
+  <!-- Botón para volver al inicio -->
+  <button onclick="window.location.href='/'">🏠 Volver al inicio</button>
+
+  {% if registros %}
+    <table id="contactTable">
+      <thead>
+        <tr>
+          <th>Grado</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        {% for registro in registros %}
+          <tr data-nombre="{{ registro.nombre | lower }}"
+              data-apellido="{{ registro.apellido | lower }}"
+              data-dni="{{ registro.dni }}">
+            <td>{{ registro.grado }}</td>
+            <td>{{ registro.nombre }}</td>
+            <td>{{ registro.apellido }}</td>
+            <td>{{ registro.dni }}</td>
+            <td>
+              <!-- Botones de acción -->
+              <button class="btn-editar"
+                      data-id="{{ registro.id }}"
+                      data-grado="{{ registro.grado }}"
+                      data-nombre="{{ registro.nombre }}"
+                      data-apellido="{{ registro.apellido }}"
+                      data-dni="{{ registro.dni }}">
+                ✏️ Editar
+              </button>
+              <button class="btn-eliminar" data-id="{{ registro.id }}">
+                ❌ Eliminar
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay registros disponibles.</p>
   {% endif %}
-
-  <!-- Formulario de ingreso de contacto -->
-  <form action="/add" method="POST">
-    <label for="grado">Grado:</label>
-    <input type="text" id="grado" name="grado">
-    
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-    
-    <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
-    
-    <label for="dni">DNI:</label>
-    <input type="text" id="dni" name="dni" placeholder="DNI" required>
-    
-    <button type="submit">Agregar Contacto</button>
-  </form>
 {% endblock %}
