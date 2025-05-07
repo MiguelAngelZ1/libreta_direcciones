@@ -1,138 +1,207 @@
+/* Estilos generales */
+body {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Contenedor principal del formulario */
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Encabezado */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Estilos para los grupos de formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+select, input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Botón de enviar */
+.btn-submit, .btn-success {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover, .btn-success:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para mensajes flash */
+.alert {
+  padding: 12px;
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.alert-success {
+  background-color: #28a745;
+}
+
+.alert-warning {
+  background-color: #ffc107;
+}
+
+.alert-danger {
+  background-color: #f44336;
+}
+
+/* Estilos para cerrar los mensajes flash */
+.alert-dismissible .btn-close {
+  position: relative;
+  float: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Ocultar los mensajes flash después de unos segundos */
+.alert-hidden {
+  opacity: 0;
+}
+
+/* Barra de navegación personalizada */
+.custom-navbar {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-bottom: 2px solid #28a745;
+}
+
+/* Botón verde unificado */
+.btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: #fff;
+}
+
 /* Estilos para el modal flash */
 .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    transition: opacity 0.3s ease;
-  }
-  
-  .modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 5px;
-  }
-  
-  .modal-header,
-  .modal-footer {
-    padding: 10px;
-  }
-  
-  .modal-header {
-    border-bottom: 1px solid #eee;
-  }
-  
-  .modal-footer {
-    border-top: 1px solid #eee;
-    text-align: right;
-  }
-  
-  .btn,
-  .close-btn {
-    cursor: pointer;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 3px;
-    background-color: #007BFF;
-    color: white;
-    font-size: 14px;
-    margin: 5px;
-  }
-  
-  .btn:hover,
-  .close-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  
-  .resaltado {
-    background-color: #ffff99;
-  }
-  
-  /* Estilos para tablas */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  /* Estilo de botones generales */
-  button {
-    padding: 8px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Estilos para alertas (transiciones y fondo uniforme) */
-  .alert-hidden {
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
-  }
-  
-  .alert-visible {
-    opacity: 1;
-    transition: opacity 0.2s ease-in;
-  }
-  
-  .alert {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    transition: opacity 0.2s ease-out;
-  }
-  
-  /* Estilos para alertas (transiciones y fondo uniforme) */
-  .alert-hidden {
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
-  }
-  
-  /* Barra de navegación personalizada */
-  .custom-navbar {
-    background-color: rgba(0, 0, 0, 0.8);  /* Fondo oscuro semitransparente */
-    border-bottom: 2px solid #28a745;       /* Borde verde para resaltar */
-  }
-  
-  /* Botón verde unificado */
-  .btn-success {
-    background-color: #28a745 !important;
-    border-color: #28a745 !important;
-    color: #fff;
-  }
-  
-  /* Enlaces del navbar con fuente clara */
-  .nav-link {
-    color: #fff !important;
-    font-weight: bold;
-  }
-  
-  /* Contenedores con fondo semitransparente para mejorar la legibilidad */
-  .container {
-    background-color: rgba(255, 255, 255, 0.92);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 5px;
+}
+
+.modal-header, .modal-footer {
+  padding: 10px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+}
+
+.modal-footer {
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.close-btn {
+  cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007BFF;
+  color: white;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.close-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Resaltado de búsqueda */
+.resaltado {
+  background-color: #ffff99;
+}
+
+/* Estilos para tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo de botones generales */
+button {
+  padding: 8px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Contenedores con fondo semitransparente */
+.container {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
