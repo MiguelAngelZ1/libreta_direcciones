@@ -6,12 +6,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="{{ url_for('index') }}">Inicio</a>
-            <a href="{{ url_for('add') }}">Agregar Contacto</a>
-        </nav>
-    </header>
     <main>
         <!-- Área para mensajes flash -->
         {% with messages = get_flashed_messages() %}
