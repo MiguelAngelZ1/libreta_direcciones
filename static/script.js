@@ -1,5 +1,6 @@
-// Funcionalidad de búsqueda en la tabla
+// Asignar listeners y funcionalidades tras la carga completa del DOM
 document.addEventListener("DOMContentLoaded", function () {
+    // BUSQUEDA: controla el input del buscador
     const searchBox = document.getElementById("searchBox");
     if (searchBox) {
         searchBox.addEventListener("input", function () {
@@ -18,16 +19,55 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+    
+    // Listener para el formulario de alta (si existe)
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Evita el reload por defecto
+            // Se valida el formulario (si algún campo falta, se aborta)
+            if (!validarFormulario()) {
+                return;
+            }
+            fetch(this.action, {
+                method: this.method,
+                body: new FormData(this)
+            }).then(response => response.text())
+              .then(() => {
+                  this.reset(); // Limpia el formulario tras envío exitoso
+              });
+        });
+    }
+    
+    // Asignar listeners a los botones de edición usando data attributes
+    document.querySelectorAll(".btn-editar").forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.dataset.id;
+            let grado = this.dataset.grado;
+            let nombre = this.dataset.nombre;
+            let apellido = this.dataset.apellido;
+            let dni = this.dataset.dni;
+            abrirModal(id, grado, nombre, apellido, dni);
+        });
+    });
+    
+    // Asignar listeners a los botones de eliminación usando data attributes
+    document.querySelectorAll(".btn-eliminar").forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.dataset.id;
+            eliminarContacto(id);
+        });
+    });
 });
 
-// Validación del formulario de alta
+// VALIDACIÓN DEL FORMULARIO DE ALTA
 function validarFormulario() {
     const gradoElem = document.getElementById("grado");
     const nombreElem = document.getElementById("nombre");
     const apellidoElem = document.getElementById("apellido");
     const dniElem = document.getElementById("dni");
     
-    // Si alguno de estos elementos no está presente, se omite la validación
+    // Si alguno de estos elementos no existe (por ejemplo, en otra vista), se omite la validación
     if (!gradoElem || !nombreElem || !apellidoElem || !dniElem) {
         return true;
     }
@@ -54,7 +94,7 @@ function validarFormulario() {
         return false;
     }
     
-    // Formatear nombre y apellido antes de enviar el formulario
+    // Formatear nombre y apellido antes de enviar
     nombre = nombre.split(" ")
                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                    .join(" ");
@@ -65,7 +105,7 @@ function validarFormulario() {
     return true;
 }
 
-// Funciones para la edición
+// FUNCIONES PARA LA EDICIÓN
 function abrirModal(id, grado, nombre, apellido, dni) {
     const editModal = document.getElementById("editModal");
     if (editModal) {
@@ -134,7 +174,7 @@ function confirmarEdicion() {
     });
 }
 
-// Función para limpiar la búsqueda
+// FUNCION PARA LIMPIAR LA BUSQUEDA: Resetea el input y muestra todas las filas de la tabla
 function limpiarBusqueda() {
     const searchBox = document.getElementById("searchBox");
     if (searchBox) {
@@ -146,7 +186,7 @@ function limpiarBusqueda() {
     });
 }
 
-// Función para eliminar un contacto
+// FUNCION PARA ELIMINAR UN CONTACTO
 function eliminarContacto(id) {
     if (confirm("¿Seguro que quieres eliminar este contacto?")) {
         fetch("/delete", {
@@ -159,20 +199,3 @@ function eliminarContacto(id) {
         });
     }
 }
-
-// Función para enviar el formulario de contacto
-document.addEventListener("DOMContentLoaded", function() {
-    const contactForm = document.getElementById("contact-form");
-    if (contactForm) {
-        contactForm.addEventListener("submit", function(event) {
-            event.preventDefault();
-            fetch(this.action, {
-                method: this.method,
-                body: new FormData(this)
-            }).then(response => response.text())
-              .then(() => {
-                  this.reset();
-              });
-        });
-    }
-});
