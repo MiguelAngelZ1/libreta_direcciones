@@ -41,7 +41,47 @@ def index():
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "GET":
-        return render_template("add.html", error=None)
+        return render_template("add.html", mensaje=None)
+
+    grado = request.form.get("grado", "").strip()
+    nombre_input = request.form.get("nombre", "").strip()
+    apellido_input = request.form.get("apellido", "").strip()
+    dni = request.form.get("dni", "").strip()
+
+    if not nombre_input or not apellido_input or not dni:
+        return render_template("add.html", mensaje="❌ Todos los campos son requeridos.")
+
+    if not dni.isdigit() or len(dni) != 8:
+        return render_template("add.html", mensaje="❌ El DNI debe contener solo números y tener 8 dígitos.")
+
+    conn = db_connection()
+    if conn is None:
+        return render_template("add.html", mensaje="❌ Error de conexión a la base de datos.")
+
+    try:
+        with conn:
+            with conn.cursor() as cursor:
+                query = "SELECT id FROM contactos WHERE dni = %s"
+                cursor.execute(query, (dni,))
+                if cursor.fetchone():
+                    return render_template("add.html", mensaje="❌ Ya existe un contacto con el mismo DNI.")
+
+                # Transformación de nombres
+                nombre = " ".join(word.capitalize() for word in nombre_input.split())
+                apellido = apellido_input.upper()
+
+                sql = """
+                    INSERT INTO contactos (grado, nombre, apellido, dni)
+                    VALUES (%s, %s, %s, %s)
+                """
+                cursor.execute(sql, (grado, nombre, apellido, dni))
+        
+        return render_template("add.html", mensaje="✅ Contacto agregado correctamente.")
+    
+    except Exception as e:
+        print(f"Error al insertar contacto: {e}")
+        return render_template("add.html", mensaje="❌ Error al agregar el contacto.")
+
 
 
 @app.route("/view")
