@@ -29,27 +29,7 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function(){
-      var flashModal = document.getElementById("flashModal");
-      if (flashModal) {
-        // Si hay algún mensaje en el cuerpo del modal, se muestra
-        if (flashModal.querySelector(".modal-body").innerHTML.trim() !== "") {
-          flashModal.style.display = "block";
-        }
-        // Cierra el modal al hacer clic en el botón de cerrar
-        document.getElementById("closeFlash").onclick = function() {
-          flashModal.style.display = "none";
-        };
-
-        // Cierra el modal al hacer clic fuera del contenido
-        window.onclick = function(event) {
-          if (event.target === flashModal) {
-            flashModal.style.display = "none";
-          }
-        };
-      }
-    });
-  </script>
+  <!-- Se carga todo el JavaScript en un archivo externo -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
