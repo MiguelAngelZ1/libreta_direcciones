@@ -5,7 +5,7 @@
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Contactos</h1>
   
-  <!-- Buscador en tiempo real (si lo deseas, puedes dejarlo o quitarlo) -->
+  <!-- Buscador en tiempo real -->
   <div class="mb-4">
       <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
   </div>
@@ -29,7 +29,7 @@
         <td>{{ c.apellido }}</td>
         <td>{{ c.dni }}</td>
         <td>
-          <!-- Botón de Editar: ahora solo dispara el modal -->
+          <!-- Botón de Editar: abre el modal -->
           <button type="button" class="btn btn-primary btn-sm" title="Editar" 
                   onclick="openEditModal('{{ c.id }}', '{{ c.grado }}', '{{ c.nombre }}', '{{ c.apellido }}', '{{ c.dni }}')">
             <i class="fas fa-edit"></i> Editar
@@ -47,6 +47,13 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <!-- Botón para volver al inicio -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-success">
+      <i class="fas fa-home"></i> Volver al Inicio
+    </a>
+  </div>
 </div>
 
 <!-- Modal para editar contacto -->
@@ -113,7 +120,7 @@ window.onclick = function(event) {
   }
 };
 
-// Si tienes implementada búsqueda en tiempo real, se puede conservar el siguiente fragmento:
+// Búsqueda en tiempo real
 document.addEventListener("DOMContentLoaded", function() {
   const searchInput = document.getElementById("searchInput");
   if (searchInput) {
