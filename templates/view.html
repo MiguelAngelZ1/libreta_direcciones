@@ -39,6 +39,28 @@
                       data-dni="{{ registro.dni }}">
                 ✏️ Editar
               </button>
+              <!-- Modal para edición -->
+<div id="editModal" class="modal" style="display: none;">
+  <div class="modal-content">
+      <h2>Editar Contacto</h2>
+      <form id="editForm" method="POST" action="/edit">
+          <input type="hidden" id="editId" name="id">
+          <label>Grado:</label>
+          <input type="text" id="editGrado" name="grado">
+          <label>Nombre:</label>
+          <input type="text" id="editNombre" name="nombre">
+          <label>Apellido:</label>
+          <input type="text" id="editApellido" name="apellido" pattern="[A-Za-z\s]+" title="El apellido solo debe contener letras">
+          <label>DNI:</label>
+          <input type="text" id="editDni" name="dni">
+          <div class="modal-buttons">
+              <button type="button" onclick="cerrarModal()">Cancelar</button>
+              <button type="submit">Confirmar cambios</button>
+          </div>
+      </form>
+  </div>
+</div>
+
               <button class="btn-eliminar" data-id="{{ registro.id }}">
                 ❌ Eliminar
               </button>
