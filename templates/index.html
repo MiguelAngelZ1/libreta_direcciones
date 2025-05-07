@@ -7,8 +7,16 @@
 {% block content %}
   <h2>Bienvenido a la Libreta de Direcciones</h2>
   <p>Seleccione una opción:</p>
-  <ul>
-    <li><a href="/add">Agregar un Contacto</a></li>
-    <li><a href="/view">Ver Todos</a></li>
-  </ul>
+  <div class="mt-4">
+    <!-- Botón para agregar un contacto -->
+    <a href="{{ url_for('add') }}" class="btn btn-success btn-lg">
+        <i class="fas fa-plus-circle"></i> Agregar Contacto
+    </a>
+
+    <!-- Botón para ver los registros -->
+    <a href="{{ url_for('view') }}" class="btn btn-dark btn-lg">
+        <i class="fas fa-list"></i> Ver Registros
+    </a>
+</div>
+
 {% endblock %}
