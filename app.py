@@ -74,25 +74,25 @@ def add():
         # Validaciones básicas
         if not nombre or not apellido or not dni:
             flash("❌ Todos los campos son requeridos.", "danger")
-            print("DEBUG: Flash -> Todos los campos son requeridos.")
+            print("DEBUG: Faltan datos")
         elif not dni.isdigit() or len(dni) != 8:
             flash("❌ El DNI debe contener solo números y tener 8 dígitos.", "danger")
-            print("DEBUG: Flash -> El DNI debe contener solo números y tener 8 dígitos.")
+            print("DEBUG: DNI inválido")
         else:
             conn = db_connection()
             if conn is None:
                 flash("❌ Error de conexión a la base de datos.", "danger")
-                print("DEBUG: Flash -> Error de conexión a la base de datos.")
+                print("DEBUG: Error de conexión")
             else:
                 try:
                     with conn:
                         with conn.cursor() as cursor:
                             # Verificar si ya existe un contacto con ese DNI
-                            query = "SELECT id FROM contactos WHERE dni = %s"
-                            cursor.execute(query, (dni,))
+                            consulta = "SELECT id FROM contactos WHERE dni = %s"
+                            cursor.execute(consulta, (dni,))
                             if cursor.fetchone():
                                 flash("❌ Ya existe un contacto con el mismo DNI.", "danger")
-                                print("DEBUG: Flash -> Ya existe un contacto con el mismo DNI.")
+                                print("DEBUG: Contacto duplicado")
                             else:
                                 sql = """
                                     INSERT INTO contactos (grado, nombre, apellido, dni)
@@ -100,17 +100,13 @@ def add():
                                 """
                                 cursor.execute(sql, (grado, nombre.capitalize(), apellido.upper(), dni))
                                 flash("✅ Contacto agregado correctamente.", "success")
-                                print("DEBUG: Flash -> Contacto agregado correctamente.")
-                    # Al hacer redirect se limpian los datos del formulario y se consumen los mensajes flash
+                                print("DEBUG: Contacto agregado")
+                    # Redirigimos para limpiar el formulario y evitar reenvío al refrescar la página
                     return redirect(url_for("add"))
                 except Exception as e:
                     flash("❌ Error al agregar el contacto.", "danger")
-                    print(f"DEBUG: Flash -> Error al agregar el contacto: {e}")
+                    print(f"DEBUG: Error insertando en la base de datos: {e}")
     return render_template("add.html")
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
-
 
 
 @app.route("/view")
