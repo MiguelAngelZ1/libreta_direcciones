@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, jsonify, render_template, request, flash, redirect, url_for
 import os
 
 app = Flask(__name__)
