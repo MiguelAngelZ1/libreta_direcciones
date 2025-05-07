@@ -40,46 +40,42 @@ def index():
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
-    if request.method == "GET":
-        return render_template("add.html", mensaje=None)
+    mensaje = None  # Inicializa el mensaje vacío
 
-    grado = request.form.get("grado", "").strip()
-    nombre_input = request.form.get("nombre", "").strip()
-    apellido_input = request.form.get("apellido", "").strip()
-    dni = request.form.get("dni", "").strip()
+    if request.method == "POST":
+        grado = request.form.get("grado", "").strip()
+        nombre = request.form.get("nombre", "").strip()
+        apellido = request.form.get("apellido", "").strip()
+        dni = request.form.get("dni", "").strip()
 
-    if not nombre_input or not apellido_input or not dni:
-        return render_template("add.html", mensaje="❌ Todos los campos son requeridos.")
+        if not nombre or not apellido or not dni:
+            mensaje = "❌ Todos los campos son requeridos."
 
-    if not dni.isdigit() or len(dni) != 8:
-        return render_template("add.html", mensaje="❌ El DNI debe contener solo números y tener 8 dígitos.")
+        elif not dni.isdigit() or len(dni) != 8:
+            mensaje = "❌ El DNI debe contener solo números y tener 8 dígitos."
 
-    conn = db_connection()
-    if conn is None:
-        return render_template("add.html", mensaje="❌ Error de conexión a la base de datos.")
+        else:
+            conn = db_connection()
+            if conn is None:
+                mensaje = "❌ Error de conexión a la base de datos."
+            else:
+                try:
+                    with conn:
+                        with conn.cursor() as cursor:
+                            query = "SELECT id FROM contactos WHERE dni = %s"
+                            cursor.execute(query, (dni,))
+                            if cursor.fetchone():
+                                mensaje = "❌ Ya existe un contacto con el mismo DNI."
+                            else:
+                                sql = "INSERT INTO contactos (grado, nombre, apellido, dni) VALUES (%s, %s, %s, %s)"
+                                cursor.execute(sql, (grado, nombre.capitalize(), apellido.upper(), dni))
+                                mensaje = "✅ Contacto agregado correctamente."
+                except Exception as e:
+                    print(f"Error al insertar contacto: {e}")
+                    mensaje = "❌ Error al agregar el contacto."
 
-    try:
-        with conn:
-            with conn.cursor() as cursor:
-                query = "SELECT id FROM contactos WHERE dni = %s"
-                cursor.execute(query, (dni,))
-                if cursor.fetchone():
-                    return render_template("add.html", mensaje="❌ Ya existe un contacto con el mismo DNI.")
+    return render_template("add.html", mensaje=mensaje)
 
-                nombre = " ".join(word.capitalize() for word in nombre_input.split())
-                apellido = apellido_input.upper()
-
-                sql = """
-                    INSERT INTO contactos (grado, nombre, apellido, dni)
-                    VALUES (%s, %s, %s, %s)
-                """
-                cursor.execute(sql, (grado, nombre, apellido, dni))
-        
-        return redirect(url_for("add"))  # 🔥 Cambio: ahora recargamos sin mensaje persistente
-    
-    except Exception as e:
-        print(f"Error al insertar contacto: {e}")
-        return render_template("add.html", mensaje="❌ Error al agregar el contacto.")
 
 
 
