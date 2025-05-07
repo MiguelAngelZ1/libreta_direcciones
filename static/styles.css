@@ -16,8 +16,9 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;  /* Se aumentó el ancho a 500px para mayor uniformidad */
+  width: 90%;
+  max-width: 600px;  /* Aumentado a 600px para mayor ancho y evitar que el título se divida */
+  box-sizing: border-box;
 }
 
 /* Encabezado */
@@ -25,6 +26,11 @@ h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
+  /* Si deseas forzar que el título no se rompa en dos líneas,
+     puedes descomentar la siguiente línea.
+     Nota: Esto puede provocar overflow en pantallas muy pequeñas.
+  */
+  /* white-space: nowrap; */
 }
 
 /* Estilos para los grupos de formulario */
