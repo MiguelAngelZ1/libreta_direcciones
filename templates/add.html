@@ -4,20 +4,8 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h1 class="mb-4 text-center">Agregar Contacto</h1>
-
-  {# Bloque para mostrar los mensajes flash #}
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-
+  <h1 class="mb-4">Agregar Contacto</h1>
+  
   <form method="POST" action="{{ url_for('add') }}">
     <div class="mb-3">
       <label for="grado" class="form-label">Grado:</label>
@@ -41,11 +29,9 @@
     </button>
   </form>
   
-  <!-- Botón para volver al inicio, con icono -->
-  <div class="text-center mt-3">
-    <a href="{{ url_for('index') }}" class="btn btn-success">
-      <i class="fas fa-home"></i> Volver al Inicio
-    </a>
-  </div>
+  <!-- Botón para volver al inicio, también con icono -->
+  <a href="{{ url_for('index') }}" class="btn btn-success mt-3">
+    <i class="fas fa-home"></i> Volver al Inicio
+  </a>
 </div>
 {% endblock %}
