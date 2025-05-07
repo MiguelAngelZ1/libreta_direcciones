@@ -1,33 +1,41 @@
+// Funcionalidad de búsqueda en la tabla
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.getElementById("searchBox");
-
     if (searchBox) {
         searchBox.addEventListener("input", function () {
             let input = searchBox.value.toLowerCase().trim();
             let filas = document.querySelectorAll("#tableBody tr");
-
             filas.forEach(fila => {
                 let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
                 let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
                 let dni = fila.dataset.dni ? fila.dataset.dni.toString() : "";
-
                 if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                    fila.style.display = "table-row";  
+                    fila.style.display = "table-row";
                     fila.style.backgroundColor = "#ffff99";  // Resalta la fila
                 } else {
-                    fila.style.display = "none";  
+                    fila.style.display = "none";
                 }
             });
         });
     }
 });
 
-/* Validación del formulario de alta */
+// Validación del formulario de alta
 function validarFormulario() {
-    let grado = document.getElementById("grado").value.trim();
-    let nombre = document.getElementById("nombre").value.trim();
-    let apellido = document.getElementById("apellido").value.trim();
-    let dni = document.getElementById("dni").value.trim();
+    const gradoElem = document.getElementById("grado");
+    const nombreElem = document.getElementById("nombre");
+    const apellidoElem = document.getElementById("apellido");
+    const dniElem = document.getElementById("dni");
+    
+    // Si alguno de estos elementos no está presente, se omite la validación
+    if (!gradoElem || !nombreElem || !apellidoElem || !dniElem) {
+        return true;
+    }
+    
+    let grado = gradoElem.value.trim();
+    let nombre = nombreElem.value.trim();
+    let apellido = apellidoElem.value.trim();
+    let dni = dniElem.value.trim();
 
     if (!grado || !nombre || !apellido || !dni) {
         alert("⚠️ Todos los campos son obligatorios.");
@@ -46,30 +54,35 @@ function validarFormulario() {
         return false;
     }
     
-    
     // Formatear nombre y apellido antes de enviar el formulario
     nombre = nombre.split(" ")
                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                    .join(" ");
     apellido = apellido.toUpperCase();
-    document.getElementById("nombre").value = nombre;
-    document.getElementById("apellido").value = apellido;
+    nombreElem.value = nombre;
+    apellidoElem.value = apellido;
     
     return true;
 }
 
-/* Funciones para la edición */
+// Funciones para la edición
 function abrirModal(id, grado, nombre, apellido, dni) {
-    document.getElementById("editId").value = id;
-    document.getElementById("editGrado").value = grado;
-    document.getElementById("editNombre").value = nombre;
-    document.getElementById("editApellido").value = apellido;
-    document.getElementById("editDni").value = dni;
-    document.getElementById("editModal").style.display = "block";  
+    const editModal = document.getElementById("editModal");
+    if (editModal) {
+        document.getElementById("editId").value = id;
+        document.getElementById("editGrado").value = grado;
+        document.getElementById("editNombre").value = nombre;
+        document.getElementById("editApellido").value = apellido;
+        document.getElementById("editDni").value = dni;
+        editModal.style.display = "block";
+    }
 }
 
 function cerrarModal() {
-    document.getElementById("editModal").style.display = "none";  
+    const editModal = document.getElementById("editModal");
+    if (editModal) {
+        editModal.style.display = "none";
+    }
 }
 
 function confirmarEdicion() {
@@ -100,7 +113,6 @@ function confirmarEdicion() {
         return;
     }
     
-
     if (!confirm("¿Seguro que quieres guardar los cambios?")) {
         return;
     }
@@ -122,16 +134,19 @@ function confirmarEdicion() {
     });
 }
 
-/* Función para limpiar la búsqueda */
+// Función para limpiar la búsqueda
 function limpiarBusqueda() {
-    document.getElementById("searchBox").value = "";
+    const searchBox = document.getElementById("searchBox");
+    if (searchBox) {
+        searchBox.value = "";
+    }
     document.querySelectorAll("#tableBody tr").forEach(fila => {
         fila.style.display = "table-row";
-        fila.style.backgroundColor = "";  
+        fila.style.backgroundColor = "";
     });
 }
 
-/* Función para eliminar un contacto */
+// Función para eliminar un contacto
 function eliminarContacto(id) {
     if (confirm("¿Seguro que quieres eliminar este contacto?")) {
         fetch("/delete", {
@@ -145,16 +160,19 @@ function eliminarContacto(id) {
     }
 }
 
-/* Función para enviar el formulario de contacto */
-document.getElementById("contact-form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita recargar la página automáticamente
-
-    fetch(this.action, {
-        method: this.method,
-        body: new FormData(this)
-    }).then(response => response.text())
-      .then(() => {
-          this.reset(); // Limpia los campos del formulario
-      });
+// Función para enviar el formulario de contacto
+document.addEventListener("DOMContentLoaded", function() {
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            fetch(this.action, {
+                method: this.method,
+                body: new FormData(this)
+            }).then(response => response.text())
+              .then(() => {
+                  this.reset();
+              });
+        });
+    }
 });
-
