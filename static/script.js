@@ -72,6 +72,8 @@ function validarFormulario() {
     return true;
 }
 
+
+
 // Funciones para la edición
 function abrirModal(id, grado, nombre, apellido, dni) {
     const editModal = document.getElementById("editModal");
