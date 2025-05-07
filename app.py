@@ -110,10 +110,30 @@ def add():
     return render_template("add.html")
 
 
-@app.route("/view")
+@app.route("/view", methods=["GET"])
 def view():
-    registros = obtener_contactos()
-    return render_template("view.html", registros=registros)
+    q = request.args.get("q", "").strip()  # Parámetro de búsqueda (por defecto vacío)
+    registros = []
+    conn = db_connection()
+    if conn is not None:
+        with conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                if q:
+                    # Busca por nombre o apellido (usando ILIKE para insensibilidad a mayúsculas)
+                    query = """
+                        SELECT id, grado, nombre, apellido, dni
+                        FROM contactos
+                        WHERE nombre ILIKE %s OR apellido ILIKE %s
+                        ORDER BY nombre ASC
+                    """
+                    wildcard = f"%{q}%"
+                    cursor.execute(query, (wildcard, wildcard))
+                else:
+                    # Si no se busca nada, muestra todos los contactos
+                    cursor.execute("SELECT id, grado, nombre, apellido, dni FROM contactos ORDER BY nombre ASC")
+                registros = cursor.fetchall()
+    return render_template("view.html", registros=registros, q=q)
+
 
 @app.route("/edit", methods=["POST"])
 def edit():
