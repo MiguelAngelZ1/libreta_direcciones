@@ -98,12 +98,10 @@
     transition: opacity 0.2s ease-out;
   }
   
-  /* Fondo de pantalla y configuración base del body */
-  body {
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
+  /* Estilos para alertas (transiciones y fondo uniforme) */
+  .alert-hidden {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
   }
   
   /* Barra de navegación personalizada */
