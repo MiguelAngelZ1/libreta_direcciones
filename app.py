@@ -66,7 +66,6 @@ def add():
                 if cursor.fetchone():
                     return render_template("add.html", mensaje="❌ Ya existe un contacto con el mismo DNI.")
 
-                # Transformación de nombres
                 nombre = " ".join(word.capitalize() for word in nombre_input.split())
                 apellido = apellido_input.upper()
 
@@ -76,7 +75,7 @@ def add():
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
         
-        return render_template("add.html", mensaje="✅ Contacto agregado correctamente.")
+        return redirect(url_for("add"))  # 🔥 Cambio: ahora recargamos sin mensaje persistente
     
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
