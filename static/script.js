@@ -1,32 +1,3 @@
-// Funcionalidad de búsqueda en la tabla con corrección de resaltado
-document.addEventListener("DOMContentLoaded", function () {
-    const searchBox = document.getElementById("searchBox");
-    if (searchBox) {
-        searchBox.addEventListener("input", function () {
-            let input = searchBox.value.toLowerCase().trim();
-            let filas = document.querySelectorAll("#tableBody tr");
-            filas.forEach(fila => {
-                // Si el campo de búsqueda está vacío, mostramos la fila sin resaltado
-                if (input === "") {
-                    fila.style.display = "table-row";
-                    fila.style.backgroundColor = "";
-                } else {
-                    let nombre = fila.dataset.nombre ? fila.dataset.nombre.toLowerCase() : "";
-                    let apellido = fila.dataset.apellido ? fila.dataset.apellido.toLowerCase() : "";
-                    let dni = fila.dataset.dni ? fila.dataset.dni.toString() : "";
-                    if (nombre.includes(input) || apellido.includes(input) || dni.includes(input)) {
-                        fila.style.display = "table-row";
-                        fila.style.backgroundColor = "#ffff99";  // Resalta la fila
-                    } else {
-                        fila.style.display = "none";
-                    }
-                }
-            });
-        });
-    }
-});
-
-
 // Validación del formulario de alta
 function validarFormulario() {
     const gradoElem = document.getElementById("grado");
@@ -34,7 +5,6 @@ function validarFormulario() {
     const apellidoElem = document.getElementById("apellido");
     const dniElem = document.getElementById("dni");
     
-    // Si alguno de estos elementos no está presente, se omite la validación
     if (!gradoElem || !nombreElem || !apellidoElem || !dniElem) {
         return true;
     }
@@ -72,38 +42,6 @@ function validarFormulario() {
     return true;
 }
 
-// Funciones para la edición
-
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script.js cargado correctamente");
-
-    // Asignar evento a los botones de edición
-    const btnEditarList = document.querySelectorAll(".btn-editar");
-    console.log("Botones de editar encontrados:", btnEditarList);
-    btnEditarList.forEach(button => {
-        button.addEventListener("click", function () {
-            let id = this.dataset.id;
-            let grado = this.dataset.grado;
-            let nombre = this.dataset.nombre;
-            let apellido = this.dataset.apellido;
-            let dni = this.dataset.dni;
-
-            console.log(`Editando contacto con ID ${id}`);
-            abrirModal(id, grado, nombre, apellido, dni);
-        });
-    });
-
-    // Asignar evento a los botones de eliminación
-    const btnEliminarList = document.querySelectorAll(".btn-eliminar");
-    console.log("Botones de eliminar encontrados:", btnEliminarList);
-    btnEliminarList.forEach(button => {
-        button.addEventListener("click", function () {
-            let id = this.dataset.id;
-            console.log(`Eliminando contacto con ID ${id}`);
-            eliminarContacto(id);
-        });
-    });
-});
 // Función para abrir el modal de edición
 function abrirModal(id, grado, nombre, apellido, dni) {
     const editModal = document.getElementById("editModal");
@@ -117,6 +55,7 @@ function abrirModal(id, grado, nombre, apellido, dni) {
     }
 }
 
+// Función para cerrar el modal de edición
 function cerrarModal() {
     const editModal = document.getElementById("editModal");
     if (editModal) {
@@ -126,7 +65,7 @@ function cerrarModal() {
 
 // Función para confirmar la edición del contacto
 function confirmarEdicion(event) {
-    event.preventDefault(); // Evita la redirección automática por el formulario
+    event.preventDefault();
 
     let formData = new FormData(document.getElementById("editForm"));
 
@@ -137,24 +76,11 @@ function confirmarEdicion(event) {
     .then(response => response.text())
     .then(() => {
         alert("✅ Contacto editado correctamente.");
-        location.reload(); // Recarga la página en lugar de redirigir
+        location.reload();
     })
     .catch(error => {
         alert("❌ Hubo un error al editar el contacto. Intenta nuevamente.");
         console.error("Error:", error);
-    });
-}
-
-
-// Función para limpiar la búsqueda
-function limpiarBusqueda() {
-    const searchBox = document.getElementById("searchBox");
-    if (searchBox) {
-        searchBox.value = "";
-    }
-    document.querySelectorAll("#tableBody tr").forEach(fila => {
-        fila.style.display = "table-row";
-        fila.style.backgroundColor = "";
     });
 }
 
@@ -182,33 +108,13 @@ function eliminarContacto(id) {
     }
 }
 
-
-// Función para enviar el formulario de contacto
-document.addEventListener("DOMContentLoaded", function() {
-    const contactForm = document.getElementById("contact-form");
-    if (contactForm) {
-        contactForm.addEventListener("submit", function(event) {
-            event.preventDefault();
-            fetch(this.action, {
-                method: this.method,
-                body: new FormData(this)
-            }).then(response => response.text())
-              .then(() => {
-                  this.reset();
-              });
-        });
-    }
-});
-
+// Función para ocultar automáticamente los mensajes flash después de unos segundos
 document.addEventListener("DOMContentLoaded", function () {
-    // Selecciona todas las alertas que tengan las clases 'alert' y 'fade'
     const alerts = document.querySelectorAll('.alert.fade');
     
     alerts.forEach(alert => {
-      // Después de 2 segundos, remueve la clase "show" para iniciar el efecto fade-out
-      setTimeout(() => {
-        alert.classList.remove('show');
-      }, 2000);
+        setTimeout(() => {
+            alert.classList.remove('show');
+        }, 2000);
     });
-  });
-  
+});
