@@ -91,4 +91,47 @@ button:hover {
   }
 
   
-  
+  /* Fondo de pantalla uniforme */
+body {
+    background: url('../images/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra de navegación personalizada */
+.custom-navbar {
+    background-color: rgba(0, 0, 0, 0.8);  /* Fondo oscuro semitransparente */
+    border-bottom: 2px solid #28a745;       /* Borde verde para resaltar */
+}
+
+/* Estilo para alertas: se utiliza la opacidad y transición para suavizar la desaparición */
+.alert {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: opacity 0.8s ease-out;
+}
+
+/* Botón verde unificado */
+.btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #fff;
+}
+
+/* Enlaces del navbar con fuente clara */
+.nav-link {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+/* Opcional: contenedores con fondo semitransparente para mejorar la legibilidad */
+.container {
+    background-color: rgba(255, 255, 255, 0.92);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
