@@ -3,7 +3,21 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h1 class="mb-4">Lista de Contactos</h1>
+  <!-- Fila para el botón de "Volver al Inicio" colocado en la parte superior, alineado a la derecha -->
+  <div class="row mb-3">
+    <div class="col text-end">
+      <a href="{{ url_for('index') }}" class="btn btn-success">
+        <i class="fas fa-home"></i> Volver al Inicio
+      </a>
+    </div>
+  </div>
+  
+  <!-- Buscador en tiempo real -->
+  <div class="row mb-4">
+    <div class="col">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
+    </div>
+  </div>
   
   {# Bloque para mostrar mensajes flash en la vista #}
   <div class="mb-4">
@@ -17,11 +31,6 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-  </div>
-  
-  <!-- Buscador en tiempo real -->
-  <div class="mb-4">
-      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
   </div>
   
   <!-- Tabla de contactos -->
@@ -61,13 +70,6 @@
       {% endfor %}
     </tbody>
   </table>
-  
-  <!-- Botón para volver al inicio -->
-  <div class="text-center mt-4">
-    <a href="{{ url_for('index') }}" class="btn btn-success">
-      <i class="fas fa-home"></i> Volver al Inicio
-    </a>
-  </div>
 </div>
 
 <!-- Modal para editar contacto -->
@@ -106,6 +108,7 @@
     </div>
   </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
