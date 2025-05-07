@@ -69,8 +69,6 @@ def add():
                     return render_template("add.html", error=error)
                 
                 # Transformación de datos:
-                # - Nombre: cada palabra con la primera letra en mayúscula.
-                # - Apellido: todo en MAYÚSCULAS.
                 nombre = " ".join(word.capitalize() for word in nombre_input.split())
                 apellido = apellido_input.upper()
 
@@ -79,15 +77,14 @@ def add():
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
-                
-            flash("Contacto agregado exitosamente.", "success")
-            return redirect(url_for("add"))
-
-
+        flash("Contacto agregado exitosamente.", "success")
+        # REDIRECT: Esto hace que se reinicie la solicitud GET y los mensajes flash se muestren
+        return redirect(url_for("add"))
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
         return render_template("add.html", error=error)
+
 
 @app.route("/view")
 def view():
