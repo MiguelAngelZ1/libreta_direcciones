@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Inicio - Mi Aplicación{% endblock %}
-
-{% block nav %}
-<nav>
-  <a href="{{ url_for('index') }}">Inicio</a>
-  <a href="{{ url_for('add') }}">Agregar Contacto</a>
-  <a href="{{ url_for('view') }}">Ver Contactos</a>
-</nav>
+{% block title %}
+  Libreta de Direcciones
 {% endblock %}
 
 {% block content %}
-  <h1>Bienvenido a Mi Aplicación</h1>
-  <p>Este es el contenido de la página de inicio.</p>
+  <h2>Bienvenido a la Libreta de Direcciones</h2>
+  <p>Seleccione una opción:</p>
+  <ul>
+    <li><a href="/add">Agregar un Contacto</a></li>
+    <li><a href="/view">Ver Todos</a></li>
+  </ul>
 {% endblock %}
