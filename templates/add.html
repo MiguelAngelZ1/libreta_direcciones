@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
-{# Sobrescribimos el bloque de navegación para no mostrar el menú #}
+{# Anulamos el bloque de mensajes flash para que no se muestren en la esquina #}
+{% block flash %}
+{% endblock %}
+
+{# Opcionalmente, también puedes quitar el bloque de navegación si no lo deseas #}
 {% block nav %}{% endblock %}
 
 {% block title %}
@@ -10,7 +14,7 @@
 {% block content %}
   <h2>Agregar Contacto</h2>
 
-  {# Si hay error (por validación o duplicado) se mostrará aquí #}
+  {# Mostrar error en caso de validación fallida #}
   {% if error %}
     <div class="alert alert-danger">
       {{ error }}
@@ -49,20 +53,20 @@
     <p>&copy; 2025 Libreta. Todos los derechos reservados.</p>
   </footer>
 
-  {# Si existe un mensaje flash de éxito, mostramos el modal y definimos las acciones #}
+  {# Si se detecta un mensaje flash de éxito, se muestra el modal #}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
         {% if category == "success" %}
           <script>
             document.addEventListener("DOMContentLoaded", function(){
-              // Se muestra el modal de éxito
+              // Mostrar el modal de éxito
               document.getElementById("successModal").style.display = "block";
-              // El botón "Sí" redirige al endpoint GET de /add (limpiando cualquier mensaje)
+              // Al hacer clic en "Sí", se redirige al endpoint GET de /add para limpiar la página sin mensajes
               document.getElementById("yesBtn").addEventListener("click", function(){
                 window.location.href = "{{ url_for('add') }}";
               });
-              // El botón "No" redirige al index
+              // Al hacer clic en "No", se redirige al index
               document.getElementById("noBtn").addEventListener("click", function(){
                 window.location.href = "{{ url_for('index') }}";
               });
