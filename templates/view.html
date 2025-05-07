@@ -5,15 +5,10 @@
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Contactos</h1>
   
-  <!-- Buscador: formulario GET para filtrar la lista -->
-  <form method="get" action="{{ url_for('view') }}" class="mb-4">
-    <div class="input-group">
-      <input type="text" name="q" class="form-control" placeholder="Buscar por nombre o apellido" value="{{ q }}">
-      <button type="submit" class="btn btn-primary">
-        <i class="fas fa-search"></i> Buscar
-      </button>
-    </div>
-  </form>
+  <!-- Buscador en tiempo real -->
+  <div class="mb-4">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre o apellido...">
+  </div>
   
   <!-- Tabla de contactos -->
   <table class="table table-striped">
@@ -26,7 +21,7 @@
         <th>Acciones</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="contactoTable">
       {% for c in registros %}
       <tr>
         <td>{{ c.grado }}</td>
@@ -58,4 +53,50 @@
     </tbody>
   </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", function(){
+         let q = searchInput.value;
+         fetch(`/search?q=${encodeURIComponent(q)}`)
+         .then(response => response.json())
+         .then(data => {
+             let tbody = document.getElementById("contactoTable");
+             tbody.innerHTML = "";
+             data.forEach(function(contacto) {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                  <td>${contacto.grado}</td>
+                  <td>${contacto.nombre}</td>
+                  <td>${contacto.apellido}</td>
+                  <td>${contacto.dni}</td>
+                  <td>
+                      <form method="post" action="{{ url_for('edit') }}" style="display:inline;">
+                        <input type="hidden" name="id" value="${contacto.id}">
+                        <input type="hidden" name="grado" value="${contacto.grado}">
+                        <input type="hidden" name="nombre" value="${contacto.nombre}">
+                        <input type="hidden" name="apellido" value="${contacto.apellido}">
+                        <input type="hidden" name="dni" value="${contacto.dni}">
+                        <button type="submit" class="btn btn-primary btn-sm" title="Editar">
+                          <i class="fas fa-edit"></i> Editar
+                        </button>
+                      </form>
+                      <form method="post" action="{{ url_for('delete') }}" style="display:inline;" onsubmit="return confirm('¿Seguro que deseas eliminar este contacto?');">
+                        <input type="hidden" name="id" value="${contacto.id}">
+                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                          <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                      </form>
+                  </td>
+                `;
+                tbody.appendChild(tr);
+             });
+         })
+         .catch(error => console.error("Error en la búsqueda en tiempo real", error));
+    });
+});
+</script>
 {% endblock %}
