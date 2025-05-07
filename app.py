@@ -158,6 +158,23 @@ def edit():
 
     return render_template("view.html", registros=obtener_contactos())
 
+@app.route("/delete", methods=["POST"])
+def delete():
+    id_registro = request.form.get("id")
+    conn = db_connection()
+    if conn is None:
+        flash("❌ Error de conexión a la base de datos.", "danger")
+        return redirect(url_for("view"))
+    try:
+        with conn:
+            with conn.cursor() as cursor:
+                delete_sql = "DELETE FROM contactos WHERE id = %s"
+                cursor.execute(delete_sql, (id_registro,))
+        flash("✅ Contacto eliminado correctamente.", "success")
+    except Exception as e:
+        print(f"Error al eliminar contacto: {e}")
+        flash("❌ Error al eliminar el contacto.", "danger")
+    return redirect(url_for("view"))
 
 
 if __name__ == "__main__":
