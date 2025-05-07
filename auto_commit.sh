@@ -27,6 +27,7 @@ while inotifywait -r -e modify,create,delete .; do
     # Procedemos con las operaciones de Git
     git add -A
 
+
     # Solo se efectúa el commit si hay cambios pendientes
     if ! git diff-index --quiet HEAD --; then
         git commit -m "Auto commit: $(date '+%Y-%m-%d %H:%M:%S')"
