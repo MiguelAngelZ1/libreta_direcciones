@@ -212,7 +212,7 @@ def delete():
             with conn.cursor() as cursor:
                 delete_sql = "DELETE FROM contactos WHERE id = %s"
                 cursor.execute(delete_sql, (id_registro,))
-        flash("✅ Contacto eliminado correctamente.", "success")
+        flash("❌ Contacto eliminado correctamente.", "success")
     except Exception as e:
         print(f"Error al eliminar contacto: {e}")
         flash("❌ Error al eliminar el contacto.", "danger")
