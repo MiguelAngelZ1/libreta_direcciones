@@ -79,8 +79,9 @@ def add():
                     VALUES (%s, %s, %s, %s)
                 """
                 cursor.execute(sql, (grado, nombre, apellido, dni))
-        flash("Contacto agregado exitosamente.", "success")
-        return render_template("add.html", error=None)
+                flash("Contacto agregado exitosamente.", "success")
+        return redirect(url_for("add"))
+
     except Exception as e:
         print(f"Error al insertar contacto: {e}")
         error = "Error al agregar el contacto."
