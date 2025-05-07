@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Después de 4 segundos, remueve la clase "show" para iniciar el efecto fade-out
       setTimeout(() => {
         alert.classList.remove('show');
-      }, 4000);
+      }, 2000);
     });
   });
   
